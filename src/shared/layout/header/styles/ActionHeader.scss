@@ -1,0 +1,93 @@
+.action-header {
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        .relative {
+            position: relative;
+        }
+        .lang-icon {
+            font-size: 12px!important;
+            margin-left: 8px;
+        }
+        li {
+            text-transform: uppercase;
+            transition: color .3s;
+            font-size: 12px;
+            padding: 14px 18px;
+            font-weight: 400;
+            color: #6a6a6a;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            &:hover {
+                color: #aaabaf !important;
+            }
+            span.ic {
+                font-size: 18px;
+                font-weight: 300;
+            }
+            .items {
+                background-color: hsla(0, 0%, 41.6%, .83529);
+                color: #fff;
+                border-radius: 10px;
+                width: 18px;
+                height: 18px;
+                position: absolute;
+                top: 15%;
+                right: 5%;
+                bottom: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 10px;
+            }
+            &:first-child {
+                position: relative;
+                &:hover {
+                    ul {
+                        display: block!important;
+                        transform: scale(1);
+                    }
+                }
+                ul {
+                    display: none!important;
+                    transform: scale(0);
+                    padding: 0px;
+                    margin: 0;
+                    border-radius: 5px;
+                    font-size: 14px;
+                    list-style: none;
+                    background-color: #fff;
+                    box-shadow: 0 7px 22px -5px rgba(47, 56, 68, 0.2);
+                    display: block;
+                    position: absolute;
+                    z-index: 22;
+                    right: 0;
+                    top: 90%;
+                    transition: all .4s;
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        height: 2px;
+                        background: #5D9D90;
+                    }
+                    li {
+                        padding: 8px 16px;
+                        transition: all .3s;
+                        &:hover {
+                            background: #eee;
+                            color: var(--primary-dark-color)!important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

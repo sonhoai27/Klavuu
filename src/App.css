@@ -1,0 +1,130 @@
+*,
+*:focus,
+*:active,
+*:visited {
+    outline: none!important;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif!important;
+}
+
+a {
+    color: #6a6a6a!important;
+    text-decoration: none!important;
+}
+
+
+/* width */
+
+.wd_100 {
+    width: 100%;
+}
+
+
+/* margin */
+
+.mg_y_32 {
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+.mg_y_16 {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.mg_x_32 {
+    margin-left: 32px;
+    margin-right: 32px;
+}
+
+.mg_x_16 {
+    margin-left: 16px;
+    margin-right: 16px;
+}
+
+.mg_x_8 {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.mg_r_8 {
+    margin-right: 8px;
+}
+
+.mg_l_8 {
+    margin-right: 8px;
+}
+
+.mg_r_16 {
+    margin-right: 16px;
+}
+
+.mg_l_16 {
+    margin-right: 16px;
+}
+
+.mg_t_16 {
+    margin-top: 16px;
+}
+
+.mg_b_16 {
+    margin-bottom: 16px;
+}
+
+
+/* padding */
+
+.pd_8 {
+    padding: 8px;
+}
+
+
+/* float */
+
+
+/* text align */
+
+
+/* display flex, flex */
+
+.flex_1 {
+    flex: 1;
+}
+
+.flex_2 {
+    flex: 2;
+}
+
+.flex_3 {
+    flex: 3;
+}
+
+.flex_4 {
+    flex: 4;
+}
+
+.flex_5 {
+    flex: 5;
+}
+
+.flex_6 {
+    flex: 6;
+}
+
+.flex_7 {
+    flex: 7;
+}
+
+.flex_8 {
+    flex: 8;
+}
+
+.flex_9 {
+    flex: 9;
+}
+
+.flex_10 {
+    flex: 10;
+}
