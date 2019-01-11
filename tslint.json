@@ -10,6 +10,7 @@
     ]
   },
   "rules": {
+    "align": false,
     "no-var-keyword": true,
     "no-unused": true,
     "semicolon": false,

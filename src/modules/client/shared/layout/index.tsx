@@ -4,17 +4,18 @@ import Header from './header';
 
 interface ILayoutProps {
   children?: any;
-  className?: string;
 }
 
 const Layout = (props: ILayoutProps) => (
-  <div
-    className={`col-12 ${props.className ? props.className : ''}`}>
-    <div className="row">
-      <Header/>
-      {props.children}
+  <>
+    <div
+      className="col-12">
+      <div className="row">
+        <Header />
+      </div>
     </div>
-  </div>
+    {props.children}
+  </>
 );
 
 export {

@@ -5,15 +5,17 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 const localStyles = require('./App.css');
 
 import { setLocalStyles } from '@app/stores/init';
-import Layout from '@app/shared/layout';
 
 interface IAppProps {
   setLocalStyles?: (styles: any) => void;
-  isShowPhotoApp: boolean;
 }
-const Home  = () => (
-  <div className="col-12"><h1>Home</h1></div>
-)
+
+const Client = React.lazy(() => import(
+  /*webpackChunkName: "client" */ '@app/modules/client'));
+
+const Admin = React.lazy(() => import(
+  /*webpackChunkName: "admin" */ '@app/modules/admin'));
+
 class App extends React.Component<IAppProps> {
   constructor(props) {
     super(props)
@@ -25,13 +27,12 @@ class App extends React.Component<IAppProps> {
 
     return (
       <Router>
-          <Layout>
-            <React.Suspense fallback={<div className="col-12">AAA</div>}>
-              <Switch>
-                <Route exact path="/" component={Home}/>
-              </Switch>
-            </React.Suspense>
-          </Layout>
+        <React.Suspense fallback={''}>
+          <Switch>
+            <Route exact path="/" component={Client}/>
+            <Route path="/xxx" component={Admin}/>
+          </Switch>
+        </React.Suspense>
       </Router>
     )
   }
@@ -39,7 +40,6 @@ class App extends React.Component<IAppProps> {
 
 const mapStateToProps = storeState => ({
   localStyles: storeState.initReducer.localStyles,
-  isShowPhotoApp: storeState.initReducer.isShowPhotoApp,
 })
 
 const mapDispatchToProps = {

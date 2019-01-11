@@ -42,7 +42,12 @@ module.exports = {
                         loader: "style-loader"
                     },
                     {
-                        loader: "css-loader"
+                        loader: require.resolve('css-loader'),
+                        options: {
+                            importLoaders: 1,
+                            modules: true,
+                            localIdentName: "sh__[hash:base64:25]",
+                        }
                     },
                     { loader: 'postcss-loader' },
                     {
@@ -62,7 +67,7 @@ module.exports = {
                         options: {
                             importLoaders: 1,
                             modules: true,
-                            localIdentName: "max_power__[hash:base64:25]",
+                            localIdentName: "sh__[hash:base64:25]",
                         }
                     },
                     { loader: 'postcss-loader' }

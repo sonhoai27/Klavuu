@@ -1,0 +1,30 @@
+.am-side-left-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 10;
+    background-color: #31373d;
+    transition: background-color 200ms ease;
+    width: calc(100% - 83.333333%);
+    padding: 12px;
+    .user {
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        span:first-child {
+            font-weight: 500;
+        }
+        span:last-child {
+            padding: 4px;
+            transition: all .3s;
+            border-radius: 100%;
+            cursor: pointer;
+            &:hover {
+                background: #fafafa;
+                color: var(--primary-dark-color);
+            }
+        }
+    }
+}

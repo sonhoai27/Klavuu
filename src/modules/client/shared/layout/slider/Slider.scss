@@ -1,0 +1,100 @@
+    .slider {
+        overflow: hidden;
+        position: relative;
+        color: #fff;
+        width: 100%;
+        @mixin sliderReady {
+            .slider.s--ready & {
+                @content;
+            }
+        }
+        &__slide {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0;
+            &.s--active {
+                pointer-events: auto;
+                opacity: 1;
+                animation: showSlide 0.8s ease-in-out;
+            }
+            &-content {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                z-index: 1;
+            }
+            &-heading {
+                font-size: 42px;
+            }
+            &-image {
+                img {
+                    object-fit: cover;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    width: 100%;
+                }
+            }
+        }
+        &__control {
+            $size: 50px;
+            z-index: 10;
+            position: absolute;
+            left: 80px;
+            top: 50%;
+            width: $size;
+            height: $size;
+            margin-top: $size/-2;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateX($size*-1);
+            transition: all .3s;
+            cursor: pointer;
+            &:hover {
+                background: rgba(255, 255, 255, 0.8);
+            }
+            &:before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                width: 20px;
+                height: 20px;
+                margin-left: -10px;
+                margin-top: -10px;
+                border: 2px solid #000;
+                border-bottom: none;
+                border-right: none;
+                transform: translateX(5px) rotate(-45deg);
+            }
+            &--right {
+                left: auto;
+                right: 80px;
+                transform: translateX($size);
+                &:before {
+                    transform: translateX(-5px) rotate(135deg);
+                }
+            }
+        }
+        @keyframes showSlide {
+            from {
+                opacity: 0.6;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    }

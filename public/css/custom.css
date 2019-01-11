@@ -5,3 +5,8 @@
     --second-dark-color: #4f4f4f;
     --third-dark-color: #585858;
 }
+
+html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
