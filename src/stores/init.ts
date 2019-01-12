@@ -6,6 +6,8 @@ const INIT_ACTION_TYPES = {
 
 const initState = {
   localStyles: {},
+  LoginState: {},
+  LoginCheckState: {},
 };
 
 const initReducer = (state = initState, action: Action) => {

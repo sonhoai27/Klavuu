@@ -1,0 +1,31 @@
+.am-tabs {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    background: #f5f6f7;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    width: 100%;
+    .am-tabs_item {
+        display: inline-block;
+        color: #707070;
+        padding: 14px 20px;
+        line-height: 1;
+        border: 0;
+        margin-right: 0;
+        border-radius: 0;
+        border-right: 1px solid #ebeef0!important;
+        font-weight: 500;
+        &:hover {
+            color: #428bca;
+            cursor: pointer;
+        }
+    }
+    .active {
+        background-color: #fff;
+    }
+}
+
+.am-tabs-content {
+    padding: 20px;
+}

@@ -1,4 +1,4 @@
-const API = 'http://api.maxpowervn.com/';
+const API = 'http://localhost/api/';
 
 export {
   API,

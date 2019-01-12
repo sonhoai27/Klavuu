@@ -10,3 +10,75 @@ html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+.mg-t-16 {
+    margin-top: 20px;
+}
+
+.pd-0 {
+    padding: 0!important;
+}
+
+
+/* lite editor */
+
+#content-editor {
+    border: 1px solid #ddd;
+}
+
+.wrap-editor {
+    padding: 8px;
+    border: 1px solid #ddd;
+    background: #fff;
+}
+
+#editor {
+    outline: none;
+}
+
+#content-editor .toolbar {
+    margin-bottom: 8px;
+}
+
+#content-editor .toolbar button {
+    border: 1px solid #eee;
+    background: #fff;
+    outline: none;
+    cursor: pointer;
+    padding: 6px 12px;
+    transition: all 0.3s;
+}
+
+#content-editor .toolbar button:hover {
+    background: #1D2939;
+    color: #fff;
+}
+
+#content-editor .toolbar select {
+    border: 1px solid #eee;
+    background: #fff;
+    outline: none;
+    height: 36px;
+    border-radius: 0;
+}
+
+#content-editor .wrap {
+    background: #f8f9fa;
+    padding: 8px;
+}
+
+#content-editor .editor-select {
+    border: 1px solid #eee;
+    background: #fff;
+    outline: none;
+    cursor: pointer;
+    padding: 6px 12px;
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+#content-editor .editor-select select {
+    background: transparent;
+    border: none;
+    height: auto;
+}

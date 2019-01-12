@@ -1,5 +1,6 @@
 const { resolve } = require('path');
 const path = require('path');
+const webpack = require('webpack');
 const { CheckerPlugin } = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -28,8 +29,8 @@ module.exports = {
     module: {
         rules: [{
                 test: /\.js$/,
-                use: ['source-map-loader'],
-                exclude: /node_modules/,
+                use: ['babel-loader', 'source-map-loader'],
+                exclude: /node_modules(?!\/quill-image-drop-module|quill-image-resize-module)/,
             },
             {
                 test: /\.tsx?$/,
@@ -78,11 +79,14 @@ module.exports = {
                 loaders: [
                     'file-loader?hash=sha512&digest=hex&name=img/[hash].[ext]',
                 ],
-            },
+            }
         ]
     },
     plugins: [
         new CheckerPlugin(),
+        new webpack.ProvidePlugin({
+            'window.Quill': 'quill'
+        }),
         new HtmlWebpackPlugin({
             template: '../public/index.html',
             minify: {
