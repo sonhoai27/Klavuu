@@ -46,6 +46,7 @@
     },
     "dependencies": {
         "axios": "^0.18.0",
+        "ckeditor4-react": "^0.1.0",
         "quill-image-resize-module": "^3.0.0",
         "react": "^16.7.0",
         "react-dom": "^16.7.0",

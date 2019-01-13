@@ -43,8 +43,8 @@ class Autocomplete extends React.Component<IAutocompleteProps, IAutocompleteStat
     const { items } = this.props;
     const escapedValue = EscapeRegexCharacters(value.trim());
 
-    const regex = new RegExp(`^${escapedValue}`, 'i');
-    const suggestions = items.filter(item => regex.test(item[this.props.config.text]));
+    const suggestions = items.filter(
+      el => el[this.props.config.text].toLowerCase().indexOf(escapedValue.toLowerCase()) > -1);
 
     if (value !== '') {
       this.setState({
@@ -92,13 +92,22 @@ class Autocomplete extends React.Component<IAutocompleteProps, IAutocompleteStat
   render() {
     return (
       <div className={Styles['autocomplete']}>
-        <input
-          type="text"
-          onChange={this.getSuggestions}
-          placeholder={ValidateObject({
-            name: 'placeholder',
-            object: this.props,
-          })} />
+        <div className={Styles['autocomplete__input']}>
+          <input
+            value={this.state.value}
+            type="text"
+            onChange={this.getSuggestions}
+            placeholder={ValidateObject({
+              name: 'placeholder',
+              object: this.props,
+            })} />
+            <span onClick={() => {
+              this.setState({
+                suggestions: [],
+                value: '',
+              })
+            }}>X</span>
+        </div>
         <div className={Styles['autocomplete__content-search']}>
           <ul className={Styles['autocomplete__items']}>
             {this.renderContent()}

@@ -98,6 +98,7 @@ module.exports = {
             { from: '../public/manifest.json', to: '../build' },
             { from: '../public/images/', to: '../build/images' },
             { from: '../public/css/', to: '../build/css' },
+            { from: '../public/ckeditor/', to: '../build/ckeditor' },
             { from: '../public/images/favicon.ico', to: '../build' }
         ])
     ],

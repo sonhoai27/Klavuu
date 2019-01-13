@@ -16,6 +16,9 @@
         align-items: center;
         justify-content: space-between;
         margin-bottom: 8px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
         span {
             &:last-child {
                 margin-left: 12px;

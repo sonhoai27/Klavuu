@@ -1,17 +1,17 @@
 .autocomplete {
     position: relative;
     input {
-        box-shadow: none;
+        box-shadow: none!important;
         outline: none;
         transition: all .2s ease-out;
         margin: 0;
-        border: 1px solid #95a7b7;
-        border-radius: 0;
-        border-style: inset;
         color: #000;
         padding: 5px 10px;
-        border: 1px solid #c4cdd5;
-        border-radius: 3px;
+        border: none!important;
+        border-top: 1px solid #c4cdd5!important;
+        border-bottom: 1px solid #c4cdd5!important;
+        border-left: 1px solid #c4cdd5!important;
+        border-radius: 0px!important;
         font-weight: 400;
         line-height: 24px;
         text-transform: initial;
@@ -22,12 +22,28 @@
         &:hover,
         &:focus,
         &:visited {
-            border-color: #0078bd;
-            -webkit-box-shadow: 0 0 0 1px #0078bd;
-            box-shadow: 0 0 0 1px #0078bd;
+            box-shadow: none!important;
             outline: none;
             position: relative;
             z-index: 1;
+        }
+    }
+    .autocomplete__input {
+        display: flex;
+        align-items: center;
+        span {
+            background: #fff;
+            padding: 5px 12px;
+            cursor: pointer;
+            transition: all .3s ease-in-out;
+            border-top: 1px solid #c4cdd5!important;
+            border-right: 1px solid #c4cdd5!important;
+            border-bottom: 1px solid #c4cdd5!important;
+            &:hover {
+                background: #0078bd;
+                border-color: #0078bd;
+                color: #fff;
+            }
         }
     }
     .autocomplete__content-search {
