@@ -1,13 +1,25 @@
 import * as React from 'react'
+import ValidateObject from '@app/shared/utils/ValidateObject';
 
-class Alert {
-  // tslint:disable-next-line:function-name
-  Danger() {
+interface IAlertProps {
+  type: string;
+  title: string;
+}
 
+class Alert extends React.Component<IAlertProps>{
+  render() {
     return (
-      <>
-      <h1>JAJAA</h1>
-      </>
+      <div className={`notification ${ValidateObject({
+        name: 'type',
+        object: this.props,
+      })}`}>
+        <h4 className="notification-title">
+          {ValidateObject({
+            name: 'title',
+            object: this.props,
+          })}
+        </h4>
+      </div>
     )
   }
 }

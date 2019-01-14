@@ -5,8 +5,8 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 
 import Layout from './shared/layout';
 
-const Home = React.lazy(() => import(
-  /*webpackChunkName: "client_home" */ '@app/modules/client/home'));
+const ProductDetail = React.lazy(() => import(
+  /*webpackChunkName: "home_detail" */ '@app/modules/client/products/ProductDetail'));
 
 interface IClientProps {
   match?: any;
@@ -24,9 +24,7 @@ class Client extends React.Component<IClientProps> {
       <Router>
         <Layout>
           <React.Suspense fallback={<div className="loading">loading...</div>}>
-            <Switch>
-              <Route exact path={match.url} component={Home}/>
-            </Switch>
+            <Route exact path={`${match.url}/product/:alias`} component={ProductDetail}/>
           </React.Suspense>
         </Layout>
       </Router>

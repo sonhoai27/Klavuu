@@ -60,16 +60,12 @@ module.exports = {
                 test: /\.css$/,
                 exclude: [
                     '/src/index.module.css',
+                    /node_modules(?!\/react-lazy-load-image-component)/
                 ],
                 use: [
                     { loader: 'style-loader' },
                     {
                         loader: require.resolve('css-loader'),
-                        options: {
-                            importLoaders: 1,
-                            modules: true,
-                            localIdentName: "sh__[hash:base64:25]",
-                        }
                     },
                     { loader: 'postcss-loader' }
                 ],
@@ -98,7 +94,6 @@ module.exports = {
             { from: '../public/manifest.json', to: '../build' },
             { from: '../public/images/', to: '../build/images' },
             { from: '../public/css/', to: '../build/css' },
-            { from: '../public/ckeditor/', to: '../build/ckeditor' },
             { from: '../public/images/favicon.ico', to: '../build' }
         ])
     ],

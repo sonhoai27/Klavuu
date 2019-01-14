@@ -2,6 +2,8 @@ import * as React from 'react';
 
 import ValidateObject from '@app/shared/utils/ValidateObject';
 
+const Styles = require('../styles/PrimaryHeader.scss')
+
 interface ISubMenuProps {
   items?: {
     text: string;
@@ -18,8 +20,8 @@ const SubMenu = (props: ISubMenuProps) => {
           <div className="col-1" />
           <div className="col-10">
             <div className="row">
-              <div className="col-sm-4 item">
-                <div className="submenu--header">
+              <div className={`${Styles['item']} col-sm-4`}>
+                <div className={Styles['submenu--header']}>
                   Glow Picks
               </div>
                 <ul>
@@ -46,8 +48,8 @@ const SubMenu = (props: ISubMenuProps) => {
                   </li>
                 </ul>
               </div>
-              <div className="col-sm-4 item">
-                <div className="submenu--header">
+              <div className={`${Styles['item']} col-sm-4`}>
+                <div className={Styles['submenu--header']}>
                   Glow Picks
               </div>
                 <ul>
@@ -74,8 +76,8 @@ const SubMenu = (props: ISubMenuProps) => {
                   </li>
                 </ul>
               </div>
-              <div className="col-sm-4 item">
-                <div className="submenu--header">
+              <div className={`${Styles['item']} col-sm-4`}>
+                <div className={Styles['submenu--header']}>
                   Glow Picks
               </div>
                 <ul>

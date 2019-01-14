@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import './Slider.scss'
+const Styles = require('./Slider.scss')
 
 interface ISliderProps {
   images: {
@@ -67,8 +67,8 @@ class Slider extends React.Component<ISliderProps, ISliderStates> {
   handleActiveOrPrev = (index: number) => {
     const { activeSlide, prevSlide } = this.state
 
-    if (activeSlide === index) return 's--active'
-    if (prevSlide === index) return 's--prev'
+    if (activeSlide === index) return Styles['s--active']
+    if (prevSlide === index) return Styles['s--prev']
 
     return ''
   }
@@ -76,21 +76,21 @@ class Slider extends React.Component<ISliderProps, ISliderStates> {
   render() {
 
     return (
-      <div className="slider s--ready" style={{ height: this.props.height }}>
-        <div className="slider__slides">
+      <div className={`${Styles['slider']} ${Styles['s--ready']}`} style={{ height: this.props.height }}>
+        <div className={Styles['slider__slides']}>
           {
             this.props.images.map((slide: any, index: number) => (
-              <div className={`slider__slide ${this.handleActiveOrPrev(index)}`} key={index}>
+              <div className={`${Styles['slider__slide']} ${this.handleActiveOrPrev(index)}`} key={index}>
                 <Link to={slide.url ? slide.url : '#'}>
-                  <div className="slider__slide-content">
-                    <h2 className="slider__slide-heading">
+                  <div className={Styles['slider__slide-content']}>
+                    <h2 className={Styles['slider__slide-heading']}>
                       {slide.title ? slide.title : ''}
                     </h2>
-                    <h3 className="slider__slide-description">
+                    <h3 className={Styles['slider__slide-description']}>
                       {slide.desc ? slide.desc : ''}
                     </h3>
                   </div>
-                  <div className="slider__slide-image">
+                  <div className={Styles['slider__slide-image']}>
                     <img src={slide.img} className="img-fluid" />
                   </div>
                 </Link>
@@ -99,10 +99,10 @@ class Slider extends React.Component<ISliderProps, ISliderStates> {
           }
         </div>
         <div
-          className="slider__control"
+          className={Styles['slider__control']}
           onClick={() => this.changeSlides(-1)} />
         <div
-          className="slider__control slider__control--right"
+          className={`${Styles['slider__control']} ${Styles['slider__control--right']}`}
           onClick={() => this.changeSlides(1)} />
       </div>
     )

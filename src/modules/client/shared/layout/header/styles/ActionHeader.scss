@@ -27,8 +27,8 @@
             &:hover {
                 color: #aaabaf !important;
             }
-            span.ic {
-                font-size: 18px;
+            .icon {
+                font-size: 18px!important;
                 font-weight: 300;
             }
             .items {
@@ -66,7 +66,7 @@
                     box-shadow: 0 7px 22px -5px rgba(47, 56, 68, 0.2);
                     display: block;
                     position: absolute;
-                    z-index: 22;
+                    z-index: 1000;
                     right: 0;
                     top: 90%;
                     &:after {

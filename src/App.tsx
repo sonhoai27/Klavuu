@@ -5,6 +5,7 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 const localStyles = require('./App.css');
 
 import { setLocalStyles } from '@app/stores/init';
+import Layout from '@app/modules/client/shared/layout';
 
 interface IAppProps {
   setLocalStyles?: (styles: any) => void;
@@ -15,6 +16,9 @@ const Client = React.lazy(() => import(
 
 const Admin = React.lazy(() => import(
   /*webpackChunkName: "admin" */ '@app/modules/admin'));
+
+const Home = React.lazy(() => import(
+  /*webpackChunkName: "client_home" */ '@app/modules/client/home'));
 
 class App extends React.Component<IAppProps> {
   constructor(props) {
@@ -29,7 +33,8 @@ class App extends React.Component<IAppProps> {
       <Router>
         <React.Suspense fallback={''}>
           <Switch>
-            <Route exact path="/" component={Client}/>
+            <Route exact path="/" render={(props) => <Layout><Home {...props}/></Layout>}/>
+            <Route path="/page" component={Client}/>
             <Route path="/xxx" component={Admin}/>
           </Switch>
         </React.Suspense>

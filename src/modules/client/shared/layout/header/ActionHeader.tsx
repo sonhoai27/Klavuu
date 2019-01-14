@@ -1,26 +1,26 @@
 import * as React from 'react'
 
-import './styles/ActionHeader.scss'
+const Styles = require('./styles/ActionHeader.scss')
 import Icon from '../Icon';
 
 const ActionHeader = () => (
-  <div className="col-12 action-header">
+  <div className={`${Styles['action-header']} col-12 `}>
     <div className="container">
       <ul>
         <li>
           Language
-        <Icon name="chevron-down" className="lang-icon" />
+        <Icon name="chevron-down" className={Styles['lang-icon']} />
           <ul>
             <li>VN</li>
             <li>US</li>
           </ul>
         </li>
         <li>
-          <Icon name="magnifier" />
+          <Icon name="magnifier" className={Styles['icon']}/>
         </li>
-        <li className="relative">
-          <Icon name="cart" />
-          <span className="items">0</span>
+        <li className={Styles['relative']}>
+          <Icon name="cart" className={Styles['icon']}/>
+          <span className={Styles['items']}>0</span>
         </li>
       </ul>
     </div>

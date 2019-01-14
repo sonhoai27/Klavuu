@@ -1,21 +1,24 @@
 import * as React from 'react';
 
-import './styles/PrimaryHeader.scss'
+const Styles = require('./styles/PrimaryHeader.scss')
 import SubMenu from './components/SubMenu';
+import { Link } from 'react-router-dom';
 
 const PrimaryHeader = () => (
-  <div className="col-12 primary-header">
+  <div className={`${Styles['primary-header']} col-12`}>
     <div className="container">
-      <div className="row">
-        <div className="primary-header__logo">
-          <img
-            src="http://en.klavuu.com/img/logo/logo.png"
-            className="img-fluid logo" />
+      <div className={`${Styles['row']} row`}>
+        <div className={Styles['primary-header__logo']}>
+          <Link to={'/'}>
+            <img
+              src="http://en.klavuu.com/img/logo/logo.png"
+              className={`${Styles['logo']} img-fluid`} />
+          </Link>
         </div>
         <ul>
           <li>
             <a href="#">Shop By</a>
-            <SubMenu className="primary-menu__submenu" />
+            <SubMenu className={Styles['primary-menu__submenu']} />
           </li>
           <li>
             <a href="#">New arrivals</a>

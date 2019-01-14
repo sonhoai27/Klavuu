@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+
 const uuidv4 = require('uuid/v4');
 import CKEditor from 'ckeditor4-react';
 
@@ -9,12 +10,15 @@ import Icon from '@app/modules/client/shared/layout/Icon';
 import Tabs, { TabPanel } from '@app/shared/tabs/Tabs';
 import Autocomplete from './components/Autocomplete';
 import ProductModel from '@app/shared/models/ProductModel';
-import ImageModel from '@app/shared/models/ImageModel';
 import Moment from '@app/shared/utils/Moment';
 import { actionGetTags, actionAddTag } from '@app/stores/tag/TagActions';
 import { actionAddBrand, actionGetBrands } from '@app/stores/brand/BrandActions';
 import { actionGetCats } from '@app/stores/cat/CatActions';
-import { actionAddProduct } from '@app/stores/product/ProductActions';
+import {
+  actionAddProduct,
+  actionBrandCat,
+  actionTagProduct,
+} from '@app/stores/product/ProductActions';
 import { actionAddImage } from '@app/stores/image/ImageActions';
 import TagModel from '@app/shared/models/TagModel';
 import CategoryModel from '@app/shared/models/CategoryModel';
@@ -22,6 +26,9 @@ import BrandModel from '@app/shared/models/BrandModel';
 import Alias from '@app/shared/utils/Alias';
 import UploadPhoto from './components/UploadImage';
 import { configForProductIntro, configForProductInfo } from '@app/shared/CKEditorConfig';
+import { actionShowHideAlert, actionShowHideLoading } from '@app/stores/init';
+import { Link } from 'react-router-dom';
+import ValidForm from '@app/shared/utils/ValidForm';
 
 const styles = require('./ProductAdd.scss')
 const GlobalStyles = require('@app/shared/styles/Box.scss');
@@ -33,20 +40,37 @@ interface IAdminProductAddProps {
   tagsState: { data: TagModel[] };
   catsState: { data: CategoryModel[] };
   brandsState: { data: BrandModel[] };
-  actionGetTags: () => void;
-  actionAddTag: (tag: TagModel) => void;
-  actionAddBrand: (brand: BrandModel) => void;
-  actionGetBrands: () => void;
-  actionGetCats: () => void;
-  actionAddProduct: (product: ProductModel) => void;
-  actionAddImage: (image: ImageModel[], productId) => void;
+  actionGetTags: Function;
+  actionAddTag: Function;
+  actionAddBrand: Function;
+  actionGetBrands: Function;
+  actionGetCats: Function;
+  actionAddProduct: Function;
+  actionAddImage: Function;
+  actionTagProduct: Function;
+  actionBrandCat: Function;
+  actionShowHideLoading: Function;
+  actionShowHideAlert: Function;
+  history?: any;
 }
 
 interface IAdminProductAddStates {
   products: ProductModel;
-  images: any[];
+
+  images: {
+    images: any[],
+    temp: {
+      img_id: string;
+      img_temp_src: string;
+    }[],
+  };
+
   brand: object;
-  tags: TagModel[];
+
+  tags: {
+    items: any[],
+    tempTags: TagModel[],
+  };
 }
 
 class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProductAddStates> {
@@ -61,7 +85,7 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
         product_created_date: Moment(),
         product_discount: 0,
         product_price: 0,
-        product_ksu: '',
+        product_ksu: 'NULL',
         product_more_info: '',
         product_volume_weight: '',
         product_inventory_number: 1,
@@ -69,14 +93,16 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
         product_intro: '',
         product_how_to_use: '',
       },
-      images: [],
+      images: {
+        images: [],
+        temp: [],
+      },
       brand: {},
-      tags: [],
+      tags: {
+        items: [],
+        tempTags: [],
+      },
     }
-  }
-
-  componentDidUpdate(): void {
-    console.log(this.state)
   }
 
   componentDidMount() {
@@ -112,8 +138,71 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
           },
         ]}
       />
+      <div className={GlobalStyles['wrap_action']}>
+        <span>
+          <Link to="/xxx/app/products">Hủy</Link>
+        </span>
+        <span onClick={() => {
+          this.props.actionShowHideLoading(true)
+          if (ValidForm(
+            this.state.products,
+            ['product_name', 'product_brand_id', 'product_cat_id'],
+          )) {
+            this.props.actionAddProduct({
+              ...this.state.products,
+              product_alias: Alias(this.state.products.product_name),
+            })
+              .then(() => {
+                return this.onAddImageTagAndBrandCat()
+              })
+              .then(() => {
+                this.showSuccessNotifyAfterAddingproduct()
+              })
+              .catch(() => {
+                this.showDangerNotifyAfterAddingproduct()
+              })
+          } else {
+            this.showDangerNotifyAfterAddingproduct()
+          }
+
+        }}>Thêm</span>
+      </div>
     </AdminHeader>
   );
+
+  showSuccessNotifyAfterAddingproduct = () => {
+    this.props.actionShowHideLoading(false)
+
+    this.props.actionShowHideAlert({
+      status: true,
+      type: 'success',
+      title: 'Thêm mới thành công',
+    })
+
+    setTimeout(() => {
+      this.props.actionShowHideAlert({
+        status: false,
+      })
+
+      this.props.history.push('/xxx/app/products')
+    }, 2500)
+  }
+
+  showDangerNotifyAfterAddingproduct = () => {
+    this.props.actionShowHideLoading(false)
+
+    this.props.actionShowHideAlert({
+      status: true,
+      type: 'danger',
+      title: 'Thất bại, vui lòng xem lại',
+    })
+
+    setTimeout(() => {
+      this.props.actionShowHideAlert({
+        status: false,
+      })
+    }, 2500)
+  }
 
   renderCategories = () => (
     this.props.catsState.data
@@ -124,6 +213,69 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
       )
     })
   )
+
+  onAddImageTagAndBrandCat = () => {
+    const lenOfImg = this.state.images.images.length;
+    const lenOfTag = this.state.tags.items.length;
+
+    if (lenOfImg > 0 && lenOfTag > 0) {
+
+      return this.onAddImagesToProduct()
+        .then(() => {
+          return this.onAddBrandCat()
+        })
+        .then(() => {
+          return this.onAddTagsProduct()
+        })
+    // tslint:disable-next-line:no-else-after-return
+    } else if (lenOfImg > 0 && lenOfTag <= 0) {
+
+      return this.onAddImagesToProduct()
+        .then(() => {
+          return this.onAddBrandCat()
+        })
+    } else if (lenOfImg <= 0 && lenOfTag > 0) {
+
+      return this.onAddBrandCat()
+        .then(() => {
+          return this.onAddTagsProduct()
+        })
+    }
+
+    return this.onAddBrandCat()
+  }
+
+  onAddImagesToProduct = () => {
+    const data = new FormData();
+    // tslint:disable-next-line:no-increment-decrement
+    for (let i = 0; i < this.state.images.images.length; i++) {
+      data.append('images[]', this.state.images.images[i]);
+    }
+
+    return this.props.actionAddImage(data, this.state.products.product_id)
+  }
+
+  onAddTagsProduct = () => {
+    return this.props.actionTagProduct(this.state.tags.items)
+  }
+
+  onAddBrandCat = () => {
+    return (
+      this.props.actionBrandCat({
+        bc_cat_id: this.state.products.product_cat_id,
+        bc_brand_id: this.state.products.product_brand_id,
+      })
+    )
+  }
+
+  onChangeCKEditor = (e, name) => {
+    this.setState({
+      products: {
+        ...this.state.products,
+        [name]: e.editor.getData(),
+      },
+    })
+  }
 
   render() {
     return (
@@ -146,17 +298,8 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
                 config={{
                   ...configForProductIntro,
                 }}
-                onChange={(e) => {
-                  this.setState({
-                    products: {
-                      ...this.state.products,
-                      product_intro: e.editor.getData(),
-                    },
-                  }, () => {
-                    console.log(this.state)
-                  })
-                }}
-                data={this.state.products.product_intro} />
+                onChange={e => this.onChangeCKEditor(e, 'product_intro')}
+                data={this.state.products.product_intro}/>
             </div>
           </div>
 
@@ -164,7 +307,9 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
             <div className={GlobalStyles['title-product-main']}>Hình ảnh</div>
             <UploadPhoto
               onChange={(e) => {
-                console.log(e)
+                this.setState({
+                  images: e,
+                })
               }}
             />
           </div>
@@ -182,14 +327,14 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
               <div className="col-sm-6">
                 <div className={GlobalStyles['form-item']}>
                   <label>Dung tích/khối lượng</label>
-                  <input type="text" name="product_volume_weight" onChange={this.onChange} />
+                  <input type="text" name="product_volume_weight" onChange={this.onChange}/>
                 </div>
               </div>
 
               <div className="col-sm-6">
                 <div className={GlobalStyles['form-item']}>
                   <label>Tồn kho</label>
-                  <input type="number" name="product_inventory_number" onChange={this.onChange} />
+                  <input type="number" name="product_inventory_number" onChange={this.onChange}/>
                 </div>
               </div>
             </div>
@@ -202,51 +347,24 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
                   config={{
                     ...configForProductInfo,
                   }}
-                  onChange={(e) => {
-                    this.setState({
-                      products: {
-                        ...this.state.products,
-                        product_info: e.editor.getData(),
-                      },
-                    }, () => {
-                      console.log(this.state)
-                    })
-                  }}
-                  data={this.state.products.product_info} />
+                  onChange={e => this.onChangeCKEditor(e, 'product_info')}
+                  data={this.state.products.product_info}/>
               </TabPanel>
               <TabPanel title="Cách sử dụng">
                 <CKEditor
                   config={{
                     ...configForProductInfo,
                   }}
-                  onChange={(e) => {
-                    this.setState({
-                      products: {
-                        ...this.state.products,
-                        product_how_to_use: e.editor.getData(),
-                      },
-                    }, () => {
-                      console.log(this.state)
-                    })
-                  }}
-                  data={this.state.products.product_how_to_use} />
+                  onChange={e => this.onChangeCKEditor(e, 'product_how_to_use')}
+                  data={this.state.products.product_how_to_use}/>
               </TabPanel>
               <TabPanel title="Thành phần">
                 <CKEditor
                   config={{
                     ...configForProductInfo,
                   }}
-                  onChange={(e) => {
-                    this.setState({
-                      products: {
-                        ...this.state.products,
-                        product_more_info: e.editor.getData(),
-                      },
-                    }, () => {
-                      console.log(this.state)
-                    })
-                  }}
-                  data={this.state.products.product_more_info} />
+                  onChange={e => this.onChangeCKEditor(e, 'product_more_info')}
+                  data={this.state.products.product_more_info}/>
               </TabPanel>
             </Tabs>
           </div>
@@ -259,12 +377,12 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
 
             <div className={GlobalStyles['form-item']}>
               <label>Giá hiển thị</label>
-              <input type="number" name="product_price" onChange={this.onChange} />
+              <input type="number" name="product_price" onChange={this.onChange}/>
             </div>
 
             <div className={GlobalStyles['form-item']}>
               <label>Khuyến mãi</label>
-              <input type="number" name="product_discount" onChange={this.onChange} />
+              <input type="number" name="product_discount" onChange={this.onChange}/>
             </div>
           </div>
 
@@ -273,16 +391,23 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
 
             <div className={GlobalStyles['form-item']}>
               <label>Hãng</label>
-              <div className={styles['am-product-add__list-tags']}>
-                <ul>
-                  <li>
-                    <span>{this.state.brand['brand_name']}</span>
-                    <span>
+
+              {
+                this.state.brand['brand_name']
+                && (
+                  <div className={styles['am-product-add__list-tags']}>
+                    <ul>
+                      <li>
+                        <span>{this.state.brand['brand_name']}</span>
+                        <span>
                     <Icon name="trash"/>
                   </span>
-                  </li>
-                </ul>
-              </div>
+                      </li>
+                    </ul>
+                  </div>
+                )
+              }
+
               <Autocomplete
                 onChange={(e) => {
                   this.setState({
@@ -331,30 +456,19 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
 
             <div className={styles['am-product-add__list-tags']}>
               <ul>
-                <li>
-                  <span>Trị mụn</span>
-                  <span>
-                    <Icon name="trash"/>
-                  </span>
-                </li>
-                <li>
-                  <span>Trị thâm</span>
-                  <span>
-                    <Icon name="trash"/>
-                  </span>
-                </li>
-                <li>
-                  <span>Da đen</span>
-                  <span>
-                    <Icon name="trash"/>
-                  </span>
-                </li>
-                <li>
-                  <span>Da khô nẻ</span>
-                  <span>
-                    <Icon name="trash"/>
-                  </span>
-                </li>
+                {
+                  this.state.tags.tempTags.length > 0
+                  && this.state.tags.tempTags.map((element) => {
+                    return (
+                      <li key={uuidv4()}>
+                        <span>{element.tag_name}</span>
+                        <span>
+                        <Icon name="trash"/>
+                        </span>
+                      </li>
+                    )
+                  })
+                }
               </ul>
             </div>
 
@@ -363,7 +477,13 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
               <Autocomplete
                 onChange={(e) => {
                   this.setState({
-                    tags: [...this.state.tags, e],
+                    tags: {
+                      items: [...this.state.tags.items, {
+                        tp_product_id: this.state.products.product_id,
+                        tp_tag_id: e.tag_id,
+                      }],
+                      tempTags: [...this.state.tags.tempTags, e],
+                    },
                   })
                 }}
                 onCreate={(e) => {
@@ -405,6 +525,10 @@ const mapDispatchToProps = {
   actionGetCats,
   actionAddProduct,
   actionAddImage,
+  actionTagProduct,
+  actionBrandCat,
+  actionShowHideLoading,
+  actionShowHideAlert,
 };
 
 export default connect(

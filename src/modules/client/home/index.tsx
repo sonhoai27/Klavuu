@@ -2,9 +2,14 @@ import * as React from 'react';
 
 import Banner from './banner';
 
-class Home extends React.Component {
+interface IHomeProps {
+  match?: any;
+}
+
+class Home extends React.Component<IHomeProps> {
   constructor (props) {
     super(props)
+    console.log(this.props.match)
   }
 
   render () {

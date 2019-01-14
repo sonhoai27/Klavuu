@@ -37,36 +37,20 @@
     font-size: 14px;
 }
 
-.success {
+.notification .success {
     background: #5ed490;
 }
 
-.success .notification_close {
-    border: 1px solid #2d794b;
-    color: #2d794b;
-}
 
-.warning {
+.notification .warning {
     background: #f56668;
 }
 
-.warning .notification_close {
-    border: 1px solid #ba4849;
-    color: #ba4849;
-}
 
-.info {
+.notification .info {
     background: #2a7ac0;
 }
 
-.info .notification_close {
-    border: 1px solid #08345b;
-}
-
-.danger {
+.notification .danger {
     background: #e5a300;
-}
-
-.danger .notification_close {
-    border: 1px solid #996d00;
 }
