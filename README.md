@@ -9,8 +9,8 @@
 * [SASS](http://sass-lang.com/)
 * [Jest](https://facebook.github.io/jest/) - Testing framework for React applications
 * Production build script
-* Image loading/minification using [Image Webpack Loader](https://github.com/tcoopman/image-webpack-loader)
-* Typescript compiling using [Awesome Typescript Loader](https://github.com/s-panferov/awesome-typescript-loader) (5.x)
+* Image loading/minification using [Image Webpack Loader
+* Typescript compiling using [Awesome Typescript Loader] (5.x)
 * Code quality (linting) for Typescript.
 
 ## Installation
