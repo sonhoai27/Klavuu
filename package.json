@@ -48,6 +48,7 @@
         "axios": "^0.18.0",
         "ckeditor4-react": "^0.1.0",
         "react": "^16.7.0",
+        "react-content-loader": "^3.4.2",
         "react-dom": "^16.7.0",
         "react-helmet": "^5.2.0",
         "react-hot-loader": "^4.6.3",

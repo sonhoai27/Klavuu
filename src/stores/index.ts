@@ -15,7 +15,7 @@ const composedMiddlewares = (middlewares: any[]) => {
 
   return compose(applyMiddleware(...defaultMiddlewares, ...middlewares));
 }
-const initialize = (initialState = {}, middlewares = []) => {
+const initialize = (initialState: any = {}, middlewares: any = []) => {
 
   return createStore(rootReducer, initialState, composedMiddlewares(middlewares));
 };

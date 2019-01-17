@@ -1,0 +1,170 @@
+.product_detail {
+    .product_detail__images {
+        display: flex;
+        &-list {
+            padding: 0;
+            list-style: none;
+            max-width: 60px;
+            margin-right: 16px;
+            li {
+                padding-bottom: 16px;
+                img {
+                    transition: all .3s;
+                    border: 2px solid #fff;
+                }
+                &:hover img {
+                    border: 2px solid var(--primary-color);
+                    cursor: pointer;
+                }
+            }
+            .picked {
+                img {
+                    border: 2px solid var(--primary-color);
+                }
+            }
+        }
+        .zoom-in-container {
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 64px;
+            .zoom-in-container__image-preview {
+                width: 90%;
+            }
+        }
+    }
+    .product_volume_weight {
+        margin-top: 14px;
+        font-size: 20px;
+        text-transform: uppercase;
+    }
+    .product-info {
+        .title {
+            font-size: 1.25rem!important;
+            color: rgb(78, 89, 93);
+            font-weight: 400!important;
+            padding: 8px 0;
+        }
+        .add-to-cart {
+            margin-top: 20px;
+            margin-bottom: 24px;
+            &__btn {
+                background: var(--primary-color);
+                color: #fff;
+                width: 80%;
+                display: inline-block;
+                font-weight: 500;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: middle;
+                user-select: none;
+                border: 1px solid transparent;
+                padding: .6875rem 3.031rem;
+                font-size: 1rem;
+                line-height: 1.5;
+                border-radius: 0;
+                transition: all .3s ease-in-out;
+                &:hover {
+                    background: #ebb8a5;
+                }
+            }
+        }
+        .price {
+            span:nth-child(1) {
+                color: rgba(78, 89, 93, 0.7);
+                font-size: 1.25rem;
+                padding-right: 8px;
+                text-decoration: line-through;
+            }
+            span:nth-child(2) {
+                color: var(--primary-color);
+                font-weight: 700;
+                font-size: 1.5rem !important;
+            }
+        }
+    }
+    .product-intro {
+        text-align: justify;
+    }
+    .product-tags {
+        margin-top: 16px;
+        margin-bottom: 16px;
+        span {
+            font-size: 12px;
+            border-radius: 3px;
+            line-height: 30px;
+            background-color: rgba(87, 161, 171, 0.07);
+            border-width: 0px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            margin-right: 7px;
+            outline: none;
+            padding: 8px 9px 8px 11px;
+            background: rgba(234, 198, 185, 0.2);
+            transition: all .3s ease-in-out;
+            &:hover {
+                background: var(--primary-color);
+            }
+        }
+    }
+    .product-rating {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-size: 15px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .additional-info {
+        padding: 0;
+        list-style: none;
+        li {
+            font-weight: 400;
+            font-size: 0.875rem;
+            padding-bottom: 5px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            span {
+                margin-right: 16px;
+                font-size: 20px;
+            }
+        }
+    }
+    .product-description {
+        &__session {
+            border-top: 1px solid rgba(78, 89, 93, 0.15);
+            cursor: pointer;
+        }
+        &__title {
+            margin-bottom: 0px;
+            text-transform: uppercase;
+            font-weight: 400;
+            line-height: 1.36;
+            color: rgb(78, 89, 93);
+            width: 100%;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            span {
+                user-select: none;
+            }
+        }
+        &__content {
+            font-weight: 400;
+            font-size: 0.875rem;
+            color: rgb(78, 89, 93);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.25s ease 0s;
+            p {
+                margin-bottom: 0;
+            }
+            ul {
+                padding: 0;
+                padding-left: 16px;
+            }
+        }
+    }
+}

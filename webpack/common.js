@@ -99,6 +99,7 @@ module.exports = {
     ],
     optimization: {
         splitChunks: {
+            chunks: 'all',
             cacheGroups: {
                 default: false,
                 vendors: false,

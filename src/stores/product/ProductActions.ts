@@ -6,6 +6,9 @@ import {
   ADD_BRAND_CAT,
   ADD_TAG_PRODUCT,
   GET_PRODUCT_BY_ALIAS,
+  DELETE_TAG_PRODUCT,
+  GET_TAG_PRODUCT,
+  GET_PRODUCTS_FILTER,
 } from './ProductTypes';
 
 import axios from 'axios'
@@ -40,6 +43,27 @@ const actionGetProducts = () => async (dispatch) => {
   })
 };
 
+const actionGetProductsFiler = () => async (dispatch) => {
+  return await dispatch({
+    type: GET_PRODUCTS_FILTER,
+    payload: axios.get(`${API}products/filter`),
+  })
+};
+
+const actionGetTagsProduct = (productId: any) => async (dispatch) => {
+  return await dispatch({
+    type: GET_TAG_PRODUCT,
+    payload: axios.get(`${API}product/tags/${productId}`),
+  })
+};
+
+const actionDeleteTagProduct = (tagId: any) => async (dispatch) => {
+  return await dispatch({
+    type: DELETE_TAG_PRODUCT,
+    payload: axios.delete(`${API}product/tag/${tagId}`),
+  })
+};
+
 const actionGetProduct = (alias: string) => async (dispatch) => {
   return await dispatch({
     type: GET_PRODUCT_BY_ALIAS,
@@ -50,11 +74,7 @@ const actionGetProduct = (alias: string) => async (dispatch) => {
 const actionUpdateProduct = (product, id) => async (dispatch) => {
   return await dispatch({
     type: UPDATE_PRODUCT,
-    payload: axios.put(`${API}product`, product, {
-      params: {
-        id,
-      },
-    }),
+    payload: axios.put(`${API}product/${id}`, product),
   })
 };
 
@@ -77,4 +97,7 @@ export {
   actionTagProduct,
   actionBrandCat,
   actionGetProduct,
+  actionGetTagsProduct,
+  actionDeleteTagProduct,
+  actionGetProductsFiler,
 }

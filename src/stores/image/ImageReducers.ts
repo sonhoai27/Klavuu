@@ -2,7 +2,6 @@ import { SUCCESS } from './../../configs/ActionType';
 import {
   ADD_IMAGE,
   DELETE_IMAGE,
-  UPDATE_IMAGE,
   LIST_IMAGES,
   LIST_IMAGES_BY_PRODUCT_ID,
 } from './ImageTypes';
@@ -21,10 +20,7 @@ const imageReducer = (state = initialState, action) => {
     case SUCCESS(ADD_IMAGE):
     case REQUEST(DELETE_IMAGE):
     case FAILURE(DELETE_IMAGE):
-    case SUCCESS(DELETE_IMAGE):
-    case REQUEST(UPDATE_IMAGE):
-    case FAILURE(UPDATE_IMAGE):
-    case SUCCESS(UPDATE_IMAGE): {
+    case SUCCESS(DELETE_IMAGE): {
       return {
         ...state,
       }

@@ -10,6 +10,9 @@ const AdminProducts = React.lazy(() => import(
 const AdminProductsAdd = React.lazy(() => import(
     /*webpackChunkName: "admin_product_add" */ '@app/modules/admin/product/add'));
 
+const AdminProductsDetail = React.lazy(() => import(
+  /*webpackChunkName: "admin_product_detail" */ '@app/modules/admin/product/detail'));
+
 const AdminRouter = (props) => {
   console.log(props)
 
@@ -17,8 +20,9 @@ const AdminRouter = (props) => {
     <React.Suspense fallback={''}>
       <Switch>
         <Route exact path={`${props.match.url}`} component={AdminHome}/>
-        <Route exact path={`${props.match.url}/products`} component={AdminProducts}/>
-        <Route exact path={`${props.match.url}/products/add`} component={AdminProductsAdd}/>
+        <Route path={`${props.match.url}/products`} component={AdminProducts}/>
+        <Route path={`${props.match.url}/product/add`} component={AdminProductsAdd}/>
+        <Route path={`${props.match.url}/product/:alias`} component={AdminProductsDetail}/>
       </Switch>
     </React.Suspense>
   )

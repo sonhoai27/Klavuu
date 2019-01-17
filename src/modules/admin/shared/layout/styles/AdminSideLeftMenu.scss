@@ -28,4 +28,22 @@
             }
         }
     }
+    .am-side-left-menu__item {
+        margin-top: 32px;
+        ul {
+            padding: 0;
+            a {
+                color: #fff!important;
+                font-size: 14px;
+                padding: 4px;
+                width: 100%;
+                display: inline-block;
+                transition: all .3s ease-in-out;
+                &:hover {
+                    background: rgba(255, 255, 255, 0.28);
+                    color: #eee!important;
+                }
+            }
+        }
+    }
 }

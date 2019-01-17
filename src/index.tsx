@@ -7,7 +7,7 @@ import ErrorBoundary from './Configs/ErrorBoundary';
 import initStore from '@app/stores';
 import App from '@app/App';
 
-const store = initStore();
+const store = initStore({}, []);
 render(
   <ErrorBoundary>
     <AppContainer>

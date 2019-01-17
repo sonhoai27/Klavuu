@@ -48,6 +48,7 @@ class Admin extends React.Component<IClientProps> {
 
         {
           this.props.showOrHideAlertState.status && (
+            // tslint:disable-next-line:max-line-length
             <Alert title={this.props.showOrHideAlertState.title} type={this.props.showOrHideAlertState.type}/>
           )
         }

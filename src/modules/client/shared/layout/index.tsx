@@ -14,7 +14,11 @@ const Layout = (props: ILayoutProps) => (
         <Header />
       </div>
     </div>
-    {props.children}
+    <div className="col-12">
+      <div className="row">
+      {props.children}
+      </div>
+    </div>
   </>
 );
 
