@@ -32,6 +32,7 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
   componentDidMount(): void {
     const { alias } = this.props.match.params
     this.props.actionGetProduct(alias)
+    window.scrollTo(0, 0)
   }
 
   componentDidUpdate(prevProps): void {
