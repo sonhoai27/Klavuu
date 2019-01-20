@@ -5,11 +5,56 @@ import ValidateObject from '@app/shared/utils/ValidateObject';
 const Styles = require('../styles/PrimaryHeader.scss')
 
 interface ISubMenuProps {
-  items?: {
-    text: string;
-    href: string;
-  }[];
+  items: any[];
   className?: string;
+}
+const renderListBrandCatsOrCatBrand = (
+  propsName: string,
+  type: string,
+  aliasOfType: string,
+  nameOfType: string,
+) => {
+  let tempParentDom = []
+  let tempChildrenDom = []
+
+  if (this.props[propsName] && this.props[propsName].length > 0) {
+    this.props[propsName].map((element, index) => {
+      if ((index + 1) % 10 === 0) {
+        tempParentDom = [...tempParentDom, React.createElement('div', {
+          className: 'col-sm-4',
+          key: uuidv4(),
+        }, tempChildrenDom)]
+        tempChildrenDom = []
+      } else {
+        tempChildrenDom = [...tempChildrenDom, (
+          <li key={uuidv4()}>
+            <Checkbox
+              id={uuidv4()}
+              onChange={() => {
+                this.onFilterChange(type, {
+                  title: element[nameOfType],
+                  value: element[aliasOfType],
+                })
+              }}
+              checked={
+                this.state.filter[type].map(e => e.value).indexOf(element[aliasOfType]) !== -1
+              }
+              name={element[nameOfType]}
+              value={element[aliasOfType]} />
+          </li>
+        )]
+      }
+    })
+    if (this.props[propsName].length <= 10) {
+      tempParentDom = [...tempParentDom, React.createElement('div', {
+        className: 'col-sm-4',
+        key: uuidv4(),
+      }, tempChildrenDom)]
+    }
+    return tempParentDom
+  }
+
+  return []
 }
 
 const SubMenu = (props: ISubMenuProps) => {
@@ -20,90 +65,7 @@ const SubMenu = (props: ISubMenuProps) => {
           <div className="col-1" />
           <div className="col-10">
             <div className="row">
-              <div className={`${Styles['item']} col-sm-4`}>
-                <div className={Styles['submenu--header']}>
-                  Glow Picks
-              </div>
-                <ul>
-                  <li>
-                    <a href="">CURATIONS FOR MEN</a>
-                  </li>
-                  <li>
-                    <a href="">SPECIAL OFFERS</a>
-                  </li>
-                  <li>
-                    <a href="">GIFT CARDS</a>
-                  </li>
-                  <li>
-                    <a href="">AS SEEN ON SHARK TANK</a>
-                  </li>
-                  <li>
-                    <a href="">K-BEAUTY KITS</a>
-                  </li>
-                  <li>
-                    <a href="">GLOW MERCH</a>
-                  </li>
-                  <li>
-                    <a href="">AWARD WINNERS</a>
-                  </li>
-                </ul>
-              </div>
-              <div className={`${Styles['item']} col-sm-4`}>
-                <div className={Styles['submenu--header']}>
-                  Glow Picks
-              </div>
-                <ul>
-                  <li>
-                    <a href="">CURATIONS FOR MEN</a>
-                  </li>
-                  <li>
-                    <a href="">SPECIAL OFFERS</a>
-                  </li>
-                  <li>
-                    <a href="">GIFT CARDS</a>
-                  </li>
-                  <li>
-                    <a href="">AS SEEN ON SHARK TANK</a>
-                  </li>
-                  <li>
-                    <a href="">K-BEAUTY KITS</a>
-                  </li>
-                  <li>
-                    <a href="">GLOW MERCH</a>
-                  </li>
-                  <li>
-                    <a href="">AWARD WINNERS</a>
-                  </li>
-                </ul>
-              </div>
-              <div className={`${Styles['item']} col-sm-4`}>
-                <div className={Styles['submenu--header']}>
-                  Glow Picks
-              </div>
-                <ul>
-                  <li>
-                    <a href="">CURATIONS FOR MEN</a>
-                  </li>
-                  <li>
-                    <a href="">SPECIAL OFFERS</a>
-                  </li>
-                  <li>
-                    <a href="">GIFT CARDS</a>
-                  </li>
-                  <li>
-                    <a href="">AS SEEN ON SHARK TANK</a>
-                  </li>
-                  <li>
-                    <a href="">K-BEAUTY KITS</a>
-                  </li>
-                  <li>
-                    <a href="">GLOW MERCH</a>
-                  </li>
-                  <li>
-                    <a href="">AWARD WINNERS</a>
-                  </li>
-                </ul>
-              </div>
+              {renderListBrandCatsOrCatBrand()}
             </div>
           </div>
           <div className="col-1" />

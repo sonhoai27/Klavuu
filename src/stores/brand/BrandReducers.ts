@@ -1,9 +1,10 @@
-import { ADD_BRAND, DELETE_BRAND, UPDATE_BRAND, LIST_BRANDS } from './BrandTypes';
+import { ADD_BRAND, DELETE_BRAND, UPDATE_BRAND, LIST_BRANDS, LIST_BRAND_CAT } from './BrandTypes';
 import { SUCCESS } from './../../configs/ActionType';
 import { REQUEST, FAILURE } from '@app/configs/ActionType';
 
 const initialState = {
   brandsState: [],
+  brandCatsState: [],
 }
 
 const brandReducer = (state = initialState, action) => {
@@ -21,6 +22,9 @@ const brandReducer = (state = initialState, action) => {
     case FAILURE(UPDATE_BRAND):
     case SUCCESS(UPDATE_BRAND):
 
+    case FAILURE(LIST_BRAND_CAT):
+    case REQUEST(LIST_BRAND_CAT):
+
     case REQUEST(LIST_BRANDS):
     case FAILURE(LIST_BRANDS): {
       return {
@@ -31,6 +35,13 @@ const brandReducer = (state = initialState, action) => {
       return {
         ...state,
         brandsState: action.payload,
+      }
+    }
+
+    case SUCCESS(LIST_BRAND_CAT): {
+      return {
+        ...state,
+        brandCatsState: action.payload.data,
       }
     }
     default: return state

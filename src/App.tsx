@@ -33,7 +33,7 @@ class App extends React.Component<IAppProps> {
       <Router>
         <React.Suspense fallback={''}>
           <Switch>
-            <Route exact path="/" render={(props) => <Layout><Home {...props}/></Layout>}/>
+            <Route exact path="/" render={props => <Layout><Home {...props}/></Layout>}/>
             <Route path="/page" component={Client}/>
             <Route path="/xxx" component={Admin}/>
           </Switch>

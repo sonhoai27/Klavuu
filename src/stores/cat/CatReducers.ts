@@ -1,8 +1,9 @@
-import { ADD_CAT, DELETE_CAT, UPDATE_CAT, LIST_CATS } from './CatTypes';
+import { ADD_CAT, DELETE_CAT, UPDATE_CAT, LIST_CATS, LIST_CAT_BRAND } from './CatTypes';
 import { REQUEST, FAILURE, SUCCESS } from '@app/configs/ActionType';
 
 const initialState = {
   catsState: [],
+  catBrandsState: [],
 }
 
 const catReducer = (state = initialState, action) => {
@@ -20,6 +21,9 @@ const catReducer = (state = initialState, action) => {
     case FAILURE(UPDATE_CAT):
     case SUCCESS(UPDATE_CAT):
 
+    case REQUEST(LIST_CAT_BRAND):
+    case FAILURE(LIST_CAT_BRAND):
+
     case REQUEST(LIST_CATS):
     case FAILURE(LIST_CATS): {
       return {
@@ -30,6 +34,13 @@ const catReducer = (state = initialState, action) => {
       return {
         ...state,
         catsState: action.payload,
+      }
+    }
+
+    case SUCCESS(LIST_CAT_BRAND): {
+      return {
+        ...state,
+        catBrandsState: action.payload.data,
       }
     }
     default: return state

@@ -28,7 +28,7 @@ class Client extends React.Component<IClientProps> {
         <Layout>
           <React.Suspense fallback={<div className="loading">loading...</div>}>
             <Route exact path={`${match.url}/product/:alias`} component={ProductDetail}/>
-            <Route path={`${match.url}/products`} component={ProductList}/>
+            <Route path={`${match.url}/products/:type/:alias`} component={ProductList}/>
           </React.Suspense>
         </Layout>
       </Router>

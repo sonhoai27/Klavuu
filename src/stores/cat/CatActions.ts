@@ -1,5 +1,5 @@
 import {
-  ADD_CAT, LIST_CATS, UPDATE_CAT, DELETE_CAT,
+  ADD_CAT, LIST_CATS, UPDATE_CAT, DELETE_CAT, LIST_CAT_BRAND,
 } from './CatTypes';
 
 import axios from 'axios'
@@ -17,6 +17,13 @@ const actionGetCats = () => async (dispatch) => {
   return await dispatch({
     type: LIST_CATS,
     payload: axios.get(`${API}cats`),
+  })
+};
+
+const actionGetCatBrands = cat => async (dispatch) => {
+  return await dispatch({
+    type: LIST_CAT_BRAND,
+    payload: axios.get(`${API}cat/brands/${cat}`),
   })
 };
 
@@ -47,4 +54,5 @@ export {
   actionGetCats,
   actionUpdateCat,
   actionDeleteCat,
+  actionGetCatBrands,
 }

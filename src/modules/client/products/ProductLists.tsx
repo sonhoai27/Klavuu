@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import LazyLoad from 'react-lazyload';
 import ContentLoader from 'react-content-loader'
-const queryString = require('query-string');
 
 import Breadcrumb from '@app/shared/Breadcrumb';
 import Checkbox from '../shared/layout/checkbox';
@@ -13,6 +12,8 @@ import { Link } from 'react-router-dom';
 import Radio from '../shared/layout/checkbox/Radio';
 import ProductFilterItems from './components/list/FilterItems';
 import queryParams from '@app/shared/utils/Query';
+import { actionGetBrandCats } from '@app/stores/brand/BrandActions';
+import { actionGetCatBrands } from '@app/stores/cat/CatActions';
 
 const uuidv4 = require('uuid/v4');
 
@@ -20,7 +21,11 @@ const Styles = require('./styles/ProductLists.scss')
 
 interface IProductListsProps {
   actionGetProductsFiler: Function;
+  actionGetBrandCats: Function;
+  actionGetCatBrands: Function;
   productsFilterState: any;
+  brandCatsState: any;
+  catBrandsState: any;
   match?: any;
   history?: any;
   location?: any;
@@ -46,12 +51,35 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
   }
 
   componentDidMount(): void {
-    this.props.actionGetProductsFiler()
-    console.log(queryString.parse(this.props.location.search))
+    if (this.onCheckBrandOrCategory()) {
+      this.props.actionGetBrandCats(this.props.match.params.alias)
+    } else {
+      this.props.actionGetCatBrands(this.props.match.params.alias)
+    }
+    this.onGetProducts()
   }
 
-  componentDidUpdate() {
-    console.log(this.props)
+  componentDidUpdate(preProps) {
+    if (this.props.location !== preProps.location) {
+      this.onGetProducts()
+    }
+  }
+
+  onGetProducts = () => {
+    const { alias } = this.props.match.params
+    const { search } = this.props.location
+    const isNullSearch = search.length > 0 ? `&${search.substring(1)}` : ''
+
+    if (this.onCheckBrandOrCategory()) {
+      this.props.actionGetProductsFiler(`?brand=${alias}${isNullSearch}`)
+    } else {
+      this.props.actionGetProductsFiler(`?category=${alias}${isNullSearch}`)
+    }
+  }
+
+  onCheckBrandOrCategory = () => {
+    // true -> brand, category
+    return (this.props.match.params.type === 'b')
   }
 
   isProduct = () => {
@@ -108,6 +136,10 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
           ...this.state.filter,
           [key]: this.onRemoveItemIfIsset(key, value),
         },
+      }, () => {
+        this.props.history.push(
+          `${this.props.match.url}${queryParams(this.onMakeFilter())}`,
+        )
       })
     } else {
       this.setState({
@@ -115,6 +147,10 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
           ...this.state.filter,
           [key]: [...this.state.filter[key], value],
         },
+      }, () => {
+        this.props.history.push(
+          `${this.props.match.url}${queryParams(this.onMakeFilter())}`,
+        )
       })
     }
   }
@@ -125,6 +161,10 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
         ...this.state.filter,
         price: [...[], value],
       },
+    }, () => {
+      this.props.history.push(
+        `${this.props.match.url}${queryParams(this.onMakeFilter())}`,
+      )
     })
   }
 
@@ -136,6 +176,19 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
 
   onRemoveItemIfIsset = (key: string, value: any) => {
     return this.state.filter[key].filter(e => e.value !== value.value)
+  }
+
+  onRemoveFilterItemWhenClickX = (key: string, value: string) => {
+    this.setState({
+      filter: {
+        ...this.state.filter,
+        [key]: this.onRemoveItemIfIsset(key, value),
+      },
+    }, () => {
+      this.props.history.push(
+        `${this.props.match.url}${queryParams(this.onMakeFilter())}`,
+      )
+    })
   }
 
   onLoading = () => (
@@ -199,6 +252,87 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
     })
   )
 
+  renderBrandFilter = () => (
+    !this.onCheckBrandOrCategory()
+    && (
+      <li>
+        <span>Hãng</span>
+        <ul className={Styles['product_lists__filter--sub']}>
+          <div className="row">
+            {this.renderListBrandCatsOrCatBrand(
+              'catBrandsState', 'brand', 'brand_alias', 'brand_name',
+            )}
+          </div>
+        </ul>
+      </li>
+    )
+  )
+
+  renderCategoryFilter = () => (
+    this.onCheckBrandOrCategory()
+    && (
+      <li>
+        <span>Danh mục</span>
+        <ul className={Styles['product_lists__filter--sub']}>
+          <div className="row">
+            {this.renderListBrandCatsOrCatBrand(
+              'brandCatsState', 'category', 'cat_alias', 'cat_name',
+            )}
+          </div>
+        </ul>
+      </li>
+    )
+  )
+
+  renderListBrandCatsOrCatBrand = (
+      propsName: string,
+      type: string,
+      aliasOfType: string,
+      nameOfType: string,
+    ) => {
+    let tempParentDom = []
+    let tempChildrenDom = []
+
+    if (this.props[propsName] && this.props[propsName].length > 0) {
+      this.props[propsName].map((element, index) => {
+        if ((index + 1) % 10 === 0) {
+          tempParentDom = [...tempParentDom, React.createElement('div', {
+            className: 'col-sm-4',
+            key: uuidv4(),
+          }, tempChildrenDom)]
+          tempChildrenDom = []
+        } else {
+          tempChildrenDom = [...tempChildrenDom, (
+            <li key={uuidv4()}>
+              <Checkbox
+                id={uuidv4()}
+                onChange={() => {
+                  this.onFilterChange(type, {
+                    title: element[nameOfType],
+                    value: element[aliasOfType],
+                  })
+                }}
+                checked={
+                  this.state.filter[type].map(e => e.value).indexOf(element[aliasOfType]) !== -1
+                }
+                name={element[nameOfType]}
+                value={element[aliasOfType]} />
+            </li>
+          )]
+        }
+      })
+      if (this.props[propsName].length <= 10) {
+        tempParentDom = [...tempParentDom, React.createElement('div', {
+          className: 'col-sm-4',
+          key: uuidv4(),
+        }, tempChildrenDom)]
+      }
+      return tempParentDom
+    }
+
+    return []
+  }
+
   render() {
     return (
       <div className={`${Styles['product_lists']} container`}>
@@ -222,114 +356,8 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
           <li>Giá từ cao đến thấp</li>
         </ul>
         <ul className={Styles['product_lists__filter']}>
-          <li>
-            <span>Hãng</span>
-            <ul className={Styles['product_lists__filter--sub']}>
-              <div className="row">
-                <div className="col-sm-4">
-                  <li>
-                    <Checkbox
-                      id={uuidv4()}
-                      onChange={() => {
-                        this.onFilterChange('brand', {
-                          title: 'Apple',
-                          value: 'apple',
-                        })
-                      }}
-                      name="Apple"
-                      value="apple" />
-                  </li>
-                  <li>
-                    <Checkbox
-                      id={uuidv4()}
-                      onChange={() => {
-                        this.onFilterChange('brand', {
-                          title: 'HTC',
-                          value: 'htc',
-                        })
-                      }}
-                      name="HTC"
-                      value="htc" />
-                  </li>
-                  <li>
-                    <Checkbox
-                      id={uuidv4()}
-                      onChange={() => {
-                        this.onFilterChange('brand', {
-                          title: 'Nokia',
-                          value: 'nokia',
-                        })
-                      }}
-                      name="Nokia"
-                      value="nokia" />
-                  </li>
-                  <li>
-                    <Checkbox
-                      id={uuidv4()}
-                      onChange={() => {
-                        this.onFilterChange('brand', {
-                          title: 'Samsung',
-                          value: 'samsung',
-                        })
-                      }}
-                      name="Samsung"
-                      value="samsung" />
-                  </li>
-                </div>
-              </div>
-              <span
-                onClick={() => {
-                  this.props.history.push(
-                    `${this.props.match.url}${queryParams(this.onMakeFilter())}`,
-                  )
-                }}
-                className={Styles['product_lists__filter--btn']}>
-                Áp dụng
-              </span>
-            </ul>
-          </li>
-          <li>
-            <span>Danh mục</span>
-            <ul className={Styles['product_lists__filter--sub']}>
-              <div className="row">
-                <div className="col-sm-4">
-                  <li>
-                    <Checkbox
-                      id={uuidv4()}
-                      onChange={() => {
-                        this.onFilterChange('category', {
-                          title: 'Sữa',
-                          value: 'sua',
-                        })
-                      }}
-                      name="Sữa"
-                      value="sua" />
-                  </li>
-                  <li>
-                    <Checkbox
-                      id={uuidv4()}
-                      onChange={() => {
-                        this.onFilterChange('category', {
-                          title: 'Dưỡng ẩm',
-                          value: 'duong-am',
-                        })
-                      }}
-                      name="Dưỡng ẩm"
-                      value="duong-am" />
-                  </li>
-                </div>
-              </div>
-              <span
-                onClick={() => {
-                  this.props.history.push(
-                    `${this.props.match.url}${queryParams(this.onMakeFilter())}`,
-                  )
-                }}
-                className={Styles['product_lists__filter--btn']}>
-                Áp dụng
-              </span>
-            </ul>
-          </li>
+          {this.renderBrandFilter()}
+          {this.renderCategoryFilter()}
           <li>
             <span>Giá</span>
             <ul className={Styles['product_lists__filter--sub']}>
@@ -344,6 +372,9 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
                           value: '500000',
                         })
                       }}
+                      checked={
+                        this.state.filter['price'].map(e => e.value).indexOf('500000') !== -1
+                      }
                       label="Dưới 500.000đ"
                       name="price"
                       value="500000" />
@@ -358,6 +389,9 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
                           value: '1000000',
                         })
                       }}
+                      checked={
+                        this.state.filter['price'].map(e => e.value).indexOf('1000000') !== -1
+                      }
                       name="price"
                       value="1000000" />
                   </li>
@@ -371,20 +405,14 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
                           value: '1000001',
                         })
                       }}
+                      checked={
+                        this.state.filter['price'].map(e => e.value).indexOf('1000001') !== -1
+                      }
                       name="price"
                       value="1000001" />
                   </li>
                 </div>
               </div>
-              <span
-                onClick={() => {
-                  this.props.history.push(
-                    `${this.props.match.url}${queryParams(this.onMakeFilter())}`,
-                  )
-                }}
-                className={Styles['product_lists__filter--btn']}>
-                Áp dụng
-              </span>
             </ul>
           </li>
         </ul>
@@ -395,7 +423,15 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
               key: 'title',
               value: 'value',
             }}
-            onRemove={e => console.log(e)}
+            onRemove={e => this.onRemoveFilterItemWhenClickX('brand', e)}
+          />
+          <ProductFilterItems
+            items={this.state.filter.category}
+            config={{
+              key: 'title',
+              value: 'value',
+            }}
+            onRemove={e =>  this.onRemoveFilterItemWhenClickX('category', e)}
           />
           <ProductFilterItems
             items={this.state.filter.price}
@@ -403,7 +439,7 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
               key: 'title',
               value: 'value',
             }}
-            onRemove={e => console.log(e)}
+            onRemove={e =>  this.onRemoveFilterItemWhenClickX('price', e)}
           />
         </ul>
         <div className={`${Styles['product_lists__items']} row`}>
@@ -416,10 +452,14 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
 
 const mapStateToProps = storeState => ({
   productsFilterState: storeState.productReducer.productsFilterState,
+  brandCatsState: storeState.brandReducer.brandCatsState,
+  catBrandsState: storeState.catReducer.catBrandsState,
 })
 
 const mapDispatchToProps = {
   actionGetProductsFiler,
+  actionGetBrandCats,
+  actionGetCatBrands,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductLists)

@@ -25,7 +25,7 @@ class ProductFilterItems extends React.Component<IProductFilterItemsProps> {
           <span>{element[this.props.config.key]}</span>
           <Icon
             onClick={() => {
-              this.props.onRemove && this.props.onRemove(element[this.props.config.value])
+              this.props.onRemove && this.props.onRemove(element)
             }}
             name="cross" />
         </li>

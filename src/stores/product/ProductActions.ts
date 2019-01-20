@@ -43,10 +43,10 @@ const actionGetProducts = () => async (dispatch) => {
   })
 };
 
-const actionGetProductsFiler = () => async (dispatch) => {
+const actionGetProductsFiler = (query = '') => async (dispatch) => {
   return await dispatch({
     type: GET_PRODUCTS_FILTER,
-    payload: axios.get(`${API}products/filter`),
+    payload: axios.get(`${API}products/filter${query}`),
   })
 };
 

@@ -1,6 +1,6 @@
 const merge = require('webpack-merge');
 const { resolve } = require('path');
-
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const commonConfig = require('./common');
 
 module.exports = merge(commonConfig, {
@@ -12,6 +12,27 @@ module.exports = merge(commonConfig, {
         path: resolve(__dirname, '../build'),
         publicPath: '/'
     },
-    devtool: 'source-map',
+    stats: {
+        colors: false,
+        hash: true,
+        timings: true,
+        assets: true,
+        chunks: true,
+        chunkModules: true,
+        modules: true,
+        children: true,
+    },
     plugins: [],
+    optimization: {
+        minimizer: [
+            new UglifyJSPlugin({
+                sourceMap: true,
+                uglifyOptions: {
+                    compress: {
+                        inline: false
+                    }
+                }
+            })
+        ]
+    }
 });
