@@ -1,0 +1,104 @@
+.comment {
+    margin-top: 32px;
+    .comment__header {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 32px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e3e3e3;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        p {
+            margin: 0;
+        }
+        p:last-child {
+            padding: 8px 11px !important;
+            background-color: transparent;
+            border-radius: 3px;
+            border: solid 1px #e3e3e3;
+            text-transform: none;
+            cursor: pointer;
+            transition: all .3s;
+            &:hover {
+                background: var(--primary-color);
+                border: solid 1px var(--primary-color);
+            }
+        }
+    }
+    .comment__write-review {
+        &__item {
+            margin-bottom: 24px;
+            p {
+                font-size: 14px;
+                color: #a2a2a2;
+                padding-bottom: 8px;
+                margin-bottom: 0px;
+            }
+            input,
+            textarea {
+                width: 100%;
+                background-color: transparent;
+                font-size: 13px;
+                color: #737373;
+                border: solid 1px #e3e3e3;
+                border-radius: 0;
+                padding: 7px;
+                box-sizing: border-box;
+            }
+        }
+    }
+    .comment__submit {
+        text-align: right;
+        margin-top: 32px;
+        span {
+            background: var(--primary-color);
+            color: var(--primary-dark-color);
+            text-transform: uppercase;
+            text-align: center;
+            font-size: 12px;
+            padding: 10px 64px;
+            cursor: pointer;
+            transition: all .3s;
+            &:hover {
+                background: var(--primary-dark-color);
+                color: #fff;
+            }
+        }
+    }
+    .comment__comments {
+        margin-top: 32px;
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            li {
+                border-bottom: 1px solid #eee;
+                margin-bottom: 24px;
+                .user {
+                    margin-bottom: 8px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    span:last-child {
+                        margin-left: 16px;
+                        font-size: 12px;
+                        font-weight: 500;
+                        color: var(--third-dark-color);
+                    }
+                }
+                .score {
+                    font-size: 12px;
+                }
+                .review {
+                    margin-top: 8px;
+                    font-style: normal !important;
+                    font-size: 14px;
+                    line-height: 17px;
+                    color: #919191;
+                    margin-bottom: 24px;
+                    text-align: justify;
+                }
+            }
+        }
+    }
+}

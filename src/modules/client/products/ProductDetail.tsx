@@ -8,6 +8,7 @@ import Breadcrumb from '@app/shared/Breadcrumb';
 import Icon from '../shared/layout/Icon';
 import { CDN } from '@app/shared/const';
 import Rater from '../shared/layout/rating';
+import ProductComment from './components/detail/Comment'
 
 const Styles = require('./styles/ProductDetail.scss')
 
@@ -234,6 +235,9 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
               </div>
             </div>
           </div>
+        </div>
+        <div className="row">
+          <ProductComment/>
         </div>
       </div>
      </>

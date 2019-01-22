@@ -13,7 +13,7 @@ const initState = {
   isLoading: false,
   showOrHideAlertState: {
     status: false,
-  }
+  },
 };
 
 const initReducer = (state = initState, action: Action) => {
@@ -63,7 +63,7 @@ const actionShowHideLoading = (loading: boolean) => (dispatch: any) => {
   });
 };
 
-const actionShowHideAlert = (status) => (dispatch: any) => {
+const actionShowHideAlert = status => (dispatch: any) => {
   dispatch({
     type: INIT_ACTION_TYPES.SHOW_HIDE_ALERT,
     payload: status,

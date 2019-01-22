@@ -12,8 +12,8 @@ import { Link } from 'react-router-dom';
 import Radio from '../shared/layout/checkbox/Radio';
 import ProductFilterItems from './components/list/FilterItems';
 import queryParams from '@app/shared/utils/Query';
-import { actionGetBrandCats } from '@app/stores/brand/BrandActions';
-import { actionGetCatBrands } from '@app/stores/cat/CatActions';
+import { actionGetBrandTags } from '@app/stores/brand/BrandActions';
+import { actionGetTagBrands } from '@app/stores/tag/TagActions';
 
 const uuidv4 = require('uuid/v4');
 
@@ -21,11 +21,11 @@ const Styles = require('./styles/ProductLists.scss')
 
 interface IProductListsProps {
   actionGetProductsFiler: Function;
-  actionGetBrandCats: Function;
-  actionGetCatBrands: Function;
+  actionGetBrandTags: Function;
+  actionGetTagBrands: Function;
   productsFilterState: any;
-  brandCatsState: any;
-  catBrandsState: any;
+  brandTagsState: any;
+  tagBrandsState: any;
   match?: any;
   history?: any;
   location?: any;
@@ -33,7 +33,7 @@ interface IProductListsProps {
 interface IProductListsStates {
   filter: {
     brand: any[];
-    category: any[];
+    tag: any[];
     price: any[];
   };
 }
@@ -44,17 +44,20 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
     this.state = {
       filter: {
         brand: [],
-        category: [],
+        tag: [],
         price: [],
       },
     }
   }
 
   componentDidMount(): void {
-    if (this.onCheckBrandOrCategory()) {
-      this.props.actionGetBrandCats(this.props.match.params.alias)
+    if (this.onCheckBrandOrTag() === 'b') {
+      this.props.actionGetBrandTags(this.props.match.params.alias)
+    } else if (this.onCheckBrandOrTag() === 't') {
+      this.props.actionGetTagBrands(this.props.match.params.alias)
     } else {
-      this.props.actionGetCatBrands(this.props.match.params.alias)
+      this.props.actionGetBrandTags(this.props.match.params.alias)
+      this.props.actionGetTagBrands(this.props.match.params.alias)
     }
     this.onGetProducts()
   }
@@ -70,16 +73,17 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
     const { search } = this.props.location
     const isNullSearch = search.length > 0 ? `&${search.substring(1)}` : ''
 
-    if (this.onCheckBrandOrCategory()) {
+    if (this.onCheckBrandOrTag() === 'b') {
       this.props.actionGetProductsFiler(`?brand=${alias}${isNullSearch}`)
+    } else if (this.onCheckBrandOrTag() === 't') {
+      this.props.actionGetProductsFiler(`?tag=${alias}${isNullSearch}`)
     } else {
-      this.props.actionGetProductsFiler(`?category=${alias}${isNullSearch}`)
+      this.props.actionGetProductsFiler(search)
     }
   }
 
-  onCheckBrandOrCategory = () => {
-    // true -> brand, category
-    return (this.props.match.params.type === 'b')
+  onCheckBrandOrTag = () => {
+    return this.props.match.params.type
   }
 
   isProduct = () => {
@@ -252,15 +256,15 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
     })
   )
 
-  renderBrandFilter = () => (
-    !this.onCheckBrandOrCategory()
+  renderTagFilter = () => (
+    (this.onCheckBrandOrTag() === 't' || this.onCheckBrandOrTag() === undefined)
     && (
       <li>
         <span>Hãng</span>
         <ul className={Styles['product_lists__filter--sub']}>
           <div className="row">
-            {this.renderListBrandCatsOrCatBrand(
-              'catBrandsState', 'brand', 'brand_alias', 'brand_name',
+            {this.renderListBrandTagsOrTagBrands(
+              'tagBrandsState', 'brand', 'brand_alias', 'brand_name',
             )}
           </div>
         </ul>
@@ -268,15 +272,15 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
     )
   )
 
-  renderCategoryFilter = () => (
-    this.onCheckBrandOrCategory()
+  renderBrandFilter = () => (
+    (this.onCheckBrandOrTag() === 'b' || this.onCheckBrandOrTag() === undefined)
     && (
       <li>
-        <span>Danh mục</span>
+        <span>Nhãn</span>
         <ul className={Styles['product_lists__filter--sub']}>
           <div className="row">
-            {this.renderListBrandCatsOrCatBrand(
-              'brandCatsState', 'category', 'cat_alias', 'cat_name',
+            {this.renderListBrandTagsOrTagBrands(
+              'brandTagsState', 'tag', 'tag_alias', 'tag_name',
             )}
           </div>
         </ul>
@@ -284,7 +288,7 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
     )
   )
 
-  renderListBrandCatsOrCatBrand = (
+  renderListBrandTagsOrTagBrands = (
       propsName: string,
       type: string,
       aliasOfType: string,
@@ -295,9 +299,26 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
 
     if (this.props[propsName] && this.props[propsName].length > 0) {
       this.props[propsName].map((element, index) => {
-        if ((index + 1) % 10 === 0) {
+        if ((index + 1) % 5 === 0) {
+          tempChildrenDom = [...tempChildrenDom, (
+            <li key={uuidv4()}>
+              <Checkbox
+                id={uuidv4()}
+                onChange={() => {
+                  this.onFilterChange(type, {
+                    title: element[nameOfType],
+                    value: element[aliasOfType],
+                  })
+                }}
+                checked={
+                  this.state.filter[type].map(e => e.value).indexOf(element[aliasOfType]) !== -1
+                }
+                name={element[nameOfType]}
+                value={element[aliasOfType]} />
+            </li>
+          )]
           tempParentDom = [...tempParentDom, React.createElement('div', {
-            className: 'col-sm-4',
+            className: 'col-sm-2',
             key: uuidv4(),
           }, tempChildrenDom)]
           tempChildrenDom = []
@@ -321,12 +342,11 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
           )]
         }
       })
-      if (this.props[propsName].length <= 10) {
-        tempParentDom = [...tempParentDom, React.createElement('div', {
-          className: 'col-sm-4',
-          key: uuidv4(),
-        }, tempChildrenDom)]
-      }
+      tempParentDom = [...tempParentDom, React.createElement('div', {
+        className: 'col-sm-2',
+        key: uuidv4(),
+      }, tempChildrenDom)]
+
       return tempParentDom
     }
 
@@ -357,7 +377,7 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
         </ul>
         <ul className={Styles['product_lists__filter']}>
           {this.renderBrandFilter()}
-          {this.renderCategoryFilter()}
+          {this.renderTagFilter()}
           <li>
             <span>Giá</span>
             <ul className={Styles['product_lists__filter--sub']}>
@@ -426,12 +446,12 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
             onRemove={e => this.onRemoveFilterItemWhenClickX('brand', e)}
           />
           <ProductFilterItems
-            items={this.state.filter.category}
+            items={this.state.filter.tag}
             config={{
               key: 'title',
               value: 'value',
             }}
-            onRemove={e =>  this.onRemoveFilterItemWhenClickX('category', e)}
+            onRemove={e =>  this.onRemoveFilterItemWhenClickX('tag', e)}
           />
           <ProductFilterItems
             items={this.state.filter.price}
@@ -452,14 +472,14 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
 
 const mapStateToProps = storeState => ({
   productsFilterState: storeState.productReducer.productsFilterState,
-  brandCatsState: storeState.brandReducer.brandCatsState,
-  catBrandsState: storeState.catReducer.catBrandsState,
+  brandTagsState: storeState.brandReducer.brandTagsState,
+  tagBrandsState: storeState.tagReducer.tagBrandsState,
 })
 
 const mapDispatchToProps = {
   actionGetProductsFiler,
-  actionGetBrandCats,
-  actionGetCatBrands,
+  actionGetBrandTags,
+  actionGetTagBrands,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductLists)

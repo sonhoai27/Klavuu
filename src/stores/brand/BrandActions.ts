@@ -3,7 +3,7 @@ import {
   LIST_BRANDS,
   UPDATE_BRAND,
   DELETE_BRAND,
-  LIST_BRAND_CAT,
+  LIST_BRAND_TAG,
 } from './BrandTypes';
 
 import axios from 'axios'
@@ -24,10 +24,10 @@ const actionGetBrands = () => async (dispatch) => {
   })
 };
 
-const actionGetBrandCats = brand => async (dispatch) => {
+const actionGetBrandTags = brand => async (dispatch) => {
   return await dispatch({
-    type: LIST_BRAND_CAT,
-    payload: axios.get(`${API}brand/cats/${brand}`),
+    type: LIST_BRAND_TAG,
+    payload: axios.get(`${API}brand/tags/${brand}`),
   })
 };
 
@@ -58,5 +58,5 @@ export {
   actionGetBrands,
   actionUpdateBrand,
   actionDeleteBrand,
-  actionGetBrandCats,
+  actionGetBrandTags,
 }

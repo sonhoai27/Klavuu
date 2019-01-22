@@ -1,5 +1,10 @@
 import {
-  ADD_TAG, LIST_TAGS, UPDATE_TAG, DELETE_TAG,
+  ADD_TAG,
+  LIST_TAGS,
+  UPDATE_TAG,
+  DELETE_TAG,
+  LIST_TAG_BRANDS,
+  LIST_TAGS_FOR_MENU,
 } from './TagTypes';
 
 import axios from 'axios'
@@ -17,6 +22,20 @@ const actionGetTags = () => async (dispatch) => {
   return await dispatch({
     type: LIST_TAGS,
     payload: axios.get(`${API}tags`),
+  })
+};
+
+const actionGetTagBrands = tag => async (dispatch) => {
+  return await dispatch({
+    type: LIST_TAG_BRANDS,
+    payload: axios.get(`${API}tag/brands/${tag}`),
+  })
+};
+
+const actionGetTagsForMenu = () => async (dispatch) => {
+  return await dispatch({
+    type: LIST_TAGS_FOR_MENU,
+    payload: axios.get(`${API}tags/menu`),
   })
 };
 
@@ -47,4 +66,6 @@ export {
   actionGetTags,
   actionUpdateTag,
   actionDeleteTag,
+  actionGetTagBrands,
+  actionGetTagsForMenu,
 }

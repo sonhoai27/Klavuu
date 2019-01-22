@@ -3,7 +3,7 @@ import {
   LIST_PRODUCTS,
   UPDATE_PRODUCT,
   DELETE_PRODUCT,
-  ADD_BRAND_CAT,
+  ADD_BRAND_TAG,
   ADD_TAG_PRODUCT,
   GET_PRODUCT_BY_ALIAS,
   DELETE_TAG_PRODUCT,
@@ -22,10 +22,10 @@ const actionAddProduct = product => async (dispatch) => {
   })
 };
 
-const actionBrandCat = form => async (dispatch) => {
+const actionBrandTag = form => async (dispatch) => {
   return await dispatch({
-    type: ADD_BRAND_CAT,
-    payload: axios.post(`${API}product/brand_cat`, form),
+    type: ADD_BRAND_TAG,
+    payload: axios.post(`${API}product/brand_tag`, form),
   })
 };
 
@@ -95,7 +95,7 @@ export {
   actionUpdateProduct,
   actionDeleteProduct,
   actionTagProduct,
-  actionBrandCat,
+  actionBrandTag,
   actionGetProduct,
   actionGetTagsProduct,
   actionDeleteTagProduct,

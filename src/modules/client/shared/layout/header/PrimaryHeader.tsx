@@ -4,7 +4,7 @@ const Styles = require('./styles/PrimaryHeader.scss')
 import SubMenu from './components/SubMenu';
 import { Link } from 'react-router-dom';
 
-const PrimaryHeader = () => (
+const PrimaryHeader = ({ menus }) => (
   <div className={`${Styles['primary-header']} col-12`}>
     <div className="container">
       <div className={`${Styles['row']} row`}>
@@ -18,7 +18,7 @@ const PrimaryHeader = () => (
         <ul>
           <li>
             <a href="#">Shop By</a>
-            <SubMenu className={Styles['primary-menu__submenu']} />
+            <SubMenu items={menus} className={Styles['primary-menu__submenu']} />
           </li>
           <li>
             <a href="#">New arrivals</a>

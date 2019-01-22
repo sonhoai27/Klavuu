@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Route, BrowserRouter as Router } from 'react-router-dom'
 
 import Layout from './shared/layout';
+import ShoppingCart from './cart/ShoppingCart';
 
 const ProductDetail = React.lazy(() => import(
   /*webpackChunkName: "home_detail" */ '@app/modules/client/products/ProductDetail'));
@@ -24,14 +25,18 @@ class Client extends React.Component<IClientProps> {
     const { match } = this.props;
 
     return (
-      <Router>
-        <Layout>
-          <React.Suspense fallback={<div className="loading">loading...</div>}>
-            <Route exact path={`${match.url}/product/:alias`} component={ProductDetail}/>
-            <Route path={`${match.url}/products/:type/:alias`} component={ProductList}/>
-          </React.Suspense>
-        </Layout>
-      </Router>
+      <>
+        <Router>
+          <Layout>
+            <React.Suspense fallback={<div className="loading">loading...</div>}>
+              <Route exact path={`${match.url}/product/:alias`} component={ProductDetail}/>
+              <Route path={`${match.url}/products/all`} component={ProductList}/>
+              <Route path={`${match.url}/products/:type/:alias`} component={ProductList}/>
+            </React.Suspense>
+          </Layout>
+        </Router>
+        <ShoppingCart/>
+      </>
     )
   }
 }

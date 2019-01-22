@@ -13,21 +13,18 @@ import ProductModel from '@app/shared/models/ProductModel';
 import Moment from '@app/shared/utils/Moment';
 import { actionGetTags, actionAddTag } from '@app/stores/tag/TagActions';
 import { actionAddBrand, actionGetBrands } from '@app/stores/brand/BrandActions';
-import { actionGetCats } from '@app/stores/cat/CatActions';
 import {
   actionAddProduct,
-  actionBrandCat,
+  actionBrandTag,
   actionTagProduct,
 } from '@app/stores/product/ProductActions';
 import { actionAddImage } from '@app/stores/image/ImageActions';
 import TagModel from '@app/shared/models/TagModel';
-import CategoryModel from '@app/shared/models/CategoryModel';
 import BrandModel from '@app/shared/models/BrandModel';
 import Alias from '@app/shared/utils/Alias';
 import UploadPhoto from './components/UploadImage';
 import { configForProductIntro, configForProductInfo } from '@app/shared/CKEditorConfig';
 import { actionShowHideAlert, actionShowHideLoading } from '@app/stores/init';
-import ValidForm from '@app/shared/utils/ValidForm';
 
 const styles = require('./ProductAdd.scss')
 const GlobalStyles = require('@app/shared/styles/Box.scss');
@@ -37,17 +34,15 @@ CKEditor.editorUrl = 'https://cdn.ckeditor.com/4.10.1/full/ckeditor.js';
 interface IAdminProductAddProps {
   match?: any;
   tagsState: { data: TagModel[] };
-  catsState: { data: CategoryModel[] };
   brandsState: { data: BrandModel[] };
   actionGetTags: Function;
   actionAddTag: Function;
   actionAddBrand: Function;
   actionGetBrands: Function;
-  actionGetCats: Function;
   actionAddProduct: Function;
   actionAddImage: Function;
   actionTagProduct: Function;
-  actionBrandCat: Function;
+  actionBrandTag: Function;
   actionShowHideLoading: Function;
   actionShowHideAlert: Function;
   history?: any;
@@ -63,9 +58,7 @@ interface IAdminProductAddStates {
       img_temp_src: string;
     }[],
   };
-
   brand: object;
-
   tags: {
     items: any[],
     tempTags: TagModel[],
@@ -80,7 +73,6 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
         product_id: uuidv4((new Date()).getMilliseconds()),
         product_name: '',
         product_brand_id: '',
-        product_cat_id: 0,
         product_created_date: Moment(),
         product_discount: 0,
         product_price: 0,
@@ -105,7 +97,6 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
   }
 
   componentDidMount() {
-    this.props.actionGetCats()
     this.props.actionGetTags()
     this.props.actionGetBrands()
   }
@@ -143,16 +134,16 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
         </span>
         <span onClick={() => {
           this.props.actionShowHideLoading(true)
-          if (ValidForm(
-            this.state.products,
-            ['product_name', 'product_brand_id', 'product_cat_id'],
-          )) {
+          if (this.state.products.product_brand_id !== ''
+              && this.state.products.product_name !== ''
+              && this.state.products.product_ksu !== ''
+              && this.state.tags.items.length > 0) {
             this.props.actionAddProduct({
               ...this.state.products,
               product_alias: Alias(this.state.products.product_name),
             })
               .then(() => {
-                return this.onAddImageTagAndBrandCat()
+                return this.onAddImageTagAndBrandTag()
               })
               .then(() => {
                 this.showSuccessNotifyAfterAddingproduct()
@@ -193,7 +184,7 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
     this.props.actionShowHideAlert({
       status: true,
       type: 'danger',
-      title: 'Thất bại, vui lòng xem lại',
+      title: 'Thất bại, vui lòng xem lại các trường bắt buộc',
     })
 
     setTimeout(() => {
@@ -203,17 +194,7 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
     }, 2500)
   }
 
-  renderCategories = () => (
-    this.props.catsState.data
-    && this.props.catsState.data.length > 0
-    && this.props.catsState.data.map((element) => {
-      return (
-        <option value={element.cat_id} key={uuidv4()}>{element.cat_name}</option>
-      )
-    })
-  )
-
-  onAddImageTagAndBrandCat = () => {
+  onAddImageTagAndBrandTag = () => {
     const lenOfImg = this.state.images.images.length;
     const lenOfTag = this.state.tags.items.length;
 
@@ -221,7 +202,7 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
 
       return this.onAddImagesToProduct()
         .then(() => {
-          return this.onAddBrandCat()
+          return this.onAddBrandTag()
         })
         .then(() => {
           return this.onAddTagsProduct()
@@ -231,17 +212,17 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
 
       return this.onAddImagesToProduct()
         .then(() => {
-          return this.onAddBrandCat()
+          return this.onAddBrandTag()
         })
     } else if (lenOfImg <= 0 && lenOfTag > 0) {
 
-      return this.onAddBrandCat()
+      return this.onAddBrandTag()
         .then(() => {
           return this.onAddTagsProduct()
         })
     }
 
-    return this.onAddBrandCat()
+    return this.onAddBrandTag()
   }
 
   onAddImagesToProduct = () => {
@@ -258,12 +239,20 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
     return this.props.actionTagProduct(this.state.tags.items)
   }
 
-  onAddBrandCat = () => {
+  onAddBrandTag = () => {
+    let tempBrandTag = []
+
+    if (this.state.products.product_brand_id !== '') {
+      // tslint:disable-next-line:no-increment-decrement
+      for (let i = 0; i < this.state.tags.items.length; i++) {
+        tempBrandTag = [...tempBrandTag, {
+          bt_brand_id: this.state.products.product_brand_id,
+          bt_tag_id: this.state.tags.items[i].tp_tag_id,
+        }]
+      }
+    }
     return (
-      this.props.actionBrandCat({
-        bc_cat_id: this.state.products.product_cat_id,
-        bc_brand_id: this.state.products.product_brand_id,
-      })
+      this.props.actionBrandTag(tempBrandTag)
     )
   }
 
@@ -287,7 +276,7 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
             </div>
 
             <div className={GlobalStyles['form-item']}>
-              <label>Tên sản phẩm</label>
+              <label>Tên sản phẩm(*)</label>
               <input type="text" name="product_name" onChange={this.onChange}/>
             </div>
 
@@ -316,12 +305,6 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
           <div className={`${GlobalStyles['wrap-content']} mg-t-16`}>
             <div className={GlobalStyles['title-product-main']}>Cấu hình</div>
             <div className="row">
-              <div className="col-sm-6">
-                <div className={GlobalStyles['form-item']}>
-                  <label>Mã KSU</label>
-                  <input type="text" name="product_ksu" onChange={this.onChange}/>
-                </div>
-              </div>
 
               <div className="col-sm-6">
                 <div className={GlobalStyles['form-item']}>
@@ -371,7 +354,7 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
         <div className="col-sm-4">
           <div className={GlobalStyles['wrap-content__right']}>
             <div className={GlobalStyles['title-product-main']}>
-              Giá sản phẩm
+              Giá sản phẩm/SKU
             </div>
 
             <div className={GlobalStyles['form-item']}>
@@ -383,13 +366,18 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
               <label>Khuyến mãi</label>
               <input type="number" name="product_discount" onChange={this.onChange}/>
             </div>
+
+            <div className={GlobalStyles['form-item']}>
+              <label>Mã KSU(*)</label>
+              <input type="text" name="product_ksu" onChange={this.onChange}/>
+            </div>
           </div>
 
           <div className={`${GlobalStyles['wrap-content__right']} mg-t-16`}>
             <div className={GlobalStyles['title-product-main']}>Phân loại</div>
 
             <div className={GlobalStyles['form-item']}>
-              <label>Hãng</label>
+              <label>Hãng(*)</label>
 
               {
                 this.state.brand['brand_name']
@@ -437,22 +425,10 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
                 placeholder="Tìm hoặc tạo mới hãng mới"
               />
             </div>
-
-            <div className={GlobalStyles['form-item']}>
-              <label>Danh mục</label>
-              <select
-                name="product_cat_id"
-                onChange={this.onChange}
-                value={this.state.products.product_cat_id}
-              >
-                <option>Chọn danh mục</option>
-                {this.renderCategories()}
-              </select>
-            </div>
           </div>
 
           <div className={`${GlobalStyles['wrap-content__right']} mg-t-16`}>
-            <div className={GlobalStyles['title-product-main']}>Thẻ tag</div>
+            <div className={GlobalStyles['title-product-main']}>Thẻ tag(*)</div>
 
             <div className={styles['am-product-add__list-tags']}>
               <ul>
@@ -488,8 +464,8 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
                 }}
                 onCreate={(e) => {
                   this.props.actionAddTag({
-                    tag_id: uuidv4((new Date()).getMilliseconds()),
                     tag_alias: Alias(e),
+                    tag_path: `/${Alias(e)}`,
                     tag_created_date: Moment(),
                     tag_name: e,
                   })
@@ -516,7 +492,6 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
 // tslint:disable-next-line:no-unused
 const mapStateToProps = storeState => ({
   tagsState: storeState.tagReducer.tagsState,
-  catsState: storeState.catReducer.catsState,
   brandsState: storeState.brandReducer.brandsState,
 });
 
@@ -525,11 +500,10 @@ const mapDispatchToProps = {
   actionAddTag,
   actionAddBrand,
   actionGetBrands,
-  actionGetCats,
   actionAddProduct,
   actionAddImage,
   actionTagProduct,
-  actionBrandCat,
+  actionBrandTag,
   actionShowHideLoading,
   actionShowHideAlert,
 };

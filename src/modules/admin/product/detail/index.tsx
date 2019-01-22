@@ -13,9 +13,8 @@ import ProductModel from '@app/shared/models/ProductModel';
 import Moment from '@app/shared/utils/Moment';
 import { actionGetTags, actionAddTag } from '@app/stores/tag/TagActions';
 import { actionAddBrand, actionGetBrands } from '@app/stores/brand/BrandActions';
-import { actionGetCats } from '@app/stores/cat/CatActions';
 import {
-  actionBrandCat,
+  actionBrandTag,
   actionTagProduct,
   actionGetProduct,
   actionGetTagsProduct,
@@ -28,7 +27,6 @@ import {
   actionDeleteImage,
 } from '@app/stores/image/ImageActions';
 import TagModel from '@app/shared/models/TagModel';
-import CategoryModel from '@app/shared/models/CategoryModel';
 import BrandModel from '@app/shared/models/BrandModel';
 import Alias from '@app/shared/utils/Alias';
 import { configForProductIntro, configForProductInfo } from '@app/shared/CKEditorConfig';
@@ -44,17 +42,15 @@ CKEditor.editorUrl = 'https://cdn.ckeditor.com/4.10.1/full/ckeditor.js';
 interface IAdminProductAddProps {
   match?: any;
   tagsState: { data: TagModel[] };
-  catsState: { data: CategoryModel[] };
   brandsState: { data: BrandModel[] };
   actionGetTags: Function;
   actionAddTag: Function;
   actionAddBrand: Function;
   actionGetBrands: Function;
-  actionGetCats: Function;
   actionUpdateProduct: Function;
   actionAddImage: Function;
   actionTagProduct: Function;
-  actionBrandCat: Function;
+  actionBrandTag: Function;
   actionShowHideLoading: Function;
   actionShowHideAlert: Function;
   history?: any;
@@ -89,11 +85,10 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
         product_id: '',
         product_name: '',
         product_brand_id: '',
-        product_cat_id: 0,
         product_created_date: '',
         product_discount: 0,
         product_price: 0,
-        product_ksu: 'NULL',
+        product_ksu: '',
         product_more_info: '',
         product_volume_weight: '',
         product_inventory_number: 1,
@@ -112,7 +107,6 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
   }
 
   componentDidMount() {
-    this.props.actionGetCats()
     this.props.actionGetTags()
     this.props.actionGetBrands()
     this.props.actionGetProduct(this.props.match.params.alias)
@@ -129,7 +123,6 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
           product_alias: product.product_alias,
           product_brand_id: product.product_brand_id,
           product_created_date: product.product_created_date,
-          product_cat_id: product.product_cat_id,
           product_name: product.product_name,
           product_intro: product.product_intro,
           product_deleted_date: product.product_deleted_date,
@@ -249,9 +242,6 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
               product_alias: Alias(this.state.products.product_name),
             }, this.state.products.product_id)
               .then(() => {
-                return this.onAddBrandCat()
-              })
-              .then(() => {
                 this.showSuccessNotifyAfterAddingproduct()
               })
               .catch(() => {
@@ -300,30 +290,11 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
     }, 2500)
   }
 
-  renderCategories = () => (
-    this.props.catsState.data
-    && this.props.catsState.data.length > 0
-    && this.props.catsState.data.map((element) => {
-      return (
-        <option value={element.cat_id} key={uuidv4()}>{element.cat_name}</option>
-      )
-    })
-  )
-
   onAddTagsProduct = (tag) => {
     this.props.actionTagProduct([tag])
     .then(() => {
       this.props.actionGetTagsProduct(this.state.products.product_id)
     })
-  }
-
-  onAddBrandCat = () => {
-    return (
-      this.props.actionBrandCat({
-        bc_cat_id: this.state.products.product_cat_id,
-        bc_brand_id: this.state.products.product_brand_id,
-      })
-    )
   }
 
   onChangeCKEditor = (e, name) => {
@@ -348,7 +319,7 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
             </div>
 
             <div className={GlobalStyles['form-item']}>
-              <label>Tên sản phẩm</label>
+              <label>Tên sản phẩm(*)</label>
               <input
                 defaultValue={products.product_name}
                 type="text"
@@ -379,16 +350,6 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
           <div className={`${GlobalStyles['wrap-content']} mg-t-16`}>
             <div className={GlobalStyles['title-product-main']}>Cấu hình</div>
             <div className="row">
-              <div className="col-sm-6">
-                <div className={GlobalStyles['form-item']}>
-                  <label>Mã KSU</label>
-                  <input
-                    defaultValue={products.product_ksu}
-                    type="text"
-                    name="product_ksu"
-                    onChange={this.onChange}/>
-                </div>
-              </div>
 
               <div className="col-sm-6">
                 <div className={GlobalStyles['form-item']}>
@@ -446,7 +407,7 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
         <div className="col-sm-4">
           <div className={GlobalStyles['wrap-content__right']}>
             <div className={GlobalStyles['title-product-main']}>
-              Giá sản phẩm
+              Giá sản phẩm/KSU
             </div>
 
             <div className={GlobalStyles['form-item']}>
@@ -465,13 +426,22 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
                 name="product_discount"
                 onChange={this.onChange}/>
             </div>
+
+            <div className={GlobalStyles['form-item']}>
+              <label>Mã KSU(*)</label>
+              <input
+                defaultValue={products.product_ksu}
+                type="text"
+                name="product_ksu"
+                onChange={this.onChange}/>
+            </div>
           </div>
 
           <div className={`${GlobalStyles['wrap-content__right']} mg-t-16`}>
             <div className={GlobalStyles['title-product-main']}>Phân loại</div>
 
             <div className={GlobalStyles['form-item']}>
-              <label>Hãng</label>
+              <label>Hãng(*)</label>
 
               {
                 this.state.brand['brand_name']
@@ -518,22 +488,10 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
                 placeholder="Tìm hoặc tạo mới hãng mới"
               />
             </div>
-
-            <div className={GlobalStyles['form-item']}>
-              <label>Danh mục</label>
-              <select
-                name="product_cat_id"
-                onChange={this.onChange}
-                value={this.state.products.product_cat_id}
-              >
-                <option>Chọn danh mục</option>
-                {this.renderCategories()}
-              </select>
-            </div>
           </div>
 
           <div className={`${GlobalStyles['wrap-content__right']} mg-t-16`}>
-            <div className={GlobalStyles['title-product-main']}>Thẻ tag</div>
+            <div className={GlobalStyles['title-product-main']}>Thẻ tag(*)</div>
 
             <div className={styles['am-product-add__list-tags']}>
               <ul>
@@ -568,6 +526,12 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
                       tp_product_id: this.state.products.product_id,
                       tp_tag_id: e.tag_id,
                     })
+                    this.props.actionBrandTag([
+                      {
+                        bt_brand_id: this.state.products.product_brand_id,
+                        bt_tag_id: e.tag_id,
+                      },
+                    ])
                   })
                 }}
                 onCreate={(e) => {
@@ -600,7 +564,6 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
 // tslint:disable-next-line:no-unused
 const mapStateToProps = storeState => ({
   tagsState: storeState.tagReducer.tagsState,
-  catsState: storeState.catReducer.catsState,
   brandsState: storeState.brandReducer.brandsState,
   productState: storeState.productReducer.productState,
   tagsProductsState: storeState.productReducer.tagsProductsState,
@@ -611,11 +574,10 @@ const mapDispatchToProps = {
   actionAddTag,
   actionAddBrand,
   actionGetBrands,
-  actionGetCats,
   actionUpdateProduct,
   actionAddImage,
   actionTagProduct,
-  actionBrandCat,
+  actionBrandTag,
   actionShowHideLoading,
   actionShowHideAlert,
   actionGetProduct,
