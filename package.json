@@ -50,6 +50,7 @@
     "dependencies": {
         "axios": "^0.18.0",
         "ckeditor4-react": "^0.1.0",
+        "nuka-carousel": "^4.4.7",
         "react": "^16.7.0",
         "react-content-loader": "^3.4.2",
         "react-dom": "^16.7.0",

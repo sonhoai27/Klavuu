@@ -4,6 +4,7 @@ const INIT_ACTION_TYPES = {
   LOCAL_STYLES: 'INIT/LOCAL_STYLES',
   IS_LOADING: 'INIT/IS_LOADING',
   SHOW_HIDE_ALERT: 'INIT/SHOW_HIDE_ALERT',
+  SHOW_HIDE_SHOPPING_CART: 'INIT/SHOW_HIDE_SHOPPING_CART',
 };
 
 const initState = {
@@ -14,6 +15,7 @@ const initState = {
   showOrHideAlertState: {
     status: false,
   },
+  isShowShoppingCartState: false,
 };
 
 const initReducer = (state = initState, action: Action) => {
@@ -31,6 +33,14 @@ const initReducer = (state = initState, action: Action) => {
       return {
         ...state,
         isLoading: action.payload,
+      };
+    }
+
+    case INIT_ACTION_TYPES.SHOW_HIDE_SHOPPING_CART: {
+
+      return {
+        ...state,
+        isShowShoppingCartState: action.payload,
       };
     }
 
@@ -70,10 +80,18 @@ const actionShowHideAlert = status => (dispatch: any) => {
   });
 };
 
+const actionShowShoppingCart = status => (dispatch: any) => {
+  dispatch({
+    type: INIT_ACTION_TYPES.SHOW_HIDE_SHOPPING_CART,
+    payload: status,
+  });
+};
+
 export default initReducer;
 export {
   INIT_ACTION_TYPES,
   setLocalStyles,
   actionShowHideLoading,
   actionShowHideAlert,
+  actionShowShoppingCart,
 };

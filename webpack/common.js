@@ -58,10 +58,6 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                exclude: [
-                    '/src/index.module.css',
-                    /node_modules(?!\/react-lazy-load-image-component)/
-                ],
                 use: [
                     { loader: 'style-loader' },
                     {

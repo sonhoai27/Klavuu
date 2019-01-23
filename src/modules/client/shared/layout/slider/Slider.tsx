@@ -76,10 +76,12 @@ class Slider extends React.Component<ISliderProps, ISliderStates> {
   render() {
 
     return (
+      // tslint:disable-next-line:max-line-length
       <div className={`${Styles['slider']} ${Styles['s--ready']}`} style={{ height: this.props.height }}>
         <div className={Styles['slider__slides']}>
           {
             this.props.images.map((slide: any, index: number) => (
+              // tslint:disable-next-line:max-line-length
               <div className={`${Styles['slider__slide']} ${this.handleActiveOrPrev(index)}`} key={index}>
                 <Link to={slide.url ? slide.url : '#'}>
                   <div className={Styles['slider__slide-content']}>

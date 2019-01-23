@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Route, BrowserRouter as Router } from 'react-router-dom'
 
 import Layout from './shared/layout';
-import ShoppingCart from './cart/ShoppingCart';
 
 const ProductDetail = React.lazy(() => import(
   /*webpackChunkName: "home_detail" */ '@app/modules/client/products/ProductDetail'));
@@ -12,8 +11,12 @@ const ProductDetail = React.lazy(() => import(
 const ProductList = React.lazy(() => import(
   /*webpackChunkName: "home_list_product" */ '@app/modules/client/products/ProductLists'));
 
+const ShoppingCart = React.lazy(() => import(
+  /*webpackChunkName: "home_shopping_cart" */ './cart/ShoppingCart'));
+
 interface IClientProps {
   match?: any;
+  isShowShoppingCartState: boolean;
 }
 
 class Client extends React.Component<IClientProps> {
@@ -35,7 +38,9 @@ class Client extends React.Component<IClientProps> {
             </React.Suspense>
           </Layout>
         </Router>
-        <ShoppingCart/>
+        {
+          this.props.isShowShoppingCartState && <ShoppingCart/>
+        }
       </>
     )
   }
@@ -43,6 +48,7 @@ class Client extends React.Component<IClientProps> {
 
 const mapStateToProps = storeState => ({
   localStyles: storeState.initReducer.localStyles,
+  isShowShoppingCartState: storeState.initReducer.isShowShoppingCartState,
 })
 
 const mapDispatchToProps = {

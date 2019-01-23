@@ -2,8 +2,14 @@ import * as React from 'react'
 
 const Styles = require('./styles/ActionHeader.scss')
 import Icon from '../Icon';
+import { connect } from 'react-redux';
+import { actionShowShoppingCart } from '@app/stores/init';
 
-const ActionHeader = () => (
+interface IActionHeaderProps {
+  actionShowShoppingCart: Function;
+}
+
+const ActionHeader = (props: IActionHeaderProps) => (
   <div className={`${Styles['action-header']} col-12 `}>
     <div className="container">
       <ul>
@@ -19,7 +25,9 @@ const ActionHeader = () => (
           <Icon name="magnifier" className={Styles['icon']}/>
         </li>
         <li className={Styles['relative']}>
-          <Icon name="cart" className={Styles['icon']}/>
+          <Icon
+            onClick={() => props.actionShowShoppingCart(true)}
+            name="cart" className={Styles['icon']}/>
           <span className={Styles['items']}>0</span>
         </li>
       </ul>
@@ -27,4 +35,8 @@ const ActionHeader = () => (
   </div>
 )
 
-export default ActionHeader
+const mapDispatchToProps = {
+  actionShowShoppingCart,
+}
+
+export default connect(null, mapDispatchToProps)(ActionHeader)
