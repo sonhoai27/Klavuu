@@ -1,7 +1,9 @@
 import * as React from 'react';
-import Icon from '../shared/layout/Icon';
-import { actionAddToCart, actionAddOrder } from '@app/stores/cart/CartActions';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+
+import Icon from '../shared/layout/Icon';
+import { actionAddToCart, actionAddOrder, actionEmptyCart } from '@app/stores/cart/CartActions';
 import { CDN } from '@app/shared/const';
 import {
   actionGetProvince,
@@ -9,8 +11,7 @@ import {
   actionGetWard,
 } from '@app/stores/product/ProductActions';
 import Moment from '@app/shared/utils/Moment';
-import { actionShowHidePopup } from '@app/stores/init';
-import { withRouter } from 'react-router';
+import { actionShowHidePopup, actionShowHideLoading } from '@app/stores/init';
 
 const uuidv4 = require('uuid/v4');
 
@@ -28,6 +29,8 @@ interface ICheckoutProps {
   actionAddOrder: Function;
   actionShowHidePopup: Function;
   history?: any;
+  actionEmptyCart: Function;
+  actionShowHideLoading: Function;
 }
 
 interface ICheckoutStates {
@@ -38,7 +41,8 @@ interface ICheckoutStates {
     contact: any,
     address: any[],
     street: string;
-  }
+  },
+  error: string;
 }
 class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
   constructor(props) {
@@ -52,6 +56,7 @@ class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
         address: [],
         street: '',
       },
+      error: '',
     }
   }
 
@@ -82,6 +87,7 @@ class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
 
   onMakeSumaryPrice = () => {
     let price = 0;
+
     if (this.props.cartState.length > 0) {
       // tslint:disable-next-line:no-increment-decrement
       for (let i = 0; i < this.props.cartState.length; i++) {
@@ -202,6 +208,7 @@ class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
       },
     }, () => {
       const id = (value.split('|'))[1]
+
       this.props.actionGetWard(id);
     })
   }
@@ -232,7 +239,11 @@ class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
   onGetAddress = () => {
     const temp = this.state.order.address.reverse()
 
-    return `${this.state.order.street}, ${temp.join(', ')}`
+    if (this.state.order.street !== '') {
+      return `${this.state.order.street}, ${temp.join(', ')}`
+    }
+
+    return ''
   }
 
   onGetStreet = (e) => {
@@ -263,45 +274,104 @@ class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
     return orderDetail
   }
 
+  onValidate = (obj) => {
+
+    if (!obj.order_client_name || obj.order_client_name === '') {
+      return 'order_client_name'
+    }
+
+    if (!obj.order_client_email || obj.order_client_email === '') {
+      return 'order_client_email'
+    }
+
+    if (!obj.order_client_phone || obj.order_client_phone === '') {
+      return 'order_client_hone'
+    }
+
+    if (!obj.order_address || obj.order_address === '') {
+      return 'order_address'
+    }
+    return ''
+  }
+
   onCompleteOrder = () => {
-    this.props.actionAddOrder({
+    this.props.actionShowHideLoading(true)
+    const order = {
       order: {
         ...this.state.order.contact,
         order_address: this.onGetAddress(),
         order_sumary_price: this.onMakeSumaryPrice(),
       },
       detail: this.onMakeOrderDetail(),
-    })
-    .then(() => {
-      this.props.actionShowHidePopup({
-        status: true,
-        onClose: () => this.props.actionShowHidePopup({ status: false }),
-        poBtn: {
-          title: 'Continue shopping',
-          func: () => {
-            this.props.actionShowHidePopup({ status: false }),
-            localStorage.setItem('cart', JSON.stringify([]))
-            this.props.history.push('/page/products/all')
+    }
+
+    const resultValidate =  this.onValidate(order.order)
+
+    if (resultValidate === '') {
+      this.props.actionAddOrder(order)
+      .then(() => {
+        this.props.actionShowHideLoading(false)
+        this.props.actionShowHidePopup({
+          status: true,
+          onClose: () => this.props.actionShowHidePopup({ status: false }),
+          poBtn: {
+            title: 'Continue shopping',
+            func: () => {
+              this.props.actionShowHidePopup({ status: false }),
+              this.props.history.push('/page/products/all')
+              this.props.actionEmptyCart()
+            },
           },
-        },
-        title: 'Order successful',
-        message: 'Thank you for your order!',
-        icon: <Icon name="smile"/>,
+          title: 'Order successful',
+          message: 'Thank you for your order!',
+          icon: <Icon name="smile"/>,
+        })
       })
-    })
-    .catch(() => {
-      this.props.actionShowHidePopup({
-        status: true,
-        onClose: () => this.props.actionShowHidePopup({ status: false }),
-        poBtn: {
-          title: 'EXIT',
-          func: () => this.props.actionShowHidePopup({ status: false }),
-        },
-        title: 'ERROR',
-        message: 'Complete ordered field!',
-        icon: <Icon name="sad"/>,
+      .catch(() => {
+        this.props.actionShowHideLoading(false)
+        this.props.actionShowHidePopup({
+          status: true,
+          onClose: () => this.props.actionShowHidePopup({ status: false }),
+          poBtn: {
+            title: 'EXIT',
+            func: () => this.props.actionShowHidePopup({ status: false }),
+          },
+          title: 'ERROR',
+          message: 'Complete ordered field!',
+          icon: <Icon name="sad"/>,
+        })
       })
-    })
+    } else {
+      this.props.actionShowHideLoading(false)
+
+      this.setState({
+        error: resultValidate,
+      }, () => {
+        setTimeout(() => {
+          this.setState({
+            error: '',
+          })
+        }, 1200)
+      })
+    }
+  }
+
+  onError = (name) => {
+    if (
+      name === 'order_client_name'
+      || name === 'order_client_email'
+      || name === 'order_client_phone'
+    ) {
+      return 'contact'
+    }
+
+    if (
+      name === 'order_address'
+    ) {
+      return 'address'
+    }
+
+    return ''
   }
 
   render() {
@@ -312,18 +382,25 @@ class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
             <div className={`col-sm-6 ${S['left']}`}>
               <div className={S['item']}>
                 <label>Contact information</label>
-                <input
-                  onChange={this.onChangeToGetUserInfomation}
-                  name="order_client_name"
-                  type="text" placeholder="Full name"/>
-                <input
-                  onChange={this.onChangeToGetUserInfomation}
-                  name="order_client_email"
-                  type="text" placeholder="Email"/>
-                <input
-                  onChange={this.onChangeToGetUserInfomation}
-                  name="order_client_phone"
-                  type="text" placeholder="Phone"/>
+                  <input
+                    onChange={this.onChangeToGetUserInfomation}
+                    name="order_client_name"
+                    type="text" placeholder="Full name"/>
+                  <input
+                    onChange={this.onChangeToGetUserInfomation}
+                    name="order_client_email"
+                    type="text" placeholder="Email"/>
+                  <input
+                    onChange={this.onChangeToGetUserInfomation}
+                    name="order_client_phone"
+                    type="text" placeholder="Phone"/>
+                  <p className={S['red']}>
+                    {
+                      this.onError(this.state.error) === 'contact'
+                      ? 'Please check your contact information!'
+                      : ''
+                    }
+                  </p>
               </div>
               <div className={S['item']}>
                 <label>Shipping address</label>
@@ -362,10 +439,25 @@ class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
                   </select>
                 </div>
 
-                <input
-                  onChange={this.onGetStreet}
-                  value={this.state.order.street}
-                  type="text" placeholder="Street"/>
+                {
+                  this.state.district !== ''
+                  && this.state.province !== ''
+                  && this.state.ward !== ''
+                  && (
+                    <input
+                      onChange={this.onGetStreet}
+                      value={this.state.order.street}
+                      type="text" placeholder="Street"/>
+                  )
+                }
+
+                <p className={S['red']}>
+                  {
+                    this.onError(this.state.error) === 'address'
+                    ? 'Please check your shipping address!'
+                    : ''
+                  }
+                </p>
               </div>
             </div>
             <div className="col-sm-6">
@@ -407,6 +499,8 @@ const mapDispatchToProps = {
   actionGetWard,
   actionAddOrder,
   actionShowHidePopup,
+  actionEmptyCart,
+  actionShowHideLoading,
 }
 
 // @ts-ignore

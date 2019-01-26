@@ -51,20 +51,38 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
   }
 
   componentDidMount(): void {
-    if (this.onCheckBrandOrTag() === 'b') {
-      this.props.actionGetBrandTags(this.props.match.params.alias)
-    } else if (this.onCheckBrandOrTag() === 't') {
-      this.props.actionGetTagBrands(this.props.match.params.alias)
-    } else {
-      this.props.actionGetBrandTags(this.props.match.params.alias)
-      this.props.actionGetTagBrands(this.props.match.params.alias)
-    }
+    this.onGetTagOrBrand()
     this.onGetProducts()
   }
 
   componentDidUpdate(preProps) {
     if (this.props.location !== preProps.location) {
       this.onGetProducts()
+      this.onGetTagOrBrand()
+    }
+  }
+
+  onGetTagOrBrand = () => {
+    if (this.onCheckBrandOrTag() === 'b') {
+      this.props.actionGetBrandTags(this.props.match.params.alias)
+      .catch(() => {
+        this.props.actionGetBrandTags(this.props.match.params.alias)
+      })
+    } else if (this.onCheckBrandOrTag() === 't') {
+      this.props.actionGetTagBrands(this.props.match.params.alias)
+      .catch(() => {
+        this.props.actionGetTagBrands(this.props.match.params.alias)
+      })
+    } else {
+      this.props.actionGetBrandTags(this.props.match.params.alias)
+      .catch(() => {
+        this.props.actionGetBrandTags(this.props.match.params.alias)
+      })
+
+      this.props.actionGetTagBrands(this.props.match.params.alias)
+      .catch(() => {
+        this.props.actionGetTagBrands(this.props.match.params.alias)
+      })
     }
   }
 
@@ -75,10 +93,19 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
 
     if (this.onCheckBrandOrTag() === 'b') {
       this.props.actionGetProductsFiler(`?brand=${alias}${isNullSearch}`)
+      .catch(() => {
+        this.props.actionGetProductsFiler(`?brand=${alias}${isNullSearch}`)
+      })
     } else if (this.onCheckBrandOrTag() === 't') {
       this.props.actionGetProductsFiler(`?tag=${alias}${isNullSearch}`)
+      .catch(() => {
+        this.props.actionGetProductsFiler(`?tag=${alias}${isNullSearch}`)
+      })
     } else {
       this.props.actionGetProductsFiler(search)
+      .catch(() => {
+        this.props.actionGetProductsFiler(search)
+      })
     }
   }
 

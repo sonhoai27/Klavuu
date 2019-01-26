@@ -1,4 +1,12 @@
-import { ADD_TO_CART, CART, ADD_ORDER, UPDATE_ORDER, GET_ORDER, GET_ORDERS } from './CartTypes';
+import {
+  ADD_TO_CART,
+  CART,
+  ADD_ORDER,
+  UPDATE_ORDER,
+  GET_ORDER,
+  GET_ORDERS,
+  EMPTY_CART,
+} from './CartTypes';
 import { REQUEST, FAILURE, SUCCESS } from '@app/configs/ActionType';
 const initialState = {
   cartState: [],
@@ -10,6 +18,13 @@ const cartReducer = (state = initialState, action) => {
   switch (action.type) {
 
     case ADD_TO_CART: {
+      return {
+        ...state,
+        cartState: action.payload,
+      }
+    }
+
+    case EMPTY_CART: {
       return {
         ...state,
         cartState: action.payload,

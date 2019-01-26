@@ -5,8 +5,8 @@ import { Route, BrowserRouter as Router } from 'react-router-dom'
 
 import Layout from './shared/layout';
 import { actionLoadCart } from '@app/stores/cart/CartActions';
-import Alert from '@app/shared/alert/Alert';
 import { actionGetTagsForMenu } from '@app/stores/tag/TagActions';
+import Alert from '@app/shared/alert/Alert';
 
 const ProductDetail = React.lazy(() => import(
   /*webpackChunkName: "home_detail" */ '@app/modules/client/products/ProductDetail'));
@@ -23,6 +23,9 @@ const Checkout = React.lazy(() => import(
 const Popup = React.lazy(() => import(
   /*webpackChunkName: "home_Popup" */ '@app/shared/popup'));
 
+const Loading = React.lazy(() => import(
+  /*webpackChunkName: "home_loading" */ '@app/shared/Loading'));
+
 interface IClientProps {
   match?: any;
   isShowShoppingCartState: boolean;
@@ -30,6 +33,7 @@ interface IClientProps {
   showOrHideAlertState: any;
   actionGetTagsForMenu: Function;
   isShowHidePopupState: any;
+  isLoading: boolean;
 }
 
 class Client extends React.Component<IClientProps> {
@@ -96,6 +100,9 @@ class Client extends React.Component<IClientProps> {
                   type={this.props.showOrHideAlertState.type} />
               )
             }
+            {
+              this.props.isLoading && <Loading/>
+            }
           </Layout>
         </Router>
       </>
@@ -108,6 +115,7 @@ const mapStateToProps = storeState => ({
   isShowHidePopupState: storeState.initReducer.isShowHidePopupState,
   isShowShoppingCartState: storeState.initReducer.isShowShoppingCartState,
   showOrHideAlertState: storeState.initReducer.showOrHideAlertState,
+  isLoading: storeState.initReducer.isLoading,
 })
 
 const mapDispatchToProps = {

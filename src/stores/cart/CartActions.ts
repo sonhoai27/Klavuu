@@ -7,6 +7,7 @@ import {
   ADD_ORDER,
   GET_ORDERS,
   GET_ORDER,
+  EMPTY_CART,
 } from './CartTypes';
 
 const actionAddToCart = (product, type, cart) => (dispatch) => {
@@ -41,6 +42,14 @@ const actionUpdateOrder = (form, orderId) => (dispatch) => {
   return dispatch({
     type: GET_ORDER,
     payload: axios.put(`${API}order/${orderId}`, form),
+  })
+}
+
+const actionEmptyCart = () => (dispatch) => {
+  localStorage.setItem('cart', JSON.stringify([]))
+  return dispatch({
+    type: EMPTY_CART,
+    payload: [],
   })
 }
 
@@ -88,4 +97,5 @@ export {
   actionGetOrders,
   actionGetOrder,
   actionUpdateOrder,
+  actionEmptyCart,
 }

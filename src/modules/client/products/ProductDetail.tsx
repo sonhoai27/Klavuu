@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import LazyLoad from 'react-lazyload';
 const uuidv4 = require('uuid/v4');
 
 import { actionGetProduct } from '@app/stores/product/ProductActions';
@@ -75,12 +74,10 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
           onClick={() => this.onSelectedProductImage(image)}
           key={uuidv4()}
           className={index === 0 ? Styles['picked'] : ''}>
-          <LazyLoad height={'100%'} once={true}>
           <img
             className="img-fluid"
             src={`${CDN}${image.img_src}`}
-            />
-          </LazyLoad>
+          />
         </li>
       )
     })
@@ -165,18 +162,16 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
               </ul>
               <div className={Styles['zoom-in-container']} style={{ overflow: 'hidden' }}>
                 <div className="content">
-                  <LazyLoad height={'100%'}>
-                    <img
-                      className={`
-                        ${Styles['zoom-in-container__image-preview']} img-fluid img-loading`}
-                      // tslint:disable-next-line:max-line-length
-                      src={
-                        this.state.currentProductImage.img_src
-                        ? `${CDN}${this.state.currentProductImage.img_src}`
-                        : './images/no_image.jpg'
-                      }
-                      />
-                  </LazyLoad>
+                  <img
+                    className={`
+                      ${Styles['zoom-in-container__image-preview']} img-fluid`}
+                    // tslint:disable-next-line:max-line-length
+                    src={
+                      this.state.currentProductImage.img_src
+                      ? `${CDN}${this.state.currentProductImage.img_src}`
+                      : './images/no_image.jpg'
+                    }
+                    />
                 </div>
               </div>
             </div>

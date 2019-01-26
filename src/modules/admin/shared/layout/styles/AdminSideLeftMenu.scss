@@ -35,14 +35,21 @@
             a {
                 color: #fff!important;
                 font-size: 14px;
-                padding: 4px;
+                padding: 6px 4px;
                 width: 100%;
+                font-weight: 600;
                 display: inline-block;
                 transition: all .3s ease-in-out;
                 &:hover {
                     background: rgba(255, 255, 255, 0.28);
                     color: #eee!important;
                 }
+            }
+            .line {
+                height: 1px;
+                background: #eee;
+                margin-top: 16px;
+                margin-bottom: 8px;
             }
         }
     }
