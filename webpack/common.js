@@ -90,8 +90,9 @@ module.exports = {
             { from: '../public/manifest.json', to: '../build' },
             { from: '../public/images/', to: '../build/images' },
             { from: '../public/css/', to: '../build/css' },
+            { from: '../public/sw.js', to: '../build/sw.js' },
             { from: '../public/images/favicon.ico', to: '../build' }
-        ])
+        ]),
     ],
     optimization: {
         splitChunks: {

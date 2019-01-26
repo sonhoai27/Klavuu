@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import BrandStory from './brand-story';
 import { connect } from 'react-redux';
+import { actionLoadCart } from '@app/stores/cart/CartActions';
 
 const NewProducts = React.lazy(() => import(
   /*webpackChunkName: "client_home_new_prd" */ './new-products'));
@@ -15,12 +16,16 @@ const ShoppingCart = React.lazy(() => import(
 interface IHomeProps {
   match?: any;
   isShowShoppingCartState?: Function;
+  actionLoadCart: Function;
 }
 
 class Home extends React.Component<IHomeProps> {
   constructor (props) {
     super(props)
-    console.log(this.props.match)
+  }
+
+  componentDidMount() {
+    this.props.actionLoadCart()
   }
 
   render () {
@@ -43,4 +48,8 @@ const mapStateToProps = storeState => ({
   isShowShoppingCartState: storeState.initReducer.isShowShoppingCartState,
 })
 
-export default connect(mapStateToProps, null)(Home);
+const mapDispatchToProps = {
+  actionLoadCart,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

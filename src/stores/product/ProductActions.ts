@@ -9,6 +9,9 @@ import {
   DELETE_TAG_PRODUCT,
   GET_TAG_PRODUCT,
   GET_PRODUCTS_FILTER,
+  GET_PROVINCE,
+  GET_DISTRICT,
+  GET_WARD,
 } from './ProductTypes';
 
 import axios from 'axios'
@@ -89,6 +92,27 @@ const actionDeleteProduct = id => async (dispatch) => {
   })
 };
 
+const actionGetProvince = () => async (dispatch) => {
+  return await dispatch({
+    type: GET_PROVINCE,
+    payload: axios.get(`${API}province`),
+  })
+};
+
+const actionGetDistrict = provinceId => async (dispatch) => {
+  return await dispatch({
+    type: GET_DISTRICT,
+    payload: axios.get(`${API}district/${provinceId}`),
+  })
+};
+
+const actionGetWard = districtId => async (dispatch) => {
+  return await dispatch({
+    type: GET_WARD,
+    payload: axios.get(`${API}ward/${districtId}`),
+  })
+};
+
 export {
   actionAddProduct,
   actionGetProducts,
@@ -100,4 +124,7 @@ export {
   actionGetTagsProduct,
   actionDeleteTagProduct,
   actionGetProductsFiler,
+  actionGetProvince,
+  actionGetDistrict,
+  actionGetWard,
 }

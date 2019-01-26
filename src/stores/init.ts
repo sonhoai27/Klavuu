@@ -5,6 +5,7 @@ const INIT_ACTION_TYPES = {
   IS_LOADING: 'INIT/IS_LOADING',
   SHOW_HIDE_ALERT: 'INIT/SHOW_HIDE_ALERT',
   SHOW_HIDE_SHOPPING_CART: 'INIT/SHOW_HIDE_SHOPPING_CART',
+  SHOW_HIDE_POPUP: 'INIT/SHOW_HIDE_POPUP',
 };
 
 const initState = {
@@ -14,8 +15,13 @@ const initState = {
   isLoading: false,
   showOrHideAlertState: {
     status: false,
+    title: '',
+    icon: undefined,
   },
   isShowShoppingCartState: false,
+  isShowHidePopupState: {
+    status: false,
+  },
 };
 
 const initReducer = (state = initState, action: Action) => {
@@ -33,6 +39,14 @@ const initReducer = (state = initState, action: Action) => {
       return {
         ...state,
         isLoading: action.payload,
+      };
+    }
+
+    case INIT_ACTION_TYPES.SHOW_HIDE_POPUP: {
+
+      return {
+        ...state,
+        isShowHidePopupState: action.payload,
       };
     }
 
@@ -80,6 +94,13 @@ const actionShowHideAlert = status => (dispatch: any) => {
   });
 };
 
+const actionShowHidePopup = status => (dispatch: any) => {
+  dispatch({
+    type: INIT_ACTION_TYPES.SHOW_HIDE_POPUP,
+    payload: status,
+  });
+};
+
 const actionShowShoppingCart = status => (dispatch: any) => {
   dispatch({
     type: INIT_ACTION_TYPES.SHOW_HIDE_SHOPPING_CART,
@@ -94,4 +115,5 @@ export {
   actionShowHideLoading,
   actionShowHideAlert,
   actionShowShoppingCart,
+  actionShowHidePopup,
 };

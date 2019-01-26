@@ -1,15 +1,21 @@
 import * as React from 'react';
 import Icon from '../shared/layout/Icon';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { actionShowShoppingCart } from '@app/stores/init';
+import { actionShowShoppingCart, actionShowHideAlert } from '@app/stores/init';
+import { CDN } from '@app/shared/const';
+import { actionAddToCart } from '@app/stores/cart/CartActions';
+
+const uuidv4 = require('uuid/v4');
 
 const S = require('./styles/ShoppingCart.scss')
 
 interface IShoppingCartProps {
-  productsInCartState?: any[];
-  actionUpdateCart?: Function;
   actionShowShoppingCart?: Function;
+  cartState: any[];
+  actionAddToCart: Function;
+  actionShowHideAlert: Function;
+  history?: any;
 }
 
 class ShoppingCart extends React.Component<IShoppingCartProps> {
@@ -17,92 +23,166 @@ class ShoppingCart extends React.Component<IShoppingCartProps> {
     super(props)
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.cartState !== this.props.cartState) {
+      this.props.actionShowHideAlert({
+        status: false,
+      })
+    }
+  }
+  componentDidMount() {
+    document.body.style.overflow = 'hidden'
+  }
+
+  shouldComponentUpdate() {
+    return true;
+  }
+
+  onFormatNumber = (price: number) => {
+    return (
+      price
+      && price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    )
+  }
+
+  onMakePrice = (price, discount, qty) => {
+    return Number((price - ((price * discount) / 100)) * qty)
+  }
+
+  onMakeSumaryPrice = () => {
+    let price = 0;
+    if (this.props.cartState.length > 0) {
+      // tslint:disable-next-line:no-increment-decrement
+      for (let i = 0; i < this.props.cartState.length; i++) {
+        price = price + this.onMakePrice(
+          this.props.cartState[i].product_price,
+          this.props.cartState[i].product_discount,
+          this.props.cartState[i].qty,
+        )
+      }
+
+      return Number(price)
+    }
+
+    return Number(price)
+  }
+
+  renderNullCart = () => (
+    this.props.cartState.length === 0
+    && (
+      <div className={S['shopping-cart__content__null']}>
+        <img src="./images/shopping-bag.svg" className="img-fluid" />
+        <div>
+          <span>Giỏ hàng của bạn còn trống</span>
+          <span>
+            <a href="/page/products/all">Tiếp tục mua sắm</a>
+          </span>
+        </div>
+      </div>
+    )
+  )
+
+  renderProductCatalog = () => (
+    this.props.cartState.length > 0
+    && this.props.cartState.map((element) => {
+      return (
+        <li key={uuidv4()}>
+          <img
+            src={`${CDN}${element.product_image}`}
+            alt=""
+            className="img-fluid" />
+          <div>
+            <div className={S['cart__item']}>
+              <span>
+                <Link to={`/page/product/${element.product_alias}`}>
+                  {element.product_name} ({element.product_discount}% OFF)
+                </Link>
+              </span>
+              <span>
+                {this.onFormatNumber(element.product_price)}đ
+              </span>
+            </div>
+            <div className={S['cart__qty']}>
+              <div className="cart_qty--left">
+                <span onClick={() => {
+                  this.props.actionAddToCart(element, 1, this.props.cartState)
+                }}>-</span>
+                <span>{element.qty}</span>
+                <span onClick={() => {
+                  this.props.actionAddToCart(element, 0, this.props.cartState)
+                }}>+</span>
+              </div>
+              <div className={S['cart__qty--right']}>
+                {this.onFormatNumber(
+                  this.onMakePrice(
+                    element.product_price,
+                    element.product_discount,
+                    element.qty,
+                  ),
+                )}đ
+              </div>
+            </div>
+          </div>
+        </li>
+      )
+    })
+  )
+
   render() {
     return (
       <div className={S['shopping-cart']}>
         <div className={S['shopping-cart__content']}>
           <div className={S['shopping-cart__content__header']}>
             <p>Giỏ hàng</p>
-            <p>(0 Sản Phẩm)</p>
+            <p>({this.props.cartState.length} Sản Phẩm)</p>
             <Icon
-              onClick={() => this.props.actionShowShoppingCart(false)}
+              onClick={() => {
+                document.body.style.overflow = 'auto'
+                this.props.actionShowShoppingCart(false)
+              }}
               name="cross"
-              className={S['close-btn']}/>
+              className={S['close-btn']} />
           </div>
           <div className={S['shopping-cart__content__items']}>
-            <div className={S['shopping-cart__content__null']}>
-              <img src="./images/shopping-bag.svg" className="img-fluid"/>
-              <div>
-                <span>Giỏ hàng của bạn còn trống</span>
-                <span>Tiếp tục mua sắm</span>
-              </div>
-            </div>
+            {this.renderNullCart()}
             <ul className={S['shopping-cart__items']}>
-              <li>
-                <img
-                  src="http://22.zonesgroup.vn/api/uploads/bf9785b2e9774045000000.png"
-                  alt=""
-                  className="img-fluid"/>
-                <div>
-                  <div className={S['cart__item']}>
-                    <span>
-                      <Link to="/">Nokia x6</Link>
-                    </span>
-                    <span>2.342.000đ</span>
-                  </div>
-                  <div className={S['cart__qty']}>
-                    <div className="cart_qty--left">
-                      <span>-</span>
-                      <span>1223</span>
-                      <span>+</span>
-                    </div>
-                    <div className={S['cart__qty--right']}>
-                      12.2232.332đ
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <img
-                  src="https://leflair-assets.storage.googleapis.com/5bc9698f1c54f600014278d9.jpg"
-                  alt=""
-                  className="img-fluid"/>
-                <div>
-                  <div className={S['cart__item']}>
-                    <span>
-                      <Link to="/">Nokia x7</Link>
-                    </span>
-                    <span>2.342.000đ</span>
-                  </div>
-                  <div className={S['cart__qty']}>
-                    <div className="cart_qty--left">
-                      <span>-</span>
-                      <span>1223</span>
-                      <span>+</span>
-                    </div>
-                    <div className={S['cart__qty--right']}>
-                      12.2232.332đ
-                    </div>
-                  </div>
-                </div>
-              </li>
+              {this.renderProductCatalog()}
             </ul>
           </div>
-          <div className={S['shopping-cart__footer']}>
-            <div>
-              <span>Thành tiền</span>
-              <span>4586788đ</span>
-            </div>
-            <div>Tiến hành đặt hàng</div>
-          </div>
+          {
+            this.props.cartState.length > 0
+              && (
+                <div className={S['shopping-cart__footer']}>
+                  <div>
+                    <span>Thành tiền</span>
+                    <span>{this.onFormatNumber(this.onMakeSumaryPrice())}đ</span>
+                  </div>
+                  <div onClick={() => {
+                    document.body.style.overflow = 'auto'
+                    this.props.actionShowShoppingCart(false)
+                    this.props.history.push('/page/checkout')
+                  }}>
+                    Tiến hành đặt hàng
+                  </div>
+                </div>
+              )
+          }
         </div>
       </div>
     )
   }
 }
+const mapStateToProps = storeState => ({
+  cartState: storeState.cartReducer.cartState,
+})
 
 const mapDispatchToProps = {
   actionShowShoppingCart,
+  actionAddToCart,
+  actionShowHideAlert,
 }
 
-export default connect(null, mapDispatchToProps)(ShoppingCart)
+// @ts-ignore
+const tempCom = connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);
+// @ts-ignore
+export default withRouter(tempCom as any)

@@ -14,7 +14,6 @@ const AdminProductsDetail = React.lazy(() => import(
   /*webpackChunkName: "admin_product_detail" */ '@app/modules/admin/product/detail'));
 
 const AdminRouter = (props) => {
-  console.log(props)
 
   return (
     <React.Suspense fallback={''}>

@@ -197,8 +197,6 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
         ...this.state.products,
         [name]: value,
       },
-    }, () => {
-      console.log(this.state.products)
     })
   }
 
@@ -466,8 +464,6 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
                         ...this.state.products,
                         product_brand_id: this.state.brand['brand_id'],
                       },
-                    }, () => {
-                      console.log(this.state)
                     })
                   })
                 }}

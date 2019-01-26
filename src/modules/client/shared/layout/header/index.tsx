@@ -5,20 +5,14 @@ import './styles/index.scss'
 import ActionHeader from './ActionHeader';
 import PrimaryHeader from './PrimaryHeader';
 import Alert from './Alert';
-import { actionGetTagsForMenu } from '@app/stores/tag/TagActions';
 
 interface IHeaderProps {
   tagsForMenuState: any;
-  actionGetTagsForMenu: Function;
 }
 
 class Header extends React.Component<IHeaderProps> {
   constructor(props) {
     super(props)
-  }
-
-  componentDidMount() {
-    this.props.actionGetTagsForMenu()
   }
 
   render() {
@@ -36,8 +30,4 @@ const mapStateToProps = storeState => ({
   tagsForMenuState: storeState.tagReducer.tagsForMenuState,
 })
 
-const mapDispatchToProps = {
-  actionGetTagsForMenu,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default connect(mapStateToProps, null)(Header)

@@ -1,0 +1,74 @@
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(42, 43, 63, .7);
+    &__content {
+        position: relative;
+        margin: 15% auto;
+        min-width: 330px;
+        background-color: #fcfcfc;
+        padding: 15px;
+        width: 400px;
+    }
+    &__header {
+        span {
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            background: var(--primary-color);
+            padding: 4px;
+            border-radius: 100%;
+            transition: all .3s;
+            cursor: pointer;
+            &:hover {
+                background: var(--primary-dark-color);
+                color: #fff;
+            }
+        }
+    }
+    &__main {
+        padding: 16px;
+        text-align: center;
+        &__icon {
+            font-size: 64px;
+        }
+        &__title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #32323d;
+        }
+        &_message {
+            line-height: 1.8;
+            font-size: 14px;
+            color: #32323d;
+            margin-top: 5px;
+        }
+    }
+    &__footer {
+        display: flex;
+        justify-content: center;
+        margin-top: 32px;
+        .ne-btn,
+        .po-btn {
+            padding: 10px 30px;
+            margin-right: 8px;
+            margin-left: 8px;
+            text-align: center;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .ne-btn {
+            background: #f7f7f7;
+        }
+        .po-btn {
+            background: var(--second-color);
+            color: #fff;
+        }
+    }
+}

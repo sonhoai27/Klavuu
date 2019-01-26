@@ -7,6 +7,7 @@ import { actionShowShoppingCart } from '@app/stores/init';
 
 interface IActionHeaderProps {
   actionShowShoppingCart: Function;
+  cartState: any[];
 }
 
 const ActionHeader = (props: IActionHeaderProps) => (
@@ -28,15 +29,21 @@ const ActionHeader = (props: IActionHeaderProps) => (
           <Icon
             onClick={() => props.actionShowShoppingCart(true)}
             name="cart" className={Styles['icon']}/>
-          <span className={Styles['items']}>0</span>
+          <span className={Styles['items']}>
+            {props.cartState.length}
+          </span>
         </li>
       </ul>
     </div>
   </div>
 )
 
+const mapStateToProps = storeState => ({
+  cartState: storeState.cartReducer.cartState,
+})
+
 const mapDispatchToProps = {
   actionShowShoppingCart,
 }
 
-export default connect(null, mapDispatchToProps)(ActionHeader)
+export default connect(mapStateToProps, mapDispatchToProps)(ActionHeader)

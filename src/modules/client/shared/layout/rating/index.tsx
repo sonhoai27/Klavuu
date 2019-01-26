@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+const uuidv4 = require('uuid/v4');
+
 const Styles = require('./rating.scss')
 
 interface IRaterProps {
@@ -63,6 +65,7 @@ class Rater extends React.Component<IRaterProps, IRaterStates> {
       // @ts-ignore
       stars.push(
         <label
+          key={uuidv4()}
           className={klass}
           onClick={() => !this.props.disabled && this.onRate(i)}
           onMouseOver={() => !this.props.disabled && this.onStarOver(i)}

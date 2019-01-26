@@ -26,6 +26,9 @@ class App extends React.Component<IAppProps> {
   }
   componentDidMount() {
     this.props.setLocalStyles(localStyles)
+    if (!localStorage.getItem('admin') === null) {
+      window.location.href = '/coming-soon.html'
+    }
   }
   render() {
 

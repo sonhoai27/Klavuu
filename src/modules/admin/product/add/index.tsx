@@ -232,7 +232,6 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
       data.append('images[]', this.state.images.images[i]);
     }
 
-    console.log(data)
     return this.props.actionAddImage(data, this.state.products.product_id)
   }
 

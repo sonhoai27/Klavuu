@@ -9,6 +9,9 @@ import {
   GET_TAG_PRODUCT,
   DELETE_TAG_PRODUCT,
   GET_PRODUCTS_FILTER,
+  GET_PROVINCE,
+  GET_DISTRICT,
+  GET_WARD,
 } from './ProductTypes';
 import { REQUEST, FAILURE, SUCCESS } from '@app/configs/ActionType';
 
@@ -17,6 +20,9 @@ const initialState = {
   productState: {},
   tagsProductsState: [],
   productsFilterState: [],
+  provinceState: [],
+  districtState: [],
+  wardState: [],
 }
 
 const productReducer = (state = initialState, action) => {
@@ -55,6 +61,15 @@ const productReducer = (state = initialState, action) => {
     case REQUEST(GET_PRODUCTS_FILTER):
     case FAILURE(GET_PRODUCTS_FILTER):
 
+    case REQUEST(GET_PROVINCE):
+    case FAILURE(GET_PROVINCE):
+
+    case REQUEST(GET_DISTRICT):
+    case FAILURE(GET_DISTRICT):
+
+    case REQUEST(GET_WARD):
+    case FAILURE(GET_WARD):
+
     case REQUEST(GET_PRODUCT_BY_ALIAS):
     case FAILURE(GET_PRODUCT_BY_ALIAS): {
       return {
@@ -89,6 +104,30 @@ const productReducer = (state = initialState, action) => {
         productsFilterState: action.payload.data,
       }
     }
+
+    case SUCCESS(GET_PROVINCE): {
+      return {
+        ...state,
+        provinceState: action.payload.data,
+        districtState: [],
+      }
+    }
+
+    case SUCCESS(GET_DISTRICT): {
+      return {
+        ...state,
+        districtState: action.payload.data,
+        wardState: [],
+      }
+    }
+
+    case SUCCESS(GET_WARD): {
+      return {
+        ...state,
+        wardState: action.payload.data,
+      }
+    }
+
     default: return state
   }
 }

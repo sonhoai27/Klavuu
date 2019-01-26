@@ -5,6 +5,7 @@ import tagReducer from './tag/TagReducers';
 import brandReducer from './brand/BrandReducers';
 import imageReducer from './image/ImageReducers';
 import productReducer from './product/ProductReducers';
+import cartReducer from './cart/CartReducer';
 
 const rootReducer = combineReducers({
   initReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   brandReducer,
   imageReducer,
   productReducer,
+  cartReducer,
 });
 
 export default rootReducer;

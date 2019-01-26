@@ -218,7 +218,7 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
             height={'100vh'}
             once
             placeholder={this.onLoading()}
-            debounce={800}>
+            throttle={800}>
             <div className={Styles['product_list__item__product']}>
               <div className={Styles['product_list__items__image']}>
                 <Link to={`/page/product/${element.product_alias}`}>

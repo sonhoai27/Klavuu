@@ -19,23 +19,32 @@ html {
     padding: 0!important;
 }
 
+.notify {
+    position: fixed;
+    top: 5%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    width: 100%;
+    z-index: 2000;
+}
+
 .notification {
     border-radius: 6px;
     padding: 20px;
-    margin: 10px auto;
-    position: fixed;
-    top: 0;
-    right: 10px;
-    z-index: 2000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-block;
 }
 
 .notification .notification-title {
     font-size: 16px!important;
-    font-weight: 600;
+    font-weight: 400;
     margin: 0;
+    color: #fff;
+    display: flex;
+}
+
+.notification .notification-title span {
+    margin-right: 16px;
 }
 
 .notification.success {

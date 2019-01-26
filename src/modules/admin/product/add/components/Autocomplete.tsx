@@ -22,7 +22,8 @@ interface IAutocompleteStates {
   statusAdd: {
     code: number;
     isShowNotify: boolean;
-  }
+  },
+  isFocus: number;
 }
 
 class Autocomplete extends React.Component<IAutocompleteProps, IAutocompleteStates> {
@@ -35,6 +36,7 @@ class Autocomplete extends React.Component<IAutocompleteProps, IAutocompleteStat
         code: 0,
         isShowNotify: false,
       },
+      isFocus: -1,
     }
   }
 
@@ -50,11 +52,13 @@ class Autocomplete extends React.Component<IAutocompleteProps, IAutocompleteStat
       this.setState({
         suggestions,
         value,
+        isFocus: 1,
       })
     } else {
       this.setState({
         value: '',
         suggestions: [],
+        isFocus: 0,
       })
     }
   };
@@ -89,11 +93,47 @@ class Autocomplete extends React.Component<IAutocompleteProps, IAutocompleteStat
       })
     )
   }
+
+  renderContentWithAllItems = () => {
+    const { items } = this.props;
+    return (
+      items.length > 0
+      && items.map((e: any, index: number) => {
+        return (
+          <li
+            key={index}
+            onClick={() => {
+              this.props.onChange(e)
+            }}
+          >
+            {e[this.props.config.text]}
+          </li>
+        )
+      })
+    )
+  }
+
+  onClick = () => {
+    this.setState({
+      isFocus: 0,
+    })
+  }
+
+  onBlur = () => {
+    this.setState({
+      isFocus: -1,
+      suggestions: [],
+      value: '',
+    })
+  }
+
   render() {
     return (
       <div className={Styles['autocomplete']}>
         <div className={Styles['autocomplete__input']}>
           <input
+            onClick={this.onClick}
+            onBlur={this.onBlur}
             value={this.state.value}
             type="text"
             onChange={this.getSuggestions}
@@ -110,7 +150,14 @@ class Autocomplete extends React.Component<IAutocompleteProps, IAutocompleteStat
         </div>
         <div className={Styles['autocomplete__content-search']}>
           <ul className={Styles['autocomplete__items']}>
-            {this.renderContent()}
+            {
+              (this.state.isFocus === 1 && this.state.suggestions.length > 0)
+              && this.renderContent()
+            }
+            {
+              (this.state.isFocus === 0 && this.props.items.length > 0)
+              && this.renderContentWithAllItems()
+            }
           </ul>
           {
             this.state.value !== ''

@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { Route, BrowserRouter as Router } from 'react-router-dom'
 
 import Layout from './shared/layout';
+import { actionLoadCart } from '@app/stores/cart/CartActions';
+import Alert from '@app/shared/alert/Alert';
+import { actionGetTagsForMenu } from '@app/stores/tag/TagActions';
 
 const ProductDetail = React.lazy(() => import(
   /*webpackChunkName: "home_detail" */ '@app/modules/client/products/ProductDetail'));
@@ -14,14 +17,29 @@ const ProductList = React.lazy(() => import(
 const ShoppingCart = React.lazy(() => import(
   /*webpackChunkName: "home_shopping_cart" */ './cart/ShoppingCart'));
 
+const Checkout = React.lazy(() => import(
+    /*webpackChunkName: "home_checkout" */ './cart/Checkout'));
+
+const Popup = React.lazy(() => import(
+  /*webpackChunkName: "home_Popup" */ '@app/shared/popup'));
+
 interface IClientProps {
   match?: any;
   isShowShoppingCartState: boolean;
+  actionLoadCart: Function;
+  showOrHideAlertState: any;
+  actionGetTagsForMenu: Function;
+  isShowHidePopupState: any;
 }
 
 class Client extends React.Component<IClientProps> {
   constructor(props) {
     super(props)
+  }
+
+  componentDidMount() {
+    this.props.actionLoadCart()
+    this.props.actionGetTagsForMenu()
   }
 
   render() {
@@ -32,15 +50,54 @@ class Client extends React.Component<IClientProps> {
         <Router>
           <Layout>
             <React.Suspense fallback={<div className="loading">loading...</div>}>
-              <Route exact path={`${match.url}/product/:alias`} component={ProductDetail}/>
-              <Route path={`${match.url}/products/all`} component={ProductList}/>
-              <Route path={`${match.url}/products/:type/:alias`} component={ProductList}/>
+              <Route exact path={`${match.url}/product/:alias`} component={ProductDetail} />
+              <Route path={`${match.url}/products/all`} component={ProductList} />
+              <Route path={`${match.url}/products/:type/:alias`} component={ProductList} />
+              <Route path={`${match.url}/checkout`} component={Checkout} />
             </React.Suspense>
+            {
+              this.props.isShowShoppingCartState && <ShoppingCart />
+            }
+            {
+              this.props.isShowHidePopupState.status && (
+                <Popup
+                  onClose={this.props.isShowHidePopupState.onClose}
+                  poBtn={{
+                    title: (
+                      this.props.isShowHidePopupState.poBtn
+                      && this.props.isShowHidePopupState.poBtn.title
+                    ),
+                    func: (
+                      this.props.isShowHidePopupState.poBtn
+                      && this.props.isShowHidePopupState.poBtn.func
+                    ),
+                  }}
+                  neBtn={{
+                    title: (
+                      this.props.isShowHidePopupState.neBtn
+                      && this.props.isShowHidePopupState.neBtn.title
+                    ),
+                    func: (
+                      this.props.isShowHidePopupState.neBtn
+                      && this.props.isShowHidePopupState.neBtn.func
+                    ),
+                  }}
+                  title={this.props.isShowHidePopupState.title}
+                  message={this.props.isShowHidePopupState.message}
+                  icon={this.props.isShowHidePopupState.icon}
+                />
+              )
+            }
+            {
+              this.props.showOrHideAlertState.status && (
+                <Alert
+                  icon={this.props.showOrHideAlertState.icon}
+                  title={this.props.showOrHideAlertState.title}
+                  type={this.props.showOrHideAlertState.type} />
+              )
+            }
           </Layout>
         </Router>
-        {
-          this.props.isShowShoppingCartState && <ShoppingCart/>
-        }
       </>
     )
   }
@@ -48,11 +105,15 @@ class Client extends React.Component<IClientProps> {
 
 const mapStateToProps = storeState => ({
   localStyles: storeState.initReducer.localStyles,
+  isShowHidePopupState: storeState.initReducer.isShowHidePopupState,
   isShowShoppingCartState: storeState.initReducer.isShowShoppingCartState,
+  showOrHideAlertState: storeState.initReducer.showOrHideAlertState,
 })
 
 const mapDispatchToProps = {
   setLocalStyles,
+  actionLoadCart,
+  actionGetTagsForMenu,
 }
 
 export {

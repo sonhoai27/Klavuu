@@ -9,6 +9,8 @@ import Icon from '../shared/layout/Icon';
 import { CDN } from '@app/shared/const';
 import Rater from '../shared/layout/rating';
 import ProductComment from './components/detail/Comment'
+import { actionAddToCart } from '@app/stores/cart/CartActions';
+import { actionShowHideAlert } from '@app/stores/init';
 
 const Styles = require('./styles/ProductDetail.scss')
 
@@ -16,6 +18,9 @@ interface IProductDetailProps {
   actionGetProduct: Function;
   productState: any;
   match: any;
+  actionAddToCart: Function;
+  cartState: any[];
+  actionShowHideAlert: Function;
 }
 
 interface IProductDetailStates {
@@ -41,6 +46,22 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
       this.setState({
         currentProductImage: this.props.productState.images[0],
       })
+    }
+    if (this.props.cartState !== prevProps.cartState) {
+      this.props.actionShowHideAlert({
+        status: true,
+        title: 'Thêm vào giỏ hàng thành công!',
+        icon: <Icon name="thumbs-up"/>,
+        type: 'success',
+      })
+      setTimeout(() => {
+        this.props.actionShowHideAlert({
+          status: false,
+          title: '',
+          icon: undefined,
+          type: '',
+        })
+      }, 2000)
     }
   }
 
@@ -114,6 +135,10 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
     })
   )
 
+  onAddToCart = (e) => {
+    this.props.actionAddToCart(e, 0, this.props.cartState)
+  }
+
   render() {
     return (
      <>
@@ -123,11 +148,6 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
             {
               title: 'Trang chủ',
               href: '/',
-              active: false,
-            },
-            {
-              title: this.isProduct()['cat_name'],
-              href: `/${this.isProduct()['cat_alias']}`,
               active: false,
             },
             {
@@ -150,7 +170,11 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
                       className={`
                         ${Styles['zoom-in-container__image-preview']} img-fluid img-loading`}
                       // tslint:disable-next-line:max-line-length
-                      src={`${CDN}${this.state.currentProductImage.img_src}`}
+                      src={
+                        this.state.currentProductImage.img_src
+                        ? `${CDN}${this.state.currentProductImage.img_src}`
+                        : './images/no_image.jpg'
+                      }
                       />
                   </LazyLoad>
                 </div>
@@ -188,7 +212,17 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
               <h4>{this.isProduct()['product_volume_weight']}</h4>
             </div>
             <div className={Styles['add-to-cart']}>
-              <div className={`${Styles['add-to-cart__btn']} btn`}>
+              <div
+                onClick={() => this.onAddToCart({
+                  qty: 1,
+                  product_name: this.isProduct()['product_name'],
+                  product_alias: this.isProduct()['product_alias'],
+                  product_price: this.isProduct()['product_price'],
+                  product_discount: this.isProduct()['product_discount'],
+                  product_id: this.isProduct()['product_id'],
+                  product_image: this.state.currentProductImage.img_src,
+                })}
+                className={`${Styles['add-to-cart__btn']} btn`}>
                 Thêm vào giỏ hàng
               </div>
             </div>
@@ -247,10 +281,13 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
 
 const mapStateToProps = storeState => ({
   productState: storeState.productReducer.productState,
+  cartState: storeState.cartReducer.cartState,
 })
 
 const mapDispatchToProps = {
   actionGetProduct,
+  actionAddToCart,
+  actionShowHideAlert,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail)
