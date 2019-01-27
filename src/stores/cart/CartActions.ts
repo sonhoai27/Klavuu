@@ -24,10 +24,10 @@ const actionAddOrder = form => (dispatch) => {
   })
 }
 
-const actionGetOrders = () => (dispatch) => {
+const actionGetOrders = queries => (dispatch) => {
   return dispatch({
     type: GET_ORDERS,
-    payload: axios.get(`${API}orders`),
+    payload: axios.get(`${API}orders${queries}`),
   })
 }
 

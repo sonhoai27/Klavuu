@@ -1,0 +1,32 @@
+.order {
+    textarea {
+        background-color: #fff;
+        color: #333;
+        border: 1px solid #d9d9d9;
+        transition: all .2s ease-out;
+        margin-bottom: 8px;
+        font-size: 14px;
+        border-radius: 5px;
+        padding: 8px;
+        width: 100%;
+    }
+    &__edit-note {
+        .edit {
+            background: #999;
+            color: #fff;
+            padding: 3px 8px;
+            font-size: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .save {
+            background: #007bff;
+            color: #fff;
+            padding: 3px 8px;
+            font-size: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+    }
+}

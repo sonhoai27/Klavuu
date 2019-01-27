@@ -95,3 +95,26 @@ h6 {
     color: #4e595d;
     letter-spacing: normal;
 }
+
+.pagination {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pagination li {
+    padding: 4px 12px;
+    border: 1px solid #eee;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.pagination li:hover,
+.pagination li.active {
+    background: #2a7ac0;
+}
+
+.pagination li:hover a,
+.pagination li.active a {
+    color: #fff!important;
+}

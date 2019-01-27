@@ -20,6 +20,7 @@ interface IPaginationProps {
   pageLimit: number;
   pageNeighbours: number;
   onPageChanged: Function;
+  currentPage?: number;
 }
 
 interface IPaginationStates {
@@ -28,6 +29,7 @@ interface IPaginationStates {
   totalRecords: number;
   pageLimit: number;
   pageNeighbours: number;
+  isInit: boolean;
 }
 
 class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
@@ -39,16 +41,20 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
       pageLimit: 20,
       pageNeighbours: 2,
       currentPage: 1,
+      isInit: false,
     }
   }
+
   componentDidMount() {
     this.init(this.props)
   }
+
   componentDidUpdate(preProps) {
     if (preProps.totalRecords !== this.props.totalRecords) {
       this.init(this.props)
     }
   }
+
   init = (props) => {
     let totalRecords = props.totalRecords
     let pageLimit = props.pageLimit
@@ -69,9 +75,20 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
       totalRecords,
       pageLimit,
       pageNeighbours,
-      currentPage: 1,
+      currentPage: this.props.currentPage ? this.props.currentPage : 1,
+    }, () => {
+      if (!this.state.isInit) {
+        this.setState({
+          isInit: true,
+        }, () => {
+          this.props.onPageChanged({
+            currentPage: this.props.currentPage ? this.props.currentPage : 1,
+          })
+        })
+      }
     })
   }
+
   gotoPage = (page: number) => {
     const { onPageChanged = f => f } = this.props
 
@@ -171,10 +188,12 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
               if (page === LEFT_PAGE) {
 
                 return (
-                <li key={index} className="page-item">
+                <li
+                  onClick={this.handleMoveLeft}
+                  key={index}
+                  className="page-item">
                   <a className="page-link"
-                    href="#" aria-label="Previous"
-                    onClick={this.handleMoveLeft}>
+                    href="#" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                     <span className="sr-only">Previous</span>
                   </a>
@@ -185,9 +204,9 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
               if (page === RIGHT_PAGE) {
 
                 return (
-                <li key={index} className="page-item">
+                <li key={index} className="page-item" onClick={this.handleMoveRight}>
                   <a className="page-link" href="#"
-                      aria-label="Next" onClick={this.handleMoveRight}>
+                      aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                     <span className="sr-only">Next</span>
                   </a>
@@ -196,8 +215,10 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
               }
 
               return (
-                <li key={index} className={`page-item${ currentPage === page ? ' active' : ''}`}>
-                  <a className="page-link" href="#" onClick={ this.handleClick(page) }>{ page }</a>
+                <li
+                  onClick={ this.handleClick(page) }
+                  key={index} className={`page-item${ currentPage === page ? ' active' : ''}`}>
+                  <a className="page-link" href="#">{ page }</a>
                 </li>
               );
 
