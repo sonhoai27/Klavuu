@@ -1,0 +1,6 @@
+export const GET_CMT_BY_PRD_ID = 'CMT/GET_CMT_BY_PRD_ID'
+export const GET_CMT = 'CMT/GET_CMT'
+export const ADD_CMT = 'CMT/ADD_CMT'
+export const DELETE_CMT = 'CMT/DELETE_CMT'
+export const UPDATE_CMT = 'CMT/UPDATE_CMT'
+export const CHECK_ORDER_ID = 'CMT/CHECK_ORDER_ID'

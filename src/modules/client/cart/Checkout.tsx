@@ -12,6 +12,7 @@ import {
 } from '@app/stores/product/ProductActions';
 import Moment from '@app/shared/utils/Moment';
 import { actionShowHidePopup, actionShowHideLoading } from '@app/stores/init';
+import Uuid from '@app/shared/utils/Uuid';
 
 const uuidv4 = require('uuid/v4');
 
@@ -67,7 +68,7 @@ class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
         ...this.state.order,
         contact: {
           ...this.state.order.contact,
-          order_id: uuidv4(),
+          order_id: Uuid(),
           order_created_date: Moment(),
         },
       },
@@ -117,7 +118,7 @@ class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
           </div>
           <div>
               <span>
-                {element.product_name} ({element.product_discount}% OFF)
+                {element.product_name}
               </span>
               <span>
                 {this.onFormatNumber(element.product_price)}đ

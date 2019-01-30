@@ -27,9 +27,15 @@ const ActionHeader = (props: IActionHeaderProps) => (
         </li>
         <li className={Styles['relative']}>
           <Icon
-            onClick={() => props.actionShowShoppingCart(true)}
+            onClick={() => {
+              props.actionShowShoppingCart(true)
+            }}
             name="cart" className={Styles['icon']}/>
-          <span className={Styles['items']}>
+          <span
+            onClick={() => {
+              props.actionShowShoppingCart(true)
+            }}
+            className={Styles['items']}>
             {props.cartState.length}
           </span>
         </li>

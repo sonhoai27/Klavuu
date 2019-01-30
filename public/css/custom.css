@@ -100,21 +100,23 @@ h6 {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: inline-block;
 }
 
 .pagination li {
-    padding: 4px 12px;
-    border: 1px solid #eee;
-    display: inline-block;
+    float: left;
+    padding: 4px 10px;
+    background: #eee;
+    border-radius: 3px;
+    text-align: center;
+    color: #333;
+    margin-right: 4px;
+    font-size: 12px;
     cursor: pointer;
 }
 
 .pagination li:hover,
 .pagination li.active {
-    background: #2a7ac0;
-}
-
-.pagination li:hover a,
-.pagination li.active a {
-    color: #fff!important;
+    background: #ccc;
+    color: #333;
 }

@@ -1,0 +1,14 @@
+.social {
+    text-align: center;
+    margin-top: 32px;
+    span {
+        padding: 12px;
+        img {
+            width: 32px;
+            transition: all .3s;
+            &:hover {
+                fill: var(--second-color);
+            }
+        }
+    }
+}

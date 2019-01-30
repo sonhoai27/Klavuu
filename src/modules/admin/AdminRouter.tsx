@@ -16,6 +16,9 @@ const AdminProductsDetail = React.lazy(() => import(
 const AdminOrder = React.lazy(() => import(
   /*webpackChunkName: "admin_order" */ '@app/modules/admin/order'));
 
+const AdminOrderDetail = React.lazy(() => import(
+  /*webpackChunkName: "admin_order_detail" */ '@app/modules/admin/order/OrderDetail'));
+
 const AdminRouter = (props) => {
 
   return (
@@ -26,7 +29,7 @@ const AdminRouter = (props) => {
         <Route path={`${props.match.url}/product/add`} component={AdminProductsAdd}/>
         <Route path={`${props.match.url}/product/:alias`} component={AdminProductsDetail}/>
         <Route path={`${props.match.url}/orders`} component={AdminOrder}/>
-        <Route path={`${props.match.url}/order/:id`} component={AdminOrder}/>
+        <Route path={`${props.match.url}/order/:id`} component={AdminOrderDetail}/>
       </Switch>
     </React.Suspense>
   )

@@ -31,7 +31,6 @@ import BrandModel from '@app/shared/models/BrandModel';
 import Alias from '@app/shared/utils/Alias';
 import { configForProductIntro, configForProductInfo } from '@app/shared/CKEditorConfig';
 import { actionShowHideAlert, actionShowHideLoading } from '@app/stores/init';
-import ValidForm from '@app/shared/utils/ValidForm';
 import UploadPhoto from './UploadImage';
 
 const styles = require('../add/ProductAdd.scss')
@@ -125,7 +124,6 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
           product_created_date: product.product_created_date,
           product_name: product.product_name,
           product_intro: product.product_intro,
-          product_deleted_date: product.product_deleted_date,
           product_discount: product.product_discount,
           product_how_to_use: product.product_how_to_use,
           product_info: product.product_info,
@@ -133,7 +131,6 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
           product_ksu: product.product_ksu,
           product_more_info: product.product_more_info,
           product_price: product.product_price,
-          product_updated_date: product.product_updated_date,
           product_volume_weight: product.product_volume_weight,
         },
         brand: {
@@ -231,10 +228,7 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
         </span>
         <span onClick={() => {
           this.props.actionShowHideLoading(true)
-          if (ValidForm(
-            this.state.products,
-            ['product_name', 'product_brand_id', 'product_cat_id'],
-          )) {
+          if (this.state.products.product_name !== '') {
             this.props.actionUpdateProduct({
               ...this.state.products,
               product_alias: Alias(this.state.products.product_name),
@@ -267,8 +261,6 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
       this.props.actionShowHideAlert({
         status: false,
       })
-
-      this.props.history.push('/xxx/app/products')
     }, 2500)
   }
 

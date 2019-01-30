@@ -27,6 +27,7 @@ interface IAutocompleteStates {
 }
 
 class Autocomplete extends React.Component<IAutocompleteProps, IAutocompleteStates> {
+  private domAutoComple;
   constructor(props) {
     super(props)
     this.state = {
@@ -119,6 +120,29 @@ class Autocomplete extends React.Component<IAutocompleteProps, IAutocompleteStat
     })
   }
 
+  componentWillMount() {
+    window.addEventListener(
+      'mousedown',
+      this.handleClickHideUIComponents,
+      false,
+    );
+  }
+  componentWillUnMount() {
+    window.addEventListener(
+      'mousedown',
+      this.handleClickHideUIComponents,
+      false,
+    );
+  }
+
+  handleClickHideUIComponents = (e: any) => {
+    try {
+      if (!this.domAutoComple.contains(e.target)) {
+        this.onBlur()
+      }
+    } catch (e) {}
+  }
+
   onBlur = () => {
     this.setState({
       isFocus: -1,
@@ -129,11 +153,10 @@ class Autocomplete extends React.Component<IAutocompleteProps, IAutocompleteStat
 
   render() {
     return (
-      <div className={Styles['autocomplete']}>
+      <div className={Styles['autocomplete']} ref={node => this.domAutoComple = node}>
         <div className={Styles['autocomplete__input']}>
           <input
             onClick={this.onClick}
-            onBlur={this.onBlur}
             value={this.state.value}
             type="text"
             onChange={this.getSuggestions}

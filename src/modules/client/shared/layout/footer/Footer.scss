@@ -1,0 +1,14 @@
+.footer {
+    background: #fff;
+    padding-top: 64px;
+    padding-bottom: 64px;
+    .back-to-top {
+        text-align: center;
+        display: block;
+        cursor: pointer;
+        transition: all .3s;
+        &:hover {
+            color: var(--second-color);
+        }
+    }
+}

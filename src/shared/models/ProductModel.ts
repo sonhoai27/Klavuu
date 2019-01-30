@@ -13,6 +13,4 @@ export default interface ProductModel {
   product_discount?: number;
   product_inventory_number?: number;
   product_created_date: any;
-  product_updated_date?: any;
-  product_deleted_date?: any;
 }

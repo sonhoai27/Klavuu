@@ -2,7 +2,13 @@ import * as React from 'react';
 import Icon from '../shared/layout/Icon';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { actionShowShoppingCart, actionShowHideAlert } from '@app/stores/init';
+import Slide from 'react-reveal/Slide';
+
+import {
+  actionShowShoppingCart,
+  actionShowHideAlert,
+  actionShowHidePopup,
+} from '@app/stores/init';
 import { CDN } from '@app/shared/const';
 import { actionAddToCart } from '@app/stores/cart/CartActions';
 
@@ -16,6 +22,8 @@ interface IShoppingCartProps {
   actionAddToCart: Function;
   actionShowHideAlert: Function;
   history?: any;
+  actionShowHidePopup: Function;
+  actionShowHideLoading: Function;
 }
 
 class ShoppingCart extends React.Component<IShoppingCartProps> {
@@ -34,8 +42,12 @@ class ShoppingCart extends React.Component<IShoppingCartProps> {
     document.body.style.overflow = 'hidden'
   }
 
-  shouldComponentUpdate() {
-    return true;
+  shouldComponentUpdate(nextProps) {
+    if (nextProps !== this.props) {
+      return true;
+    }
+
+    return false;
   }
 
   onFormatNumber = (price: number) => {
@@ -82,6 +94,37 @@ class ShoppingCart extends React.Component<IShoppingCartProps> {
     )
   )
 
+  onHandleAddToCart = (element, type, cartState) => {
+    if (type === 0) {
+      this.props.actionAddToCart(element, type, cartState)
+    } else if (type === 1) {
+      if (element.qty === 1) {
+        this.props.actionShowHidePopup({
+          status: true,
+          onClose: () => this.props.actionShowHidePopup({ status: false }),
+          poBtn: {
+            title: 'OK',
+            func: () => {
+              this.props.actionShowHidePopup({ status: false })
+              this.props.actionAddToCart(element, type, cartState)
+            },
+          },
+          neBtn: {
+            title: 'Cancel',
+            func: () => {
+              this.props.actionShowHidePopup({ status: false })
+            },
+          },
+          title: 'Warning',
+          message: 'If you click OK, This product will be delete from cart.',
+          icon: <Icon name="smile"/>,
+        })
+      } else {
+        this.props.actionAddToCart(element, type, cartState)
+      }
+    }
+  }
+
   renderProductCatalog = () => (
     this.props.cartState.length > 0
     && this.props.cartState.map((element) => {
@@ -95,7 +138,7 @@ class ShoppingCart extends React.Component<IShoppingCartProps> {
             <div className={S['cart__item']}>
               <span>
                 <Link to={`/page/product/${element.product_alias}`}>
-                  {element.product_name} ({element.product_discount}% OFF)
+                  {element.product_name}
                 </Link>
               </span>
               <span>
@@ -105,11 +148,11 @@ class ShoppingCart extends React.Component<IShoppingCartProps> {
             <div className={S['cart__qty']}>
               <div className="cart_qty--left">
                 <span onClick={() => {
-                  this.props.actionAddToCart(element, 1, this.props.cartState)
+                  this.onHandleAddToCart(element, 1, this.props.cartState)
                 }}>-</span>
                 <span>{element.qty}</span>
                 <span onClick={() => {
-                  this.props.actionAddToCart(element, 0, this.props.cartState)
+                  this.onHandleAddToCart(element, 0, this.props.cartState)
                 }}>+</span>
               </div>
               <div className={S['cart__qty--right']}>
@@ -131,43 +174,45 @@ class ShoppingCart extends React.Component<IShoppingCartProps> {
   render() {
     return (
       <div className={S['shopping-cart']}>
-        <div className={S['shopping-cart__content']}>
-          <div className={S['shopping-cart__content__header']}>
-            <p>Giỏ hàng</p>
-            <p>({this.props.cartState.length} Sản Phẩm)</p>
-            <Icon
-              onClick={() => {
-                document.body.style.overflow = 'auto'
-                this.props.actionShowShoppingCart(false)
-              }}
-              name="cross"
-              className={S['close-btn']} />
-          </div>
-          <div className={S['shopping-cart__content__items']}>
-            {this.renderNullCart()}
-            <ul className={S['shopping-cart__items']}>
-              {this.renderProductCatalog()}
-            </ul>
-          </div>
-          {
-            this.props.cartState.length > 0
-              && (
-                <div className={S['shopping-cart__footer']}>
-                  <div>
-                    <span>Thành tiền</span>
-                    <span>{this.onFormatNumber(this.onMakeSumaryPrice())}đ</span>
+        <Slide right duration={500}>
+          <div className={S['shopping-cart__content']}>
+            <div className={S['shopping-cart__content__header']}>
+              <p>Giỏ hàng</p>
+              <p>({this.props.cartState.length} Sản Phẩm)</p>
+              <Icon
+                onClick={() => {
+                  document.body.style.overflow = 'auto'
+                  this.props.actionShowShoppingCart(false)
+                }}
+                name="cross"
+                className={S['close-btn']} />
+            </div>
+            <div className={S['shopping-cart__content__items']}>
+              {this.renderNullCart()}
+              <ul className={S['shopping-cart__items']}>
+                {this.renderProductCatalog()}
+              </ul>
+            </div>
+            {
+              this.props.cartState.length > 0
+                && (
+                  <div className={S['shopping-cart__footer']}>
+                    <div>
+                      <span>Thành tiền</span>
+                      <span>{this.onFormatNumber(this.onMakeSumaryPrice())}đ</span>
+                    </div>
+                    <div onClick={() => {
+                      document.body.style.overflow = 'auto'
+                      this.props.actionShowShoppingCart(false)
+                      this.props.history.push('/page/checkout')
+                    }}>
+                      Tiến hành đặt hàng
+                    </div>
                   </div>
-                  <div onClick={() => {
-                    document.body.style.overflow = 'auto'
-                    this.props.actionShowShoppingCart(false)
-                    this.props.history.push('/page/checkout')
-                  }}>
-                    Tiến hành đặt hàng
-                  </div>
-                </div>
-              )
-          }
-        </div>
+                )
+            }
+          </div>
+        </Slide>
       </div>
     )
   }
@@ -180,6 +225,7 @@ const mapDispatchToProps = {
   actionShowShoppingCart,
   actionAddToCart,
   actionShowHideAlert,
+  actionShowHidePopup,
 }
 
 // @ts-ignore

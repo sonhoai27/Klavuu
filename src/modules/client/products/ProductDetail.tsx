@@ -7,11 +7,13 @@ import Breadcrumb from '@app/shared/Breadcrumb';
 import Icon from '../shared/layout/Icon';
 import { CDN } from '@app/shared/const';
 import Rater from '../shared/layout/rating';
-import ProductComment from './components/detail/Comment'
 import { actionAddToCart } from '@app/stores/cart/CartActions';
 import { actionShowHideAlert } from '@app/stores/init';
 
 const Styles = require('./styles/ProductDetail.scss')
+
+const ProductComment = React.lazy(() => import(
+  /*webpackChunkName: "home_prd_cmt" */ './components/detail/Comment'));
 
 interface IProductDetailProps {
   actionGetProduct: Function;
@@ -60,7 +62,7 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
           icon: undefined,
           type: '',
         })
-      }, 2000)
+      }, 1000)
     }
   }
 
@@ -132,6 +134,18 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
     })
   )
 
+  isReviews = () => {
+    if (this.props.productState
+      && this.props.productState.reviews) {
+      return this.props.productState.reviews;
+    }
+
+    return {
+      num_rows: 0,
+      avg: 0,
+    }
+  }
+
   onAddToCart = (e) => {
     this.props.actionAddToCart(e, 0, this.props.cartState)
   }
@@ -167,7 +181,7 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
                       ${Styles['zoom-in-container__image-preview']} img-fluid`}
                     // tslint:disable-next-line:max-line-length
                     src={
-                      this.state.currentProductImage.img_src
+                      (this.state.currentProductImage && this.state.currentProductImage.img_src)
                       ? `${CDN}${this.state.currentProductImage.img_src}`
                       : './images/no_image.jpg'
                     }
@@ -187,8 +201,8 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
               {this.isProduct()['product_name']}
             </h4>
             <div className={Styles['product-rating']}>
-              <Rater disabled={true} rating={1}/>
-              (23 reviews)
+              <Rater disabled={true} rating={this.isReviews()['avg']}/>
+              ({this.isReviews()['num_rows']} reviews)
             </div>
             <div className={Styles['price']}>
               <span>{this.onFormatNumber(this.isProduct()['product_price'])}đ</span>
@@ -266,7 +280,12 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
           </div>
         </div>
         <div className="row">
-          <ProductComment/>
+          <React.Suspense fallback={<p>Loading...</p>}>
+            {
+              this.isProduct()['product_id']
+              && <ProductComment prdId={this.isProduct()['product_id']}/>
+            }
+          </React.Suspense>
         </div>
       </div>
      </>

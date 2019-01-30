@@ -51,6 +51,7 @@
         "axios": "^0.18.0",
         "ckeditor4-react": "^0.1.0",
         "joi": "^14.3.1",
+        "net": "^1.0.2",
         "nuka-carousel": "^4.4.7",
         "react": "^16.7.0",
         "react-content-loader": "^3.4.2",
@@ -58,10 +59,10 @@
         "react-helmet": "^5.2.0",
         "react-lazyload": "^2.3.0",
         "react-redux": "^6.0.0",
+        "react-reveal": "^1.2.2",
         "react-router": "^4.3.1",
         "react-router-dom": "^4.3.1",
         "redux": "^4.0.1",
-        "net": "^1.0.2",
         "uuid": "^3.3.2"
     },
     "scripts": {

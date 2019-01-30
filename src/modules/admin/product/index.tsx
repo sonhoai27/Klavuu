@@ -40,7 +40,7 @@ class Products extends React.Component<IProductsProps> {
         <tr key={uuidv4()}>
           <th scope="row">1</th>
           <td>
-            <Link to={`${ADMIN_URL}product/${element.product_alias}`}>{element.product_name}</Link>
+            <a href={`${ADMIN_URL}product/${element.product_alias}`}>{element.product_name}</a>
           </td>
           <td>{FormatNumber(element.product_price)}đ</td>
           <td>{element.product_discount}</td>

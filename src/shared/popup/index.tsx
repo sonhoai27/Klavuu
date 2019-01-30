@@ -49,6 +49,7 @@ class Popup extends React.Component<IPopupProps> {
         <div className={S['popup__content']}>
           <div className={S['popup__header']}>
             <Icon
+              onClick={this.props.onClose}
               name="cross"
             />
           </div>

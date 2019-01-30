@@ -1,12 +1,11 @@
 import * as React from 'react';
 
-const uuidv4 = require('uuid/v4');
-
 const Styles = require('./rating.scss')
 
 interface IRaterProps {
   disabled?: boolean;
   rating: number;
+  onChange?: Function;
 }
 
 interface IRaterStates {
@@ -27,10 +26,22 @@ class Rater extends React.Component<IRaterProps, IRaterStates> {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.rating !== this.props.rating) {
+      this.setState({
+        rating: this.props.rating,
+      })
+    }
+  }
+
   onRate = (i) => {
     this.setState({
       rating: i,
       tempRating: i,
+    }, () => {
+      if (this.props.onChange) {
+        this.props.onChange(i)
+      }
     })
   }
 
@@ -55,7 +66,7 @@ class Rater extends React.Component<IRaterProps, IRaterStates> {
     const stars = []
 
     // tslint:disable-next-line:no-increment-decrement
-    for (let i = 0; i < 5; i++) {
+    for (let i = 1; i <= 5; i++) {
       let klass = Styles['star-rating__star']
 
       if (this.state.rating >= i) {
@@ -65,7 +76,7 @@ class Rater extends React.Component<IRaterProps, IRaterStates> {
       // @ts-ignore
       stars.push(
         <label
-          key={uuidv4()}
+          key={i}
           className={klass}
           onClick={() => !this.props.disabled && this.onRate(i)}
           onMouseOver={() => !this.props.disabled && this.onStarOver(i)}

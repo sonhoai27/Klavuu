@@ -12,7 +12,10 @@ class NewProducts extends React.Component {
         <div className="row">
           <div className="col-12">
             <Carousel
-              autoplay={true}
+              renderBottomCenterControls={(e) => {
+                console.log(e)
+                return []
+              }}
               renderCenterLeftControls={({ previousSlide }) => (
                 <Icon className={S['new-products__action']}
                   name="chevron-left" onClick={previousSlide}/>
@@ -21,47 +24,46 @@ class NewProducts extends React.Component {
                 <Icon className={S['new-products__action']}
                   name="chevron-right" onClick={nextSlide}/>
               )}
-              slidesToShow={4}
-              cellAlign="left">
+              slidesToShow={4}>
               <div className={S['new-products__item']}>
                 <Link to="/">
                   <img src="http://22.zonesgroup.vn/api/uploads/53fb3f5546773958600000.jpg" />
-                  <p>From start to finish, the right products</p>
+                  <p>0</p>
                   <div>200.000đ</div>
                 </Link>
               </div>
               <div className={S['new-products__item']}>
                 <Link to="/">
                   <img src="http://22.zonesgroup.vn/api/uploads/53fb3f5546773958600000.jpg" />
-                  <p>From start to finish, the right products</p>
+                  <p>1</p>
                   <div>200.000đ</div>
                 </Link>
               </div>
               <div className={S['new-products__item']}>
                 <Link to="/">
                   <img src="http://22.zonesgroup.vn/api/uploads/53fb3f5546773958600000.jpg" />
-                  <p>From start to finish, the right products</p>
+                  <p>2</p>
                   <div>200.000đ</div>
                 </Link>
               </div>
               <div className={S['new-products__item']}>
                 <Link to="/">
                   <img src="http://22.zonesgroup.vn/api/uploads/53fb3f5546773958600000.jpg" />
-                  <p>From start to finish, the right products</p>
+                  <p>3</p>
                   <div>200.000đ</div>
                 </Link>
               </div>
               <div className={S['new-products__item']}>
                 <Link to="/">
                   <img src="http://22.zonesgroup.vn/api/uploads/53fb3f5546773958600000.jpg" />
-                  <p>From start to finish, the right products</p>
+                  <p>4</p>
                   <div>200.000đ</div>
                 </Link>
               </div>
               <div className={S['new-products__item']}>
                 <Link to="/">
                   <img src="http://22.zonesgroup.vn/api/uploads/53fb3f5546773958600000.jpg" />
-                  <p>From start to finish, the right products</p>
+                  <p>5</p>
                   <div>200.000đ</div>
                 </Link>
               </div>

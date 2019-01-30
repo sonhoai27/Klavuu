@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Icon from '@app/modules/client/shared/layout/Icon';
 
 const LEFT_PAGE = 'LEFT';
 const RIGHT_PAGE = 'RIGHT';
@@ -16,10 +17,10 @@ const range = (from: number, to: number, step = 1) => {
 };
 
 interface IPaginationProps {
-  totalRecords: number;
-  pageLimit: number;
-  pageNeighbours: number;
-  onPageChanged: Function;
+  totalRecords?: number;
+  pageLimit?: number;
+  pageNeighbours?: number;
+  onPageChanged?: Function;
   currentPage?: number;
 }
 
@@ -104,18 +105,15 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
     this.setState({ currentPage }, () => onPageChanged(paginationData));
   }
 
-  handleClick = (page: number) => (evt: any) => {
-    evt.preventDefault();
+  handleClick = (page: number) => {
     this.gotoPage(page);
   }
 
-  handleMoveLeft = (evt: any) => {
-    evt.preventDefault();
+  handleMoveLeft = () => {
     this.gotoPage(this.state.currentPage - (this.state.pageNeighbours * 2) - 1);
   }
 
-  handleMoveRight = (evt: any) => {
-    evt.preventDefault();
+  handleMoveRight = () => {
     this.gotoPage(this.state.currentPage + (this.state.pageNeighbours * 2) + 1);
   }
 
@@ -137,7 +135,7 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
       const startPage = Math.max(2, currentPage - pageNeighbours);
       const endPage = Math.min(totalPages - 1, currentPage + pageNeighbours);
 
-      let pages = range(startPage, endPage);
+      let pages = range(startPage, endPage, 1);
 
       const hasLeftSpill = startPage > 2;
       const hasRightSpill = (totalPages - endPage) > 1;
@@ -146,14 +144,14 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
       switch (true) {
         // handle: (1) < {5 6} [7] {8 9} (10)
         case (hasLeftSpill && !hasRightSpill): {
-          const extraPages = range(startPage - spillOffset, startPage - 1);
+          const extraPages = range(startPage - spillOffset, startPage - 1, 1);
           pages = [LEFT_PAGE, ...extraPages, ...pages];
           break;
         }
 
         // handle: (1) {2 3} [4] {5 6} > (10)
         case (!hasLeftSpill && hasRightSpill): {
-          const extraPages = range(endPage + 1, endPage + spillOffset);
+          const extraPages = range(endPage + 1, endPage + spillOffset, 1);
           pages = [...pages, ...extraPages, RIGHT_PAGE];
           break;
         }
@@ -170,7 +168,7 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
 
     }
 
-    return range(1, totalPages);
+    return range(1, totalPages, 1);
 
   }
   render() {
@@ -180,7 +178,7 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
     const pages = this.fetchPageNumbers();
 
     return (
-      <React.Fragment>
+      <>
         <nav aria-label="Countries Pagination">
           <ul className="pagination">
             { pages.map((page, index) => {
@@ -192,11 +190,10 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
                   onClick={this.handleMoveLeft}
                   key={index}
                   className="page-item">
-                  <a className="page-link"
-                    href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                    <span className="sr-only">Previous</span>
-                  </a>
+                  <span className="page-link"
+                    aria-label="Previous">
+                    <Icon name="chevron-left"/>
+                  </span>
                 </li>
                 );
               }
@@ -205,20 +202,19 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
 
                 return (
                 <li key={index} className="page-item" onClick={this.handleMoveRight}>
-                  <a className="page-link" href="#"
+                  <span className="page-link"
                       aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                    <span className="sr-only">Next</span>
-                  </a>
+                    <Icon name="chevron-right"/>
+                  </span>
                 </li>
                 );
               }
 
               return (
                 <li
-                  onClick={ this.handleClick(page) }
+                  onClick={() => this.handleClick(page) }
                   key={index} className={`page-item${ currentPage === page ? ' active' : ''}`}>
-                  <a className="page-link" href="#">{ page }</a>
+                  <span className="page-link">{ page }</span>
                 </li>
               );
 
@@ -226,7 +222,7 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
 
           </ul>
         </nav>
-      </React.Fragment>
+      </>
     )
   }
 }

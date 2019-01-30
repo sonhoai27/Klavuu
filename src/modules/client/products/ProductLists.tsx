@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import LazyLoad from 'react-lazyload';
-import ContentLoader from 'react-content-loader'
 
 import Breadcrumb from '@app/shared/Breadcrumb';
 import Checkbox from '../shared/layout/checkbox';
@@ -14,6 +13,7 @@ import ProductFilterItems from './components/list/FilterItems';
 import queryParams from '@app/shared/utils/Query';
 import { actionGetBrandTags } from '@app/stores/brand/BrandActions';
 import { actionGetTagBrands } from '@app/stores/tag/TagActions';
+import LazyLoading from '../shared/layout/loading';
 
 const uuidv4 = require('uuid/v4');
 
@@ -222,21 +222,6 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
     })
   }
 
-  onLoading = () => (
-    <ContentLoader
-      height={475}
-      width={400}
-      speed={2}
-      primaryColor="#f3f3f3"
-      secondaryColor="#ecebeb"
-    >
-      <rect x="27.75" y="18.61" rx="0" ry="0" width="244%" height="284" />
-      <rect x="27.75" y="318.61" rx="0" ry="0" width="127.4" height="8.01" />
-      <rect x="27.75" y="334.61" rx="0" ry="0" width="234.78" height="8.01" />
-      <rect x="27.75" y="352.61" rx="0" ry="0" width="234.78" height="8.01" />
-    </ContentLoader>
-  )
-
   renderProducts = () => (
     this.isProduct().map((element) => {
       return (
@@ -244,8 +229,8 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
           <LazyLoad
             height={'100vh'}
             once
-            placeholder={this.onLoading()}
-            throttle={800}>
+            placeholder={<LazyLoading/>}
+            throttle={1000}>
             <div className={Styles['product_list__item__product']}>
               <div className={Styles['product_list__items__image']}>
                 <Link to={`/page/product/${element.product_alias}`}>

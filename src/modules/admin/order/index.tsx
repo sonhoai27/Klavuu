@@ -43,13 +43,14 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
     this.props.actionShowHideLoading(true)
     const tempDom: any = document.getElementById(orderId)
     this.props.actionUpdateOrder({
+      // @ts-ignore
       order_staff_note: tempDom.value,
     }, orderId)
     .then(() => {
       this.setState({
         currenRowState: '',
       }, () => {
-        this.props.actionGetOrders()
+        this.props.actionGetOrders('')
         this.props.actionShowHideLoading(false)
         this.props.actionShowHideAlert({
           status: true,
@@ -139,6 +140,18 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
     })
   )
 
+  isMeta = () => {
+    if (this.props.ordersState
+      && this.props.ordersState.meta) {
+      return this.props.ordersState.meta
+    }
+
+    return {
+      total: 0,
+      page_size: 0,
+    }
+  }
+
   render() {
     return (
       <>
@@ -179,14 +192,14 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
             </div>
             <Pagination
               currentPage={Number(this.onMakeCurrentPage())}
-              pageLimit={10}
+              pageLimit={Number(this.isMeta()['page_size'])}
               pageNeighbours={2}
               onPageChanged={(e) => {
                 this.props.actionGetOrders(`?page=${e.currentPage}`)
                 window.scrollTo(0, 0)
                 window.history.pushState('', '', `${this.props.match.url}?page=${e.currentPage}`);
               }}
-              totalRecords={100}
+              totalRecords={Number(this.isMeta()['total'])}
             />
           </div>
         </div>

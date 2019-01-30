@@ -7,6 +7,9 @@ import Layout from './shared/layout';
 import { actionLoadCart } from '@app/stores/cart/CartActions';
 import { actionGetTagsForMenu } from '@app/stores/tag/TagActions';
 import Alert from '@app/shared/alert/Alert';
+import Loading from '@app/shared/Loading';
+import Popup from '@app/shared/popup';
+import ShoppingCart from './cart/ShoppingCart';
 
 const ProductDetail = React.lazy(() => import(
   /*webpackChunkName: "home_detail" */ '@app/modules/client/products/ProductDetail'));
@@ -14,17 +17,8 @@ const ProductDetail = React.lazy(() => import(
 const ProductList = React.lazy(() => import(
   /*webpackChunkName: "home_list_product" */ '@app/modules/client/products/ProductLists'));
 
-const ShoppingCart = React.lazy(() => import(
-  /*webpackChunkName: "home_shopping_cart" */ './cart/ShoppingCart'));
-
 const Checkout = React.lazy(() => import(
     /*webpackChunkName: "home_checkout" */ './cart/Checkout'));
-
-const Popup = React.lazy(() => import(
-  /*webpackChunkName: "home_Popup" */ '@app/shared/popup'));
-
-const Loading = React.lazy(() => import(
-  /*webpackChunkName: "home_loading" */ '@app/shared/Loading'));
 
 interface IClientProps {
   match?: any;
