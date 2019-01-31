@@ -7,6 +7,7 @@ import imageReducer from './image/ImageReducers';
 import productReducer from './product/ProductReducers';
 import cartReducer from './cart/CartReducer';
 import cmtReducer from './comment/CommentReducer';
+import bannerReducer from './banner/BannerReducer';
 
 const rootReducer = combineReducers({
   initReducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   productReducer,
   cartReducer,
   cmtReducer,
+  bannerReducer,
 });
 
 export default rootReducer;

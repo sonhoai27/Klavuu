@@ -4,7 +4,7 @@ const uuidv4 = require('uuid/v4');
 import Icon from '@app/modules/client/shared/layout/Icon';
 import { CDN } from '@app/shared/const';
 
-const GlobalStyles = require('@app/shared/styles/Box.scss');
+const ImageStyles = require('../add/components/UploadImage.scss')
 
 interface IUploadPhotoProps {
   onChange: (event: any) => void;
@@ -45,8 +45,8 @@ class UploadPhoto extends React.Component<IUploadPhotoProps, IUploadPhotoStates>
 
   render() {
     return (
-      <div className={GlobalStyles['form-item']}>
-        <div className={GlobalStyles['image-picker']}>
+      <div className={ImageStyles['form-item']}>
+        <div className={ImageStyles['image-picker']}>
           <input type="file" onChange={(e) => {
             const file = e.target.files[0]
             this.props.onChange(file)
@@ -54,7 +54,7 @@ class UploadPhoto extends React.Component<IUploadPhotoProps, IUploadPhotoStates>
           <Icon name="picture" />
           <p>Kéo hoặc nhấn vào để tài hình</p>
         </div>
-        <ul className={GlobalStyles['image-picker__items']}>
+        <ul className={ImageStyles['image-picker__items']}>
           {this.renderImages()}
         </ul>
       </div>

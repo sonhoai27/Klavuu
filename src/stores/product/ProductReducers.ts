@@ -12,6 +12,7 @@ import {
   GET_PROVINCE,
   GET_DISTRICT,
   GET_WARD,
+  GET_NEW_PRODUCT,
 } from './ProductTypes';
 import { REQUEST, FAILURE, SUCCESS } from '@app/configs/ActionType';
 
@@ -23,6 +24,7 @@ const initialState = {
   provinceState: [],
   districtState: [],
   wardState: [],
+  newProductsState: [],
 }
 
 const productReducer = (state = initialState, action) => {
@@ -69,6 +71,9 @@ const productReducer = (state = initialState, action) => {
 
     case REQUEST(GET_WARD):
     case FAILURE(GET_WARD):
+
+    case REQUEST(GET_NEW_PRODUCT):
+    case FAILURE(GET_NEW_PRODUCT):
 
     case REQUEST(GET_PRODUCT_BY_ALIAS):
     case FAILURE(GET_PRODUCT_BY_ALIAS): {
@@ -125,6 +130,13 @@ const productReducer = (state = initialState, action) => {
       return {
         ...state,
         wardState: action.payload.data,
+      }
+    }
+
+    case SUCCESS(GET_NEW_PRODUCT): {
+      return {
+        ...state,
+        newProductsState: action.payload.data,
       }
     }
 

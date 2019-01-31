@@ -13,10 +13,14 @@ const AdminPage = React.lazy(() => import(
 const AdminLogin =  React.lazy(() => import(
   /*webpackChunkName: "admin_login" */ '@app/modules/admin/auth/Login'));
 
+const Popup =  React.lazy(() => import(
+  /*webpackChunkName: "admin_popup" */ '@app/shared/popup'));
+
 interface IClientProps {
   match?: any;
   isLoading: boolean;
   showOrHideAlertState: any;
+  isShowHidePopupState: any;
 }
 
 class Admin extends React.Component<IClientProps> {
@@ -52,6 +56,36 @@ class Admin extends React.Component<IClientProps> {
             <Alert title={this.props.showOrHideAlertState.title} type={this.props.showOrHideAlertState.type}/>
           )
         }
+        {
+          this.props.isShowHidePopupState.status && (
+            <Popup
+              onClose={this.props.isShowHidePopupState.onClose}
+              poBtn={{
+                title: (
+                  this.props.isShowHidePopupState.poBtn
+                  && this.props.isShowHidePopupState.poBtn.title
+                ),
+                func: (
+                  this.props.isShowHidePopupState.poBtn
+                  && this.props.isShowHidePopupState.poBtn.func
+                ),
+              }}
+              neBtn={{
+                title: (
+                  this.props.isShowHidePopupState.neBtn
+                  && this.props.isShowHidePopupState.neBtn.title
+                ),
+                func: (
+                  this.props.isShowHidePopupState.neBtn
+                  && this.props.isShowHidePopupState.neBtn.func
+                ),
+              }}
+              title={this.props.isShowHidePopupState.title}
+              message={this.props.isShowHidePopupState.message}
+              icon={this.props.isShowHidePopupState.icon}
+            />
+          )
+        }
 
       </>
     )
@@ -62,6 +96,7 @@ const mapStateToProps = storeState => ({
   localStyles: storeState.initReducer.localStyles,
   isLoading: storeState.initReducer.isLoading,
   showOrHideAlertState: storeState.initReducer.showOrHideAlertState,
+  isShowHidePopupState: storeState.initReducer.isShowHidePopupState,
 })
 
 const mapDispatchToProps = {

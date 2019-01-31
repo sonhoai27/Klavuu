@@ -12,6 +12,7 @@ import {
   GET_PROVINCE,
   GET_DISTRICT,
   GET_WARD,
+  GET_NEW_PRODUCT,
 } from './ProductTypes';
 
 import axios from 'axios'
@@ -43,6 +44,13 @@ const actionGetProducts = () => async (dispatch) => {
   return await dispatch({
     type: LIST_PRODUCTS,
     payload: axios.get(`${API}products`),
+  })
+};
+
+const actionGetNewProducts = () => async (dispatch) => {
+  return await dispatch({
+    type: GET_NEW_PRODUCT,
+    payload: axios.get(`${API}products/new`),
   })
 };
 
@@ -127,4 +135,5 @@ export {
   actionGetProvince,
   actionGetDistrict,
   actionGetWard,
+  actionGetNewProducts,
 }

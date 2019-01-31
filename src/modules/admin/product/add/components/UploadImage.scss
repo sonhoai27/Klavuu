@@ -1,0 +1,64 @@
+.form-item {
+    display: block;
+    width: 100%;
+    margin-top: 24px;
+    .image-picker {
+        position: relative;
+        text-align: center;
+        padding: 16px;
+        color: #d3dbe2;
+        input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+        }
+        span {
+            font-size: 64px;
+        }
+    }
+    .image-picker__items {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: inline-block;
+        width: 100%;
+        li {
+            width: calc(100%/3 - 32px);
+            float: left;
+            margin: 16px;
+            position: relative;
+            div {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                top: 0;
+                left: 0;
+                padding: 16px;
+                background: rgba(0, 0, 0, .4);
+                display: none;
+                align-items: center;
+                justify-content: center;
+                span {
+                    transition: all .3s;
+                    cursor: pointer;
+                    border-radius: 4px;
+                    color: #fff;
+                    font-weight: 600;
+                    padding: 4px;
+                    &:hover {
+                        background: #fff;
+                        color: #0078bd;
+                    }
+                }
+            }
+            &:hover div {
+                display: flex!important;
+            }
+        }
+    }
+}
