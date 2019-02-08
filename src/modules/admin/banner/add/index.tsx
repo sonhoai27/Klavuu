@@ -114,27 +114,31 @@ class AdminAddBanner extends React.PureComponent<IAdminAddBannerProps, IAdminAdd
   }
 
   onSave = () => {
-    this.props.actionShowHideLoading(true)
-    const formData = new FormData()
-    formData.append('upload-image', this.state.image)
-    axios.post(`${API}banner/image`, formData)
-    .then((result) => {
-      this.props.actionShowHideLoading(false)
-      const image = result.data.url
-      return this.props.actionAddBanner({
-        ...this.state.banner,
-        banner_image: image,
+    if (this.state.image !== '') {
+      this.props.actionShowHideLoading(true)
+      const formData = new FormData()
+      formData.append('upload-image', this.state.image)
+      axios.post(`${API}banner/image`, formData)
+      .then((result) => {
+        this.props.actionShowHideLoading(false)
+        const image = result.data.url
+        return this.props.actionAddBanner({
+          ...this.state.banner,
+          banner_image: image,
+        })
       })
-    })
-    .then(() => {
-      this.props.onCloseAddBanner()
-      this.props.actionShowHideLoading(false)
-      this.onShowAlert('success', 'Thêm mới thành công.')
-    })
-    .catch(() => {
-      this.props.actionShowHideLoading(false)
-      this.onShowAlert('danger', 'Có lỗi, vui lòng xem lại.')
-    })
+      .then(() => {
+        this.props.onCloseAddBanner()
+        this.props.actionShowHideLoading(false)
+        this.onShowAlert('success', 'Thêm mới thành công.')
+      })
+      .catch(() => {
+        this.props.actionShowHideLoading(false)
+        this.onShowAlert('danger', 'Có lỗi, vui lòng xem lại.')
+      })
+    } else {
+      this.onShowAlert('warning', 'Vui lòng chọn hình!.')
+    }
   }
 
   onShowAlert  = (type, title) => {

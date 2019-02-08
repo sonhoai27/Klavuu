@@ -7,6 +7,7 @@ const S = require('./Modal.scss')
 interface IModalProps {
   children: any;
   isShow: boolean;
+  style?: any;
 }
 
 interface IHeaderProps {
@@ -48,7 +49,7 @@ class Modal extends React.Component<IModalProps> {
     return this.props.isShow
       && (
         <div className={S['am-modal']}>
-          <div className={S['am-modal__content']}>
+          <div style={this.props.style ? this.props.style : {}} className={S['am-modal__content']}>
             {this.renderChildren()}
           </div>
         </div>

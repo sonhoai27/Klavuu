@@ -1,11 +1,39 @@
 import * as React from 'react'
 import Carousel from 'nuka-carousel';
+import { connect } from 'react-redux';
+import { actionGetBanners } from '@app/stores/banner/BannerActions';
+import { CDN } from '@app/shared/const';
 
-class Banner extends React.PureComponent {
+const uuidv4 = require('uuid/v4');
+
+interface IBannerProps {
+  bannersState: any[];
+  actionGetBanners: Function;
+}
+
+class Banner extends React.PureComponent<IBannerProps> {
   private carousel;
   constructor(props) {
     super(props)
   }
+
+  componentDidMount() {
+    this.props.actionGetBanners()
+  }
+
+  renderListBanners = () => (
+    this.props.bannersState
+    && this.props.bannersState.length > 0
+    && this.props.bannersState.map(element => (
+      <div key={uuidv4()}>
+        <img
+          onLoad={this.handleLoadImage}
+          style={{ width: '100%' }}
+          className="img-fluid"
+          src={`${CDN}banners/${element.banner_image}`} />
+      </div>
+    ))
+  )
 
   handleLoadImage = () => {
     this.carousel.setDimensions()
@@ -14,30 +42,18 @@ class Banner extends React.PureComponent {
   render() {
     return (
       <Carousel ref={c => this.carousel = c} >
-        <div>
-          <img
-            onLoad={this.handleLoadImage}
-            style={{ width: '100%' }}
-            className="img-fluid"
-            src="https://images.leflair.vn/w1440/q85/5c46eb20adc03f1f0a0b8e30.jpg" />
-        </div>
-        <div>
-          <img
-            onLoad={this.handleLoadImage}
-            style={{ width: '100%' }}
-            className="img-fluid"
-            src="https://images.leflair.vn/w1440/q85/5c4051e82cc27f748bbfac5a.jpg" />
-        </div>
-        <div>
-          <img
-            onLoad={this.handleLoadImage}
-            style={{ width: '100%' }}
-            className="img-fluid"
-            src="https://images.leflair.vn/w1440/q85/5c46eb20adc03f1f0a0b8e30.jpg" />
-        </div>
+        {this.renderListBanners()}
       </Carousel>
     )
   }
 }
 
-export default Banner
+const mapStateToProps = storeState => ({
+  bannersState: storeState.bannerReducer.bannersState,
+})
+
+const mapDispatchToProps = {
+  actionGetBanners,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Banner)

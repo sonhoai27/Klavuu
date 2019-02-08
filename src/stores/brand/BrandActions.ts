@@ -34,22 +34,14 @@ const actionGetBrandTags = brand => async (dispatch) => {
 const actionUpdateBrand = (brand, id) => async (dispatch) => {
   return await dispatch({
     type: UPDATE_BRAND,
-    payload: axios.put(`${API}brand`, brand, {
-      params: {
-        id,
-      },
-    }),
+    payload: axios.put(`${API}brand/${id}`, brand),
   })
 };
 
 const actionDeleteBrand = id => async (dispatch) => {
   return await dispatch({
     type: DELETE_BRAND,
-    payload: axios.delete(`${API}brand`, {
-      params: {
-        id,
-      },
-    }),
+    payload: axios.delete(`${API}brand/${id}`),
   })
 };
 
