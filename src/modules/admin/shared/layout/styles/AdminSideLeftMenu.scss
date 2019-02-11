@@ -8,6 +8,8 @@
     transition: background-color 200ms ease;
     width: calc(100% - 83.333333%);
     padding: 12px;
+    overflow-y: scroll;
+    max-height: 100vh;
     .user {
         color: #fff;
         display: flex;

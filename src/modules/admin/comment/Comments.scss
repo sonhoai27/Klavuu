@@ -1,0 +1,13 @@
+.comment-btn {
+    color: #111;
+    border-color: #ccc;
+    background: #3995ca;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #fff;
+    cursor: pointer;
+    &:hover {
+        background: #333;
+    }
+}

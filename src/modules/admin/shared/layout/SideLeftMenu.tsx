@@ -34,7 +34,7 @@ class AdminSideLeftMenu extends React.Component {
             </li>
             <li className={styles['line']}/>
             <li>
-              <Link to="/xxx/app/orders">Bình luận/đánh giá</Link>
+              <Link to="/xxx/app/comments">Bình luận/đánh giá</Link>
             </li>
             <li>
               <Link to="/xxx/app/banners">Banner</Link>

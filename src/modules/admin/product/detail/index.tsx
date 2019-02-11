@@ -235,6 +235,7 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
             }, this.state.products.product_id)
               .then(() => {
                 this.showSuccessNotifyAfterAddingproduct()
+                window.location.href = `/xxx/app/product/${Alias(this.state.products.product_name)}`
               })
               .catch(() => {
                 this.showDangerNotifyAfterAddingproduct()
@@ -527,6 +528,7 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
                     tag_id: uuidv4((new Date()).getMilliseconds()),
                     tag_alias: Alias(e),
                     tag_created_date: Moment(),
+                    tag_path: `/${Alias(e)}`,
                     tag_name: e,
                   })
                   .then(() => {

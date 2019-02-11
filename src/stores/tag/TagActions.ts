@@ -39,25 +39,17 @@ const actionGetTagsForMenu = () => async (dispatch) => {
   })
 };
 
-const actionUpdateTag = (brand, id) => async (dispatch) => {
+const actionUpdateTag = (tag, id) => async (dispatch) => {
   return await dispatch({
     type: UPDATE_TAG,
-    payload: axios.put(`${API}tag`, brand, {
-      params: {
-        id,
-      },
-    }),
+    payload: axios.put(`${API}tag/${id}`, tag),
   })
 };
 
 const actionDeleteTag = id => async (dispatch) => {
   return await dispatch({
     type: DELETE_TAG,
-    payload: axios.delete(`${API}tag`, {
-      params: {
-        id,
-      },
-    }),
+    payload: axios.delete(`${API}tag/${id}`),
   })
 };
 

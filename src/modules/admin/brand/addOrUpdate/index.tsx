@@ -36,11 +36,19 @@ class AdminBrandAdd extends React.Component<IAdminBrandAddProps, IAdminBrandAddS
     super(props)
     this.state = {
       brand: {
-        brand_id: uuidv4(Date.now()),
+        brand_id: '',
+        brand_created_date: '',
         brand_alias: '',
         brand_name: '',
-        brand_created_date: Moment(),
       },
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.brand !== prevProps.brand && this.props.brand.brand_name !== '') {
+      this.setState({
+        brand: this.props.brand,
+      })
     }
   }
 
@@ -58,12 +66,17 @@ class AdminBrandAdd extends React.Component<IAdminBrandAddProps, IAdminBrandAddS
 
   onSave = () => {
     if (this.onCheckBrand()) {
-      this.props.actionAddBrand(this.state.brand)
+      this.props.actionAddBrand({
+        ...this.state.brand,
+        brand_id: uuidv4(Date.now()),
+        brand_created_date: Moment(),
+      })
       .then(() => {
         this.onShowAlert({
           type: 'success',
           title: `Thêm mới thành công ${this.state.brand.brand_name}`,
         })
+        this.props.onCloseAddBrand()
       })
       .catch(() => {
         this.onShowAlert({
@@ -102,14 +115,47 @@ class AdminBrandAdd extends React.Component<IAdminBrandAddProps, IAdminBrandAddS
         status: false,
       })
       this.setState({
-        brand: {},
+        brand: {
+          brand_alias: '',
+          brand_created_date: '',
+          brand_id: '',
+          brand_name: '',
+        },
       }, () => {
         this.props.actionGetBrands()
       })
     }, 1500)
   }
 
-  onUpdate = () => {}
+  onUpdate = () => {
+    if (this.onCheckBrand()) {
+      this.props.actionUpdateBrand(
+        {
+          brand_name: this.state.brand.brand_name,
+          brand_alias: this.state.brand.brand_alias,
+        },
+        this.state.brand.brand_id,
+      )
+      .then(() => {
+        this.onShowAlert({
+          type: 'success',
+          title: `Cập nhật thành công ${this.state.brand.brand_name}`,
+        })
+        this.props.onCloseAddBrand()
+      })
+      .catch(() => {
+        this.onShowAlert({
+          type: 'danger',
+          title: `Cập nhật thất bại ${this.state.brand.brand_name}`,
+        })
+      })
+    } else {
+      this.onShowAlert({
+        type: 'warning',
+        title: 'Lỗi vui lòng điền đủ thông tin!',
+      })
+    }
+  }
 
   render() {
     return (
@@ -118,7 +164,12 @@ class AdminBrandAdd extends React.Component<IAdminBrandAddProps, IAdminBrandAddS
           title={!this.props.isAddOrUpdate ? 'Thêm hãng mới' : 'Cập nhật hãng'}
           onClose={() => {
             this.setState({
-              brand: {},
+              brand: {
+                brand_alias: '',
+                brand_created_date: '',
+                brand_id: '',
+                brand_name: '',
+              },
             }, () => {
               this.props.onCloseAddBrand()
             })
@@ -127,7 +178,9 @@ class AdminBrandAdd extends React.Component<IAdminBrandAddProps, IAdminBrandAddS
             <div className="mg-t-16">
               <div className={S['form-item']}>
                 <p>Tên hãng</p>
-                <input onChange={this.onChange} type="text" name="brand_name"/>
+                <input
+                  defaultValue={this.state.brand.brand_name}
+                  onChange={this.onChange} type="text" name="brand_name"/>
               </div>
               <div className={S['form-item']}>
                 <p>Alias</p>
@@ -139,7 +192,12 @@ class AdminBrandAdd extends React.Component<IAdminBrandAddProps, IAdminBrandAddS
             <div className={S['btn-action']}>
               <span onClick={() => {
                 this.setState({
-                  brand: {},
+                  brand: {
+                    brand_alias: '',
+                    brand_created_date: '',
+                    brand_id: '',
+                    brand_name: '',
+                  },
                 }, () => {
                   this.props.onCloseAddBrand()
                 })

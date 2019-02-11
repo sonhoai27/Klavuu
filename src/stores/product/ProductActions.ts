@@ -92,11 +92,7 @@ const actionUpdateProduct = (product, id) => async (dispatch) => {
 const actionDeleteProduct = id => async (dispatch) => {
   return await dispatch({
     type: DELETE_PRODUCT,
-    payload: axios.delete(`${API}product`, {
-      params: {
-        id,
-      },
-    }),
+    payload: axios.delete(`${API}products/${id}`),
   })
 };
 

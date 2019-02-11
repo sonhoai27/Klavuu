@@ -5,58 +5,62 @@ const uuidv4 = require('uuid/v4');
 
 import AdminHeader from '../shared/layout/Header';
 import Breadcrumb from '../shared/layout/Breadcrumb';
-import { actionGetBrands, actionDeleteBrand } from '@app/stores/brand/BrandActions';
 import { actionShowHidePopup, actionShowHideAlert } from '@app/stores/init';
 import Icon from '@app/modules/client/shared/layout/Icon';
+import { actionGetTags, actionDeleteTag } from '@app/stores/tag/TagActions';
 
 const GlobalStyles = require('@app/shared/styles/Box.scss');
 
-const AdminAddBrand = React.lazy(() => import(
-  /*webpackChunkName: "admin_add_brand" */ './addOrUpdate'));
+const AdminAddTag = React.lazy(() => import(
+  /*webpackChunkName: "admin_add_tag" */ './addOrUpdate'));
 
-interface IAdminBrandProps {
-  actionGetBrands: Function;
-  actionDeleteBrand: Function;
+interface IAdminTagsProps {
+  actionGetTags: Function;
+  actionDeleteTag: Function;
   actionShowHidePopup: Function;
   actionShowHideAlert: Function;
-  brandsState: any;
+  tagsState: any;
 }
 
-interface IAdminBrandStates {
-  isShowHideAddBrand: boolean;
-  currentBrand: {
-    brand_id?: string;
-    brand_alias?: string;
-    brand_name?: string;
-    brand_created_date?: string;
+interface IAdminTagsStates {
+  isShowHideAddTag: boolean;
+  currentTag: {
+    tag_id?: string;
+    tag_alias?: string;
+    tag_name?: string;
+    tag_created_date?: string;
+    tag_parent?: number;
+    tag_path?: string;
   };
-  isAddOrUpdateBrand: boolean;
+  isAddOrUpdateTag: boolean;
 }
 
-class AdminBrand extends React.Component<IAdminBrandProps, IAdminBrandStates> {
+class AdminTags extends React.Component<IAdminTagsProps, IAdminTagsStates> {
   constructor(props) {
     super(props)
     this.state = {
-      isShowHideAddBrand: false,
-      currentBrand: {
-        brand_alias: '',
-        brand_created_date: '',
-        brand_id: '',
-        brand_name: '',
+      isShowHideAddTag: false,
+      currentTag: {
+        tag_alias: '',
+        tag_created_date: '',
+        tag_id: '',
+        tag_name: '',
+        tag_parent: 0,
+        tag_path: '',
       },
-      isAddOrUpdateBrand: false,
+      isAddOrUpdateTag: false,
     }
   }
 
   componentDidMount() {
-    this.props.actionGetBrands()
+    this.props.actionGetTags()
   }
 
-  onCloseAddBrand = () => {
+  onCloseAddTag = () => {
     this.setState({
-      isShowHideAddBrand: !this.state.isShowHideAddBrand,
-      currentBrand: {},
-      isAddOrUpdateBrand: false,
+      isShowHideAddTag: !this.state.isShowHideAddTag,
+      currentTag: {},
+      isAddOrUpdateTag: false,
     })
   }
 
@@ -68,13 +72,13 @@ class AdminBrand extends React.Component<IAdminBrandProps, IAdminBrandStates> {
         title: 'OK',
         func: () => {
           this.props.actionShowHidePopup({ status: false })
-          this.props.actionDeleteBrand(id)
+          this.props.actionDeleteTag(id)
           .then(() => {
-            this.props.actionGetBrands()
+            this.props.actionGetTags()
             .then(() => {
               this.props.actionShowHideAlert({
                 type: 'success',
-                title: 'Xóa thành công hãng!',
+                title: 'Xóa thành công tag!',
                 status: true,
               })
               setTimeout(() => {
@@ -87,7 +91,7 @@ class AdminBrand extends React.Component<IAdminBrandProps, IAdminBrandStates> {
           .catch(() => {
             this.props.actionShowHideAlert({
               type: 'warning',
-              title: 'Lỗi, hãng này đã có sản phẩm sử dụng!',
+              title: 'Lỗi, tag này đã có sản phẩm sử dụng!',
               status: true,
             })
             setTimeout(() => {
@@ -111,22 +115,22 @@ class AdminBrand extends React.Component<IAdminBrandProps, IAdminBrandStates> {
   }
 
   renderBrands = () => (
-    this.props.brandsState.data
-    && this.props.brandsState.data.length > 0
-    && this.props.brandsState.data.map(element => (
+    this.props.tagsState.data
+    && this.props.tagsState.data.length > 0
+    && this.props.tagsState.data.map(element => (
       <tr key={uuidv4()}>
         <td>
           <span onClick={() => {
             this.setState({
-              currentBrand: element,
-              isAddOrUpdateBrand: true,
-              isShowHideAddBrand: true,
+              currentTag: element,
+              isAddOrUpdateTag: true,
+              isShowHideAddTag: true,
             })
-          }}>{element.brand_name}</span>
+          }}>{element.tag_name}</span>
         </td>
-        <td>{element.brand_alias}</td>
+        <td>{element.tag_path}</td>
         <td>
-          <Icon onClick={() => this.onDelete(element.brand_id)} name="trash"/>
+          <Icon onClick={() => this.onDelete(element.tag_id)} name="trash"/>
         </td>
       </tr>
     ))
@@ -145,14 +149,14 @@ class AdminBrand extends React.Component<IAdminBrandProps, IAdminBrandStates> {
                 active: false,
               },
               {
-                title: 'Quản lý hãng',
-                href: '/xxx/app/brands',
+                title: 'Quản lý tag',
+                href: '/xxx/app/tags',
                 active: true,
               },
             ]}
           />
           <div className={GlobalStyles['wrap_action']}>
-            <span onClick={this.onCloseAddBrand}>
+            <span onClick={this.onCloseAddTag}>
               Thêm mới
             </span>
           </div>
@@ -164,7 +168,7 @@ class AdminBrand extends React.Component<IAdminBrandProps, IAdminBrandStates> {
                 <thead>
                 <tr>
                   <th scope="col">Tên</th>
-                  <th scope="col">Alias</th>
+                  <th scope="col">Path</th>
                   <th>Hành động</th>
                   <th/>
                 </tr>
@@ -176,11 +180,11 @@ class AdminBrand extends React.Component<IAdminBrandProps, IAdminBrandStates> {
             </div>
           </div>
         </div>
-        <AdminAddBrand
-          brand={this.state.currentBrand}
-          onCloseAddBrand={this.onCloseAddBrand}
-          isShowAddBrand={this.state.isShowHideAddBrand}
-          isAddOrUpdate={this.state.isAddOrUpdateBrand}
+        <AdminAddTag
+          tag={this.state.currentTag}
+          onCloseAddTag={this.onCloseAddTag}
+          isShowAddTag={this.state.isShowHideAddTag}
+          isAddOrUpdate={this.state.isAddOrUpdateTag}
         />
       </>
     )
@@ -188,14 +192,14 @@ class AdminBrand extends React.Component<IAdminBrandProps, IAdminBrandStates> {
 }
 
 const mapStateToProps = storeState => ({
-  brandsState: storeState.brandReducer.brandsState,
+  tagsState: storeState.tagReducer.tagsState,
 })
 
 const mapDispatchToProps = {
-  actionGetBrands,
-  actionDeleteBrand,
+  actionGetTags,
+  actionDeleteTag,
   actionShowHidePopup,
   actionShowHideAlert,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminBrand)
+export default connect(mapStateToProps, mapDispatchToProps)(AdminTags)

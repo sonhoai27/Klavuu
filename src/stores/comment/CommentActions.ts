@@ -17,7 +17,7 @@ const actionAddCMT = form => (dispatch) => {
   })
 }
 
-const actionGetCMTS = query => (dispatch) => {
+const actionGetCMTS = (query = '') => (dispatch) => {
   return dispatch({
     type: GET_CMT,
     payload: axios.get(`${API}comments${query}`),

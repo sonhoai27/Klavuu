@@ -5,16 +5,20 @@ const uuidv4 = require('uuid/v4');
 
 import AdminHeader from '../shared/layout/Header';
 import Breadcrumb from '@app/modules/admin/shared/layout/Breadcrumb';
-import { actionGetProducts } from '@app/stores/product/ProductActions';
+import { actionGetProducts, actionDeleteProduct } from '@app/stores/product/ProductActions';
 import Icon from '@app/modules/client/shared/layout/Icon';
 import FormatNumber from '@app/shared/utils/FormatNumber';
 import { ADMIN_URL } from '@app/shared/const';
+import { actionShowHidePopup, actionShowHideAlert } from '@app/stores/init';
 
 const GlobalStyles = require('@app/shared/styles/Box.scss');
 
 interface IProductsProps {
   actionGetProducts: Function;
   productsState: any;
+  actionShowHidePopup: Function;
+  actionDeleteProduct: Function;
+  actionShowHideAlert: Function;
 }
 
 class Products extends React.Component<IProductsProps> {
@@ -47,10 +51,63 @@ class Products extends React.Component<IProductsProps> {
           <td>
             <Link to={`/page/product/${element.product_alias}`}><Icon name="store"/></Link>
           </td>
+          <td>
+            <Icon onClick={() => this.onDelete(element.product_id)} name="trash"/>
+          </td>
         </tr>
       )
     })
   )
+
+  onDelete = (id) => {
+    this.props.actionShowHidePopup({
+      status: true,
+      onClose: () => this.props.actionShowHidePopup({ status: false }),
+      poBtn: {
+        title: 'OK',
+        func: () => {
+          this.props.actionShowHidePopup({ status: false })
+          this.props.actionDeleteProduct(id)
+          .then(() => {
+            this.props.actionGetProducts()
+            .then(() => {
+              this.props.actionShowHideAlert({
+                type: 'success',
+                title: 'Xóa thành công hãng!',
+                status: true,
+              })
+              setTimeout(() => {
+                this.props.actionShowHideAlert({
+                  status: false,
+                })
+              }, 1500)
+            })
+          })
+          .catch(() => {
+            this.props.actionShowHideAlert({
+              type: 'warning',
+              title: 'Có lỗi khi xóa!',
+              status: true,
+            })
+            setTimeout(() => {
+              this.props.actionShowHideAlert({
+                status: false,
+              })
+            }, 1500)
+          })
+        },
+      },
+      neBtn: {
+        title: 'Cancel',
+        func: () => {
+          this.props.actionShowHidePopup({ status: false })
+        },
+      },
+      title: 'Warning',
+      message: 'If you click OK, This product will be delete.',
+      icon: <Icon name="smile"/>,
+    })
+  }
 
   render() {
     return (
@@ -88,6 +145,7 @@ class Products extends React.Component<IProductsProps> {
                   <th scope="col">Giá</th>
                   <th scope="col">Khuyến mãi</th>
                   <th/>
+                  <th/>
                 </tr>
                 </thead>
                 <tbody>
@@ -108,6 +166,9 @@ const mapStateToProps = storeState => ({
 
 const mapDispatchToProps = {
   actionGetProducts,
+  actionShowHidePopup,
+  actionDeleteProduct,
+  actionShowHideAlert,
 }
 
 export default connect(
