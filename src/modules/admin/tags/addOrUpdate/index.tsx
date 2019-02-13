@@ -147,6 +147,9 @@ class AdminTagAdd extends React.Component<IAdminTagAddProps, IAdminTagAddStates>
         {
           tag_name: this.state.tag.tag_name,
           tag_alias: this.state.tag.tag_alias,
+          tag_parent: this.state.tag.tag_parent,
+          tag_path:
+          `${this.state.tag.tag_path ? this.state.tag.tag_path : ''}/${this.state.tag.tag_alias}`,
         },
         this.state.tag.tag_id,
       )
