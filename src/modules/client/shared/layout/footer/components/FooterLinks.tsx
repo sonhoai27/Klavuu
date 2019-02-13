@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom';
 
 const S = require('./FoorLinks.scss')
 
-const FooterLinks = () => (
+interface IFooterLinksProps {
+  settings: any;
+}
+
+const FooterLinks = (props: IFooterLinksProps) => (
   <div className={`col-12 ${S['footer']}`}>
       <div className="row">
         <div className="col-sm-4">
@@ -11,12 +15,12 @@ const FooterLinks = () => (
             <div className={S['footer__hot-link']}>
               <ul>
                 <li>
-                  11 Nguyễn Đình chiểu
+                  {props.settings.WEBSITE_ADDRESS}
                 </li>
                 <li>
-                  sonhoai272@gmail.com
+                {props.settings.WEBSITE_EMAIL}
                 </li>
-                <li>09890223232</li>
+                <li>{props.settings.WEBSITE_PHONE}</li>
               </ul>
           </div>
         </div>

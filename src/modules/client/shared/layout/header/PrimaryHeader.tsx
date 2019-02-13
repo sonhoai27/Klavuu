@@ -2,16 +2,21 @@ import * as React from 'react';
 
 const Styles = require('./styles/PrimaryHeader.scss')
 import SubMenu from './components/SubMenu';
+import { CDN } from '@app/shared/const';
 
-const PrimaryHeader = ({ menus }) => (
+const PrimaryHeader = ({ menus, settings }) => (
   <div className={`${Styles['primary-header']} col-12`}>
     <div className="container">
       <div className={`${Styles['row']} row`}>
         <div className={Styles['primary-header__logo']}>
           <a href="/">
-            <img
-              src="http://en.klavuu.com/img/logo/logo.png"
+            {
+              settings.WEBSITE_LOGO
+              ? <img
+              src={`${CDN}icons/${settings.WEBSITE_LOGO}`}
               className={`${Styles['logo']} img-fluid`} />
+              : 'ZONE 22'
+            }
           </a>
         </div>
         <ul>

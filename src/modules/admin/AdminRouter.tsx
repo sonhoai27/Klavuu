@@ -31,6 +31,9 @@ const AdminTags = React.lazy(() => import(
 const AdminComments = React.lazy(() => import(
   /*webpackChunkName: "admin_comments" */ '@app/modules/admin/comment'));
 
+const AdminSettings = React.lazy(() => import(
+  /*webpackChunkName: "admin_settings" */ '@app/modules/admin/settings'));
+
 const AdminRouter = (props) => {
 
   return (
@@ -46,6 +49,7 @@ const AdminRouter = (props) => {
         <Route path={`${props.match.url}/brands`} component={AdminBrand}/>
         <Route path={`${props.match.url}/tags`} component={AdminTags}/>
         <Route path={`${props.match.url}/comments`} component={AdminComments}/>
+        <Route path={`${props.match.url}/settings`} component={AdminSettings}/>
       </Switch>
     </React.Suspense>
   )

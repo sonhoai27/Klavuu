@@ -1,0 +1,14 @@
+.settings__btn {
+    background: #3995ca;
+    color: #fff;
+    text-align: center;
+    padding: 7px 12px;
+    border-radius: 3px;
+    font-size: 14px;
+    margin-top: 16px;
+    display: inline-block;
+    cursor: pointer;
+    &:hover {
+        background: #3385b4;
+    }
+}

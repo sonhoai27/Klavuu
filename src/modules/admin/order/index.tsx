@@ -94,11 +94,12 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
     && this.props.ordersState.items.length > 0
     && this.props.ordersState.items.map((element) => {
       return (
-        <tr key={uuidv4()}>
+        <tr key={uuidv4()} style={{ fontSize: 15 }}>
           <td>
             <Link to={`/xxx/app/order/${element.order_id}`}>{element.order_id}</Link>
           </td>
           <td>{element.order_client_name}</td>
+          <td>{element.order_address}</td>
           <td>{element.order_sumary_price}</td>
           <td>
             {
@@ -179,9 +180,10 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
                 <thead>
                   <tr>
                     <th style={{ width: '20%' }} scope="col">#ID</th>
-                    <th style={{ width: '30%' }} scope="col">Khách hàng</th>
+                    <th style={{ width: '25%' }} scope="col">Khách hàng</th>
+                    <th style={{ width: '15%' }} scope="col">Đại chỉ</th>
                     <th style={{ width: '20%' }} scope="col">Tổng giá trị</th>
-                    <th style={{ width: '30%' }} scope="col">Ghi chú</th>
+                    <th style={{ width: '20%' }} scope="col">Ghi chú</th>
                     <th />
                   </tr>
                 </thead>

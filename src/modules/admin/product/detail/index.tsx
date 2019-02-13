@@ -152,6 +152,7 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
         tempTags =  [...tempTags, this.props.tagsProductsState[i]]
       }
     }
+    console.log(this.props.tagsProductsState)
     this.setState({
       tags: {
         tempTags,
@@ -234,6 +235,7 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
               product_alias: Alias(this.state.products.product_name),
             }, this.state.products.product_id)
               .then(() => {
+                this.onAddBrandTag()
                 this.showSuccessNotifyAfterAddingproduct()
                 window.location.href = `/xxx/app/product/${Alias(this.state.products.product_name)}`
               })
@@ -295,6 +297,23 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
         [name]: e.editor.getData(),
       },
     })
+  }
+
+  onAddBrandTag = () => {
+    let tempBrandTag = []
+
+    if (this.state.products.product_brand_id !== '') {
+      // tslint:disable-next-line:no-increment-decrement
+      for (let i = 0; i < this.state.tags.tempTags.length; i++) {
+        tempBrandTag = [...tempBrandTag, {
+          bt_brand_id: this.state.products.product_brand_id,
+          bt_tag_id: this.state.tags.tempTags[i].tp_tag_id,
+        }]
+      }
+    }
+    return (
+      this.props.actionBrandTag(tempBrandTag)
+    )
   }
 
   render() {

@@ -1,4 +1,8 @@
+import axios from 'axios'
+
 import Action from '@app/shared/models/action';
+import { FAILURE, REQUEST, SUCCESS } from '@app/configs/ActionType';
+import { API } from '@app/shared/const';
 
 const INIT_ACTION_TYPES = {
   LOCAL_STYLES: 'INIT/LOCAL_STYLES',
@@ -6,6 +10,7 @@ const INIT_ACTION_TYPES = {
   SHOW_HIDE_ALERT: 'INIT/SHOW_HIDE_ALERT',
   SHOW_HIDE_SHOPPING_CART: 'INIT/SHOW_HIDE_SHOPPING_CART',
   SHOW_HIDE_POPUP: 'INIT/SHOW_HIDE_POPUP',
+  GET_SETTINGS: 'INIT/GET_SETTINGS',
 };
 
 const initState = {
@@ -22,6 +27,7 @@ const initState = {
   isShowHidePopupState: {
     status: false,
   },
+  settingsState: {},
 };
 
 const initReducer = (state = initState, action: Action) => {
@@ -67,6 +73,19 @@ const initReducer = (state = initState, action: Action) => {
         },
       };
     }
+
+    case REQUEST(INIT_ACTION_TYPES.GET_SETTINGS):
+    case FAILURE(INIT_ACTION_TYPES.GET_SETTINGS): {
+      return {
+        ...state,
+      }
+    }
+    case SUCCESS(INIT_ACTION_TYPES.GET_SETTINGS): {
+      return {
+        ...state,
+        settingsState: action.payload.data,
+      }
+    }
     default:
 
       return state;
@@ -108,6 +127,13 @@ const actionShowShoppingCart = status => (dispatch: any) => {
   });
 };
 
+const actionGetSettings = () => async (dispatch) => {
+  return await dispatch({
+    type: INIT_ACTION_TYPES.GET_SETTINGS,
+    payload: axios.get(`${API}configs`),
+  })
+};
+
 export default initReducer;
 export {
   INIT_ACTION_TYPES,
@@ -116,4 +142,5 @@ export {
   actionShowHideAlert,
   actionShowShoppingCart,
   actionShowHidePopup,
+  actionGetSettings,
 };
