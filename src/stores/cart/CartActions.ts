@@ -11,9 +11,12 @@ import {
 } from './CartTypes';
 
 const actionAddToCart = (product, type, cart) => (dispatch) => {
-  return dispatch({
-    type: ADD_TO_CART,
-    payload: makeQty(product, type, cart),
+  return new Promise((resolve) => {
+    dispatch({
+      type: ADD_TO_CART,
+      payload: makeQty(product, type, cart),
+    })
+    resolve()
   })
 }
 

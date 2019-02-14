@@ -11,11 +11,12 @@ const INIT_ACTION_TYPES = {
   SHOW_HIDE_SHOPPING_CART: 'INIT/SHOW_HIDE_SHOPPING_CART',
   SHOW_HIDE_POPUP: 'INIT/SHOW_HIDE_POPUP',
   GET_SETTINGS: 'INIT/GET_SETTINGS',
+  LOGIN: 'INIT/LOGIN',
+  CHECK_LOGIN: 'INIT/CHECK_LOGIN',
 };
 
 const initState = {
   localStyles: {},
-  LoginState: {},
   LoginCheckState: {},
   isLoading: false,
   showOrHideAlertState: {
@@ -86,6 +87,28 @@ const initReducer = (state = initState, action: Action) => {
         settingsState: action.payload.data,
       }
     }
+
+    case REQUEST(INIT_ACTION_TYPES.CHECK_LOGIN):
+    case FAILURE(INIT_ACTION_TYPES.CHECK_LOGIN): {
+      return {
+        ...state,
+      }
+    }
+    case SUCCESS(INIT_ACTION_TYPES.CHECK_LOGIN): {
+      return {
+        ...state,
+        LoginCheckState: action.payload.data,
+      }
+    }
+
+    case REQUEST(INIT_ACTION_TYPES.LOGIN):
+    case FAILURE(INIT_ACTION_TYPES.LOGIN):
+    case SUCCESS(INIT_ACTION_TYPES.GET_SETTINGS): {
+      return {
+        ...state,
+      }
+    }
+
     default:
 
       return state;
@@ -134,6 +157,22 @@ const actionGetSettings = () => async (dispatch) => {
   })
 };
 
+const actionLogin = form => async (dispatch) => {
+  return await dispatch({
+    type: INIT_ACTION_TYPES.LOGIN,
+    payload: axios.post(`${API}auth/login`, form),
+  })
+};
+
+const actionCheckLogin = () => async (dispatch) => {
+  return await dispatch({
+    type: INIT_ACTION_TYPES.CHECK_LOGIN,
+    payload: axios.post(`${API}auth/check`, {
+      token: localStorage.getItem('token'),
+    }),
+  })
+};
+
 export default initReducer;
 export {
   INIT_ACTION_TYPES,
@@ -143,4 +182,6 @@ export {
   actionShowShoppingCart,
   actionShowHidePopup,
   actionGetSettings,
+  actionLogin,
+  actionCheckLogin,
 };

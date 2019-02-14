@@ -16,7 +16,7 @@ export const PrivateRouter = ({
 
   return (
     <Route {...rest} render={(props) => {
-      return (Login.status === 200
+      return (Login.status === 202
         ? <AdminLayout><Component {...props} /></AdminLayout>
         : <Redirect to={'/xxx/login'} />)
     }} />

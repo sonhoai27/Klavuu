@@ -48,22 +48,6 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
         currentProductImage: this.props.productState.images[0],
       })
     }
-    if (this.props.cartState !== prevProps.cartState) {
-      this.props.actionShowHideAlert({
-        status: true,
-        title: 'Thêm vào giỏ hàng thành công!',
-        icon: <Icon name="thumbs-up"/>,
-        type: 'success',
-      })
-      setTimeout(() => {
-        this.props.actionShowHideAlert({
-          status: false,
-          title: '',
-          icon: undefined,
-          type: '',
-        })
-      }, 1000)
-    }
   }
 
   renderListImages = () => (
@@ -148,6 +132,38 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
 
   onAddToCart = (e) => {
     this.props.actionAddToCart(e, 0, this.props.cartState)
+    .then(() => {
+      this.props.actionShowHideAlert({
+        status: true,
+        title: 'Thêm vào giỏ hàng thành công!',
+        icon: <Icon name="thumbs-up"/>,
+        type: 'success',
+      })
+      setTimeout(() => {
+        this.props.actionShowHideAlert({
+          status: false,
+          title: '',
+          icon: undefined,
+          type: '',
+        })
+      }, 1000)
+    })
+    .catch(() => {
+      this.props.actionShowHideAlert({
+        status: true,
+        title: 'Thêm vào giỏ hàng thất bại!',
+        icon: <Icon name="thumbs-up"/>,
+        type: 'warning',
+      })
+      setTimeout(() => {
+        this.props.actionShowHideAlert({
+          status: false,
+          title: '',
+          icon: undefined,
+          type: '',
+        })
+      }, 1000)
+    })
   }
 
   render() {
@@ -205,7 +221,11 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
               ({this.isReviews()['num_rows']} reviews)
             </div>
             <div className={Styles['price']}>
-              <span>{this.onFormatNumber(this.isProduct()['product_price'])}đ</span>
+            {
+              Number(this.isProduct()['product_discount']) !== 0
+              ? <span>{this.onFormatNumber(this.isProduct()['product_price'])}đ</span>
+              : <span/>
+            }
               <span>
                 {
                   this.onFormatNumber(

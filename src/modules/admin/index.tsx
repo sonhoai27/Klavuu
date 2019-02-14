@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
-import { setLocalStyles } from '@app/stores/init';
+import { setLocalStyles, actionCheckLogin } from '@app/stores/init';
 import PrivateRouter from '@app/configs/PrivateRoute';
 import Loading from '@app/shared/Loading';
 import Alert from '@app/shared/alert/Alert';
@@ -21,11 +21,31 @@ interface IClientProps {
   isLoading: boolean;
   showOrHideAlertState: any;
   isShowHidePopupState: any;
+  LoginCheckState: any;
+  actionCheckLogin: Function;
 }
 
-class Admin extends React.Component<IClientProps> {
+interface IClientStates {
+  login: any;
+}
+
+class Admin extends React.Component<IClientProps, IClientStates> {
   constructor(props) {
     super(props)
+
+    this.state = {
+      login: {},
+    }
+  }
+
+  componentDidMount() {
+    this.props.actionCheckLogin()
+    .then((result) => {
+      const { data } = result.value
+      this.setState({
+        login: data,
+      })
+    })
   }
 
   render() {
@@ -35,15 +55,22 @@ class Admin extends React.Component<IClientProps> {
       <>
         <React.Suspense fallback={''}>
           <Switch>
-            <PrivateRouter
-              apiLogin={{
-                status: 200,
-              }}
-              path={`${match.url}/app`}
-              component={AdminPage}
-            />
             <Route path={`${match.url}/login`} component={AdminLogin}/>
-            <Redirect from={`${match.url}`} to={`${match.url}/app`} />
+            {
+              this.state.login.status
+              && (
+                  <PrivateRouter
+                    apiLogin={this.state.login}
+                    path={`${match.url}/app`}
+                    component={AdminPage}
+                  />
+              )
+            }
+            {
+              this.state.login.status
+              && this.state.login.status === 202
+              && <Redirect from={`${match.url}`} to={`${match.url}/app`} />
+            }
           </Switch>
         </React.Suspense>
         {
@@ -101,6 +128,7 @@ const mapStateToProps = storeState => ({
 
 const mapDispatchToProps = {
   setLocalStyles,
+  actionCheckLogin,
 }
 
 export {

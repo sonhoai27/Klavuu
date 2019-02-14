@@ -102,7 +102,7 @@ module.exports = {
                 vendors: false,
                 vendor: {
                     chunks: 'all',
-                    test: /node_modules/
+                    test: /node_modules/,
                 }
             }
         }
