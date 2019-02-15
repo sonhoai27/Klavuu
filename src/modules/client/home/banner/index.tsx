@@ -1,8 +1,10 @@
 import * as React from 'react'
 import Carousel from 'nuka-carousel';
 import { connect } from 'react-redux';
+
 import { actionGetBanners } from '@app/stores/banner/BannerActions';
 import { CDN } from '@app/shared/const';
+import BannerLazyLoading from './loading';
 
 const uuidv4 = require('uuid/v4');
 
@@ -40,11 +42,14 @@ class Banner extends React.PureComponent<IBannerProps> {
   }
 
   render() {
-    return (
-      <Carousel ref={c => this.carousel = c} >
-        {this.renderListBanners()}
-      </Carousel>
-    )
+    if (this.props.bannersState && this.props.bannersState.length > 0) {
+      return (
+        <Carousel ref={c => this.carousel = c} >
+            {this.renderListBanners()}
+        </Carousel>
+      )
+    }
+    return <BannerLazyLoading/>
   }
 }
 

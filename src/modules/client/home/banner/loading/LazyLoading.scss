@@ -1,0 +1,33 @@
+.lazy-loading {
+    position: relative;
+    width: 100%;
+    -webkit-animation: pulseAnimation 1.6s ease infinite;
+    animation: pulseAnimation 1.6s ease infinite;
+    margin-bottom: 32px;
+    .content {
+        height: 350px;
+        overflow: hidden;
+        border-radius: 4px;
+        display: block;
+        background-image: linear-gradient(45deg, #FAFBFC 0%, #E6ECF2 100%);
+    }
+    .line_1 {
+        margin-top: 14px;
+        width: 64px;
+        height: 12px;
+        background-image: linear-gradient(45deg, #FAFBFC 0%, #E6ECF2 100%);
+        border-radius: 4px;
+        margin-right: 32px;
+    }
+    @keyframes pulseAnimation {
+        0% {
+            opacity: 1;
+        }
+        45% {
+            opacity: .3;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+}

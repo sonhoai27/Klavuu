@@ -3,8 +3,9 @@ import * as React from 'react';
 const Styles = require('./styles/PrimaryHeader.scss')
 import SubMenu from './components/SubMenu';
 import { CDN } from '@app/shared/const';
+import { Link } from 'react-router-dom';
 
-const PrimaryHeader = ({ menus, settings }) => (
+const PrimaryHeader = ({ menus, settings, brands }) => (
   <div className={`${Styles['primary-header']} col-12`}>
     <div className="container">
       <div className={`${Styles['row']} row`}>
@@ -22,22 +23,28 @@ const PrimaryHeader = ({ menus, settings }) => (
         <ul>
           <li>
             <a href="#">Shop By</a>
-            <SubMenu items={menus} className={Styles['primary-menu__submenu']} />
-          </li>
-          <li>
-            <a href="#">New arrivals</a>
+            <SubMenu
+              type="t"
+              kv={{
+                alias: 'tag_alias',
+                name: 'tag_name',
+              }}
+              items={menus}
+              className={Styles['primary-menu__submenu']} />
           </li>
           <li>
             <a href="#">Brands</a>
+            <SubMenu
+              type="b"
+              kv={{
+                alias: 'brand_alias',
+                name: 'brand_name',
+              }}
+              items={brands}
+              className={Styles['primary-menu__submenu']} />
           </li>
           <li>
-            <a href="#">Sales</a>
-          </li>
-          <li>
-            <a href="#">About us</a>
-          </li>
-          <li>
-            <a href="#">Contact us</a>
+            <Link to="/page/about-us">About us</Link>
           </li>
         </ul>
       </div>

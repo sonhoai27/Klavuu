@@ -71,13 +71,13 @@
             }
         }
         .price {
-            span:nth-child(1) {
+            .price {
                 color: rgba(78, 89, 93, 0.7);
                 font-size: 1.25rem;
                 margin-right: 16px;
                 text-decoration: line-through;
             }
-            span:nth-child(2) {
+            .discount {
                 color: var(--primary-color);
                 font-weight: 700;
                 font-size: 1.5rem !important;

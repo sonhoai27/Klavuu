@@ -144,13 +144,14 @@
             .product_list__item__price {
                 display: flex;
                 justify-content: flex-start;
-                span:first-child {
+                .price {
                     margin-right: 16px;
                     font-size: 1rem;
                     color: rgba(78, 89, 93, 0.7);
                     font-weight: 400;
+                    text-decoration: line-through;
                 }
-                span:last-child {
+                .discount {
                     font-size: 1.125rem;
                     line-height: 1.33rem;
                     color: #f5b095;

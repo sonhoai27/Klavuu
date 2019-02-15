@@ -9,6 +9,7 @@ import Alert from './Alert';
 interface IHeaderProps {
   tagsForMenuState: any;
   settingsState: any;
+  brandsState: any;
 }
 
 class Header extends React.Component<IHeaderProps> {
@@ -21,7 +22,10 @@ class Header extends React.Component<IHeaderProps> {
       <React.Fragment>
         <Alert/>
         <ActionHeader/>
-        <PrimaryHeader settings={this.props.settingsState} menus={this.props.tagsForMenuState}/>
+        <PrimaryHeader
+          brands={this.props.brandsState.data ? this.props.brandsState.data : []}
+          settings={this.props.settingsState}
+          menus={this.props.tagsForMenuState}/>
       </React.Fragment>
     )
   }
@@ -30,6 +34,7 @@ class Header extends React.Component<IHeaderProps> {
 const mapStateToProps = storeState => ({
   tagsForMenuState: storeState.tagReducer.tagsForMenuState,
   settingsState: storeState.initReducer.settingsState,
+  brandsState: storeState.brandReducer.brandsState,
 })
 
 export default connect(mapStateToProps, null)(Header)

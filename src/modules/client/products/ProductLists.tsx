@@ -249,8 +249,13 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
                 </Link>
               </div>
               <div className={Styles['product_list__item__price']}>
-                <span>{FormatNumber(element.product_price)}đ</span>
-                <span>
+                {
+                  Number(element.product_discount) !== 0
+                  && <span className={Styles['price']}>
+                      ${FormatNumber(element.product_price)}đ
+                    </span>
+                }
+                <span className={Styles['discount']}>
                   {
                     FormatNumber(
                       this.onMakePrice(
@@ -365,6 +370,23 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
     return []
   }
 
+  renderLazyLoading = () => (
+    <>
+      <div className="col sm-3">
+        <LazyLoading/>
+      </div>
+      <div className="col sm-3">
+        <LazyLoading/>
+      </div>
+      <div className="col sm-3">
+        <LazyLoading/>
+      </div>
+      <div className="col sm-3">
+        <LazyLoading/>
+      </div>
+    </>
+  )
+
   render() {
     return (
       <div className={`${Styles['product_lists']} container`}>
@@ -475,7 +497,12 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
           />
         </ul>
         <div className={`${Styles['product_lists__items']} row`}>
-          {this.renderProducts()}
+          {
+            this.props.productsFilterState
+            && this.props.productsFilterState.items
+            ? this.renderProducts()
+            : this.renderLazyLoading()
+          }
         </div>
       </div>
     )

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { actionLoadCart } from '@app/stores/cart/CartActions';
 import { actionGetTagsForMenu } from '@app/stores/tag/TagActions';
 import Popup from '@app/shared/popup';
+import { actionGetBrands } from '@app/stores/brand/BrandActions';
 
 const NewProducts = React.lazy(() => import(
   /*webpackChunkName: "client_home_new_prd" */ './new-products'));
@@ -21,6 +22,7 @@ interface IHomeProps {
   actionLoadCart: Function;
   actionGetTagsForMenu: Function;
   isShowHidePopupState: any;
+  actionGetBrands: Function;
 }
 
 class Home extends React.Component<IHomeProps> {
@@ -31,6 +33,7 @@ class Home extends React.Component<IHomeProps> {
   componentDidMount() {
     this.props.actionLoadCart()
     this.props.actionGetTagsForMenu()
+    this.props.actionGetBrands()
   }
 
   render () {
@@ -87,6 +90,7 @@ const mapStateToProps = storeState => ({
 const mapDispatchToProps = {
   actionLoadCart,
   actionGetTagsForMenu,
+  actionGetBrands,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

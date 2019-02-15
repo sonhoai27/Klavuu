@@ -13,18 +13,25 @@ interface ISubMenuProps {
     href: string;
   }[];
   className?: string;
+  kv: {
+    alias: string;
+    name: string;
+  },
+  type: string;
 }
 
 const SubMenu = (props: ISubMenuProps) => {
-
-  const MenuChildItem = (props) => {
-    if (props.child) {
+  console.log(props)
+  const MenuChildItem = (items, kv) => {
+    if (items.child) {
       return (
         <ul>
           {
-            props.child.map(element => (
+            items.child.map(element => (
               <li key={uuidv4()}>
-                <Link to={`/page/products/t/${element.tag_alias}`}>{element.tag_name}</Link>
+                <Link to={`/page/products/${props.type}/${element[kv.alias]}`}>
+                  {element[kv.name]}
+                </Link>
               </li>
             ))
           }
@@ -34,9 +41,11 @@ const SubMenu = (props: ISubMenuProps) => {
     return <></>
   }
 
-  const MenuParentItem = props => (
+  const MenuParentItem = element => (
     <div className={Styles['submenu--header']}>
-      <Link to={`/page/products/t/${props.tag_alias}`}>{props.tag_name}</Link>
+      <Link to={`/page/products/${props.type}/${element[props.kv.alias]}`}>
+        {element[props.kv.name]}
+      </Link>
     </div>
   )
 
@@ -51,7 +60,7 @@ const SubMenu = (props: ISubMenuProps) => {
           tempChildrenDom = [...tempChildrenDom, (
             <div className={Styles['item']} key={uuidv4()}>
               {MenuParentItem(element)}
-              {MenuChildItem(element)}
+              {MenuChildItem(element, props.kv)}
             </div>
           )]
 
@@ -68,7 +77,7 @@ const SubMenu = (props: ISubMenuProps) => {
           tempChildrenDom = [...tempChildrenDom, (
             <div className={Styles['item']} key={uuidv4()}>
               {MenuParentItem(element)}
-              {MenuChildItem(element)}
+              {MenuChildItem(element, props.kv)}
             </div>
           )]
         }

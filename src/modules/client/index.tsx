@@ -10,6 +10,7 @@ import Alert from '@app/shared/alert/Alert';
 import Loading from '@app/shared/Loading';
 import Popup from '@app/shared/popup';
 import ShoppingCart from './cart/ShoppingCart';
+import { actionGetBrands } from '@app/stores/brand/BrandActions';
 
 const ProductDetail = React.lazy(() => import(
   /*webpackChunkName: "home_detail" */ '@app/modules/client/products/ProductDetail'));
@@ -20,6 +21,9 @@ const ProductList = React.lazy(() => import(
 const Checkout = React.lazy(() => import(
     /*webpackChunkName: "home_checkout" */ './cart/Checkout'));
 
+const AboutUs = React.lazy(() => import(
+  /*webpackChunkName: "home_aboutus" */ './about/AboutUs'));
+
 interface IClientProps {
   match?: any;
   isShowShoppingCartState: boolean;
@@ -28,6 +32,7 @@ interface IClientProps {
   actionGetTagsForMenu: Function;
   isShowHidePopupState: any;
   isLoading: boolean;
+  actionGetBrands: Function;
 }
 
 class Client extends React.Component<IClientProps> {
@@ -38,6 +43,7 @@ class Client extends React.Component<IClientProps> {
   componentDidMount() {
     this.props.actionLoadCart()
     this.props.actionGetTagsForMenu()
+    this.props.actionGetBrands()
   }
 
   render() {
@@ -52,6 +58,7 @@ class Client extends React.Component<IClientProps> {
               <Route path={`${match.url}/products/all`} component={ProductList} />
               <Route path={`${match.url}/products/:type/:alias`} component={ProductList} />
               <Route path={`${match.url}/checkout`} component={Checkout} />
+              <Route path={`${match.url}/about-us`} component={AboutUs} />
             </React.Suspense>
             {
               this.props.isShowShoppingCartState && <ShoppingCart />
@@ -116,6 +123,7 @@ const mapDispatchToProps = {
   setLocalStyles,
   actionLoadCart,
   actionGetTagsForMenu,
+  actionGetBrands,
 }
 
 export {
