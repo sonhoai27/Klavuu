@@ -9,10 +9,12 @@
         padding: 0;
         margin: 0;
         text-align: left;
+        li>a {
+            font-size: 15px;
+        }
         li {
             display: inline-block;
             text-transform: capitalize;
-            font-size: 12px;
             font-weight: 600;
             padding: 20px 20px;
             letter-spacing: 1.35px;

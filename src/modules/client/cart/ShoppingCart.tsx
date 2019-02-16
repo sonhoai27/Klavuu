@@ -3,6 +3,7 @@ import Icon from '../shared/layout/Icon';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Slide from 'react-reveal/Slide';
+import { withNamespaces } from 'react-i18next';
 
 import {
   actionShowShoppingCart,
@@ -24,6 +25,7 @@ interface IShoppingCartProps {
   history?: any;
   actionShowHidePopup: Function;
   actionShowHideLoading: Function;
+  t?: any;
 }
 
 class ShoppingCart extends React.Component<IShoppingCartProps> {
@@ -85,9 +87,9 @@ class ShoppingCart extends React.Component<IShoppingCartProps> {
       <div className={S['shopping-cart__content__null']}>
         <img src="./images/shopping-bag.svg" className="img-fluid" />
         <div>
-          <span>Giỏ hàng của bạn còn trống</span>
+          <span>{this.props.t('CART_EMPTY')}</span>
           <span>
-            <a href="/page/products/all">Tiếp tục mua sắm</a>
+            <a href="/page/products/all">{this.props.t('CART_CN_SHOPPING')}</a>
           </span>
         </div>
       </div>
@@ -103,20 +105,20 @@ class ShoppingCart extends React.Component<IShoppingCartProps> {
           status: true,
           onClose: () => this.props.actionShowHidePopup({ status: false }),
           poBtn: {
-            title: 'OK',
+            title: this.props.t('OK'),
             func: () => {
               this.props.actionShowHidePopup({ status: false })
               this.props.actionAddToCart(element, type, cartState)
             },
           },
           neBtn: {
-            title: 'Cancel',
+            title: this.props.t('CANCEL'),
             func: () => {
               this.props.actionShowHidePopup({ status: false })
             },
           },
-          title: 'Warning',
-          message: 'If you click OK, This product will be delete from cart.',
+          title: this.props.t('WARNING'),
+          message: this.props.t('CART_DELETE_PRODUCT'),
           icon: <Icon name="smile"/>,
         })
       } else {
@@ -177,8 +179,8 @@ class ShoppingCart extends React.Component<IShoppingCartProps> {
         <Slide right duration={500}>
           <div className={S['shopping-cart__content']}>
             <div className={S['shopping-cart__content__header']}>
-              <p>Giỏ hàng</p>
-              <p>({this.props.cartState.length} Sản Phẩm)</p>
+              <p>{this.props.t('CART_CART')}</p>
+              <p>({this.props.cartState.length} {this.props.t('PRODUCT')})</p>
               <Icon
                 onClick={() => {
                   document.body.style.overflow = 'auto'
@@ -198,7 +200,7 @@ class ShoppingCart extends React.Component<IShoppingCartProps> {
                 && (
                   <div className={S['shopping-cart__footer']}>
                     <div>
-                      <span>Thành tiền</span>
+                      <span>{this.props.t('CART_TOTAL')}</span>
                       <span>{this.onFormatNumber(this.onMakeSumaryPrice())}đ</span>
                     </div>
                     <div onClick={() => {
@@ -206,7 +208,7 @@ class ShoppingCart extends React.Component<IShoppingCartProps> {
                       this.props.actionShowShoppingCart(false)
                       this.props.history.push('/page/checkout')
                     }}>
-                      Tiến hành đặt hàng
+                      {this.props.t('CART_CHECKOUT')}
                     </div>
                   </div>
                 )
@@ -228,7 +230,8 @@ const mapDispatchToProps = {
   actionShowHidePopup,
 }
 
+const TwithNamespaces = withNamespaces()(ShoppingCart)
 // @ts-ignore
-const tempCom = connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);
+const tempCom = connect(mapStateToProps, mapDispatchToProps)(TwithNamespaces);
 // @ts-ignore
 export default withRouter(tempCom as any)

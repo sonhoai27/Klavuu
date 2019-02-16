@@ -13,6 +13,7 @@ const ProductInfo = ({
   currentProductImage,
   onCollapse,
   renderTags,
+  t,
 }) => (
   <>
     <h4 className={Styles['brand']}>
@@ -23,7 +24,7 @@ const ProductInfo = ({
     </h4>
     <div className={Styles['product-rating']}>
       <Rater disabled={true} rating={isReviews()['avg']} />
-      ({isReviews()['num_rows']} reviews)
+      ({isReviews()['num_rows']} {t('PRD_CMT_POST')})
             </div>
     <div className={Styles['price']}>
       {
@@ -57,7 +58,7 @@ const ProductInfo = ({
           product_image: currentProductImage.img_src,
         })}
         className={`${Styles['add-to-cart__btn']} btn`}>
-        Thêm vào giỏ hàng
+        {t('CART_ADD_TO_CART')}
               </div>
     </div>
     <ul className={Styles['additional-info']}>
@@ -73,7 +74,7 @@ const ProductInfo = ({
         <div
           onClick={onCollapse}
           className={Styles['product-description__title']}>
-          Thông tin sản phẩm <Icon name="chevron-down" />
+          {t('PRD_INFO')} <Icon name="chevron-down" />
         </div>
         <div className={Styles['product-description__content']}>
           <div dangerouslySetInnerHTML={{ __html: isProduct()['product_info'] }} />
@@ -83,7 +84,7 @@ const ProductInfo = ({
         onClick={onCollapse}
         className={Styles['product-description__session']}>
         <div className={Styles['product-description__title']}>
-          Cách sử dụng <Icon name="chevron-down" />
+          {t('PRD_HOW_TO_USE')} <Icon name="chevron-down" />
         </div>
         <div className={Styles['product-description__content']}>
           <div
@@ -94,7 +95,7 @@ const ProductInfo = ({
         onClick={onCollapse}
         className={Styles['product-description__session']}>
         <div className={Styles['product-description__title']}>
-          Thông tin khác <Icon name="chevron-down" />
+        {t('PRD_MORE_INFO')} <Icon name="chevron-down" />
         </div>
         <div className={Styles['product-description__content']}>
           <div

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { withNamespaces } from 'react-i18next';
 
 const Styles = require('./styles/PrimaryHeader.scss')
 import SubMenu from './components/SubMenu';
@@ -9,6 +10,7 @@ interface IPrimaryHeaderProps {
   menus: any;
   settings: any;
   brands: any;
+  t?: any;
 }
 
 interface IPrimaryHeaderStates {
@@ -67,6 +69,8 @@ class PrimaryHeader extends React.Component<IPrimaryHeaderProps, IPrimaryHeaderS
   onSetCurrentItemMenu = (choose: string) => this.setState({ choose })
 
   render() {
+    const { t } = this.props;
+
     return (
       <div className={`${Styles['primary-header']} col-12`}>
         <div className="container">
@@ -84,7 +88,7 @@ class PrimaryHeader extends React.Component<IPrimaryHeaderProps, IPrimaryHeaderS
             </div>
             <ul ref={node => this.menuRef = node}>
               <li>
-                <a onClick={() => this.onSetCurrentItemMenu('shop-by')}>Shop By</a>
+                <a onClick={() => this.onSetCurrentItemMenu('shop-by')}>{t('MENU_SHOP_BY')}</a>
                 {
                   this.isChoose({
                     menu: 'shop-by',
@@ -98,7 +102,7 @@ class PrimaryHeader extends React.Component<IPrimaryHeaderProps, IPrimaryHeaderS
                 }
               </li>
               <li>
-                <a onClick={() => this.onSetCurrentItemMenu('brands')}>Brands</a>
+                <a onClick={() => this.onSetCurrentItemMenu('brands')}>{t('MENU_BRANDS')}</a>
                   {
                   this.isChoose({
                     menu: 'brands',
@@ -112,7 +116,7 @@ class PrimaryHeader extends React.Component<IPrimaryHeaderProps, IPrimaryHeaderS
                 }
               </li>
               <li>
-                <Link to="/page/about-us">About us</Link>
+                <Link to="/page/about-us">{t('MENU_ABOUT_US')}</Link>
               </li>
             </ul>
           </div>
@@ -122,4 +126,4 @@ class PrimaryHeader extends React.Component<IPrimaryHeaderProps, IPrimaryHeaderS
   }
 }
 
-export default PrimaryHeader
+export default withNamespaces()(PrimaryHeader)

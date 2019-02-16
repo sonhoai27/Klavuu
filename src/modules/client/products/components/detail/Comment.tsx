@@ -25,6 +25,7 @@ interface IProductCommentProps {
   actionShowHideLoading: Function;
   actionShowHideAlert: Function;
   actionCheckOrderId: Function;
+  t?: any;
 }
 
 interface IProductCommentStates {
@@ -84,7 +85,7 @@ class ProductComment extends React.Component<IProductCommentProps, IProductComme
         this.props.actionShowHideLoading(false)
         this.props.actionShowHideAlert({
           status: true,
-          title: 'Thành công!',
+          title: this.props.t('SUCCESS'),
           icon: <Icon name="thumbs-up"/>,
           type: 'success',
         })
@@ -117,7 +118,7 @@ class ProductComment extends React.Component<IProductCommentProps, IProductComme
         this.props.actionShowHideLoading(false)
         this.props.actionShowHideAlert({
           status: true,
-          title: 'Thất bại, vui lòng xem lại',
+          title: this.props.t('FAILURE'),
           icon: <Icon name="thumbs-up"/>,
           type: 'warning',
         })
@@ -134,7 +135,7 @@ class ProductComment extends React.Component<IProductCommentProps, IProductComme
       this.props.actionShowHideLoading(false)
       this.props.actionShowHideAlert({
         status: true,
-        title: 'Thất bại, vui lòng xem đủ thông tin',
+        title: this.props.t('FAILURE_BY_INPUT'),
         icon: <Icon name="thumbs-up"/>,
         type: 'warning',
       })
@@ -170,7 +171,7 @@ class ProductComment extends React.Component<IProductCommentProps, IProductComme
     <Fade opposite collapse when={this.state.isShowOrHideWriteAReview}>
       <div className={S['comment__write-review']}>
         <div className={S['comment__write-review__item']}>
-          <p>Score:</p>
+          <p>{this.props.t('PRD_CMT_SCORE')}:</p>
           <div className={S['comment__write-review__star']}>
             <Rater
               onChange={(e) => {
@@ -199,7 +200,7 @@ class ProductComment extends React.Component<IProductCommentProps, IProductComme
           </div>
         </div>
         <div className={S['comment__write-review__item']}>
-          <p>* Name:</p>
+          <p>* {this.props.t('PRD_CMT_NAME')}:</p>
           <input
             value={this.state.cmt.cmt_user_name}
             name="cmt_user_name"
@@ -207,7 +208,7 @@ class ProductComment extends React.Component<IProductCommentProps, IProductComme
             type="text" />
         </div>
         <div className={S['comment__write-review__item']}>
-          <p>* Review:</p>
+          <p>* {this.props.t('PRD_CMT_REVIEW')}:</p>
           <textarea
             value={this.state.cmt.cmt_content}
             name="cmt_content"
@@ -215,7 +216,7 @@ class ProductComment extends React.Component<IProductCommentProps, IProductComme
             rows={3} />
         </div>
         <div className={S['comment__write-review__item']}>
-          <p>Order Id:</p>
+          <p>{this.props.t('PRD_CMT_ORDER_ID')}:</p>
           <input
             onChange={this.onCheckOrderId} type="text"
             id="order-id-code"
@@ -226,10 +227,10 @@ class ProductComment extends React.Component<IProductCommentProps, IProductComme
         </div>
         <div style={{ display: 'flex', justifyItems: 'center' }}>
           <div className={S['comment__cancel']}>
-            <span onClick={this.onShowOrHideWriteAReview}>CANCEL</span>
+            <span onClick={this.onShowOrHideWriteAReview}>{this.props.t('CANCEL')}</span>
           </div>
           <div className={S['comment__submit']}>
-            <span onClick={this.onAddCmt}>POST</span>
+            <span onClick={this.onAddCmt}>{this.props.t('PRD_CMT_POST')}</span>
           </div>
         </div>
       </div>
@@ -262,9 +263,9 @@ class ProductComment extends React.Component<IProductCommentProps, IProductComme
     return (
       <div className={`${S['comment']} col-12`}>
         <div className={S['comment__header']}>
-          <p>REVIEWS</p>
+          <p>{this.props.t('PRD_CMT_POST')}</p>
           <p onClick={this.onShowOrHideWriteAReview}>
-            Write a review
+            {this.props.t('PRD_WRITE_A_RV')}
           </p>
         </div>
         {this.renderEditor()}

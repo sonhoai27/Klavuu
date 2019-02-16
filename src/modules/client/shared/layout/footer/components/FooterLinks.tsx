@@ -5,6 +5,7 @@ const S = require('./FoorLinks.scss')
 
 interface IFooterLinksProps {
   settings: any;
+  t?: any;
 }
 
 const FooterLinks = (props: IFooterLinksProps) => (
@@ -26,20 +27,20 @@ const FooterLinks = (props: IFooterLinksProps) => (
         </div>
         <div className="col-sm-4">
           <div className={S['footer__hot-link']}>
-            <span>ABOUT GLOW RECIPE</span>
+            <span>{props.t('HOME_FOOTER_ABOUT_US')}</span>
             <ul>
               <li>
-                <Link to="">Shipping</Link>
+                <Link to="">{props.t('HOME_FOOTER_SHIPPING')}</Link>
               </li>
               <li>
-                <Link to="">Returns</Link>
+                <Link to="">{props.t('HOME_FOOTER_RETURNS')}</Link>
               </li>
             </ul>
           </div>
         </div>
         <div className="col-sm-4">
           <div className={S['footer__hot-link']}>
-            <span>HELPS & FAQS</span>
+            <span>{props.t('HOME_FOOTER_HELP_AND_FAQ')}</span>
             <ul>
               <li>
                 <Link to="">About us</Link>

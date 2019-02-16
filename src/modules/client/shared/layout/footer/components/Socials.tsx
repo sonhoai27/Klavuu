@@ -11,6 +11,7 @@ interface ISocialProps {
     href: string;
   }[],
   settings: any;
+  t?: any;
 }
 
 const Socials = (props: ISocialProps) => (

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { withNamespaces } from 'react-i18next';
 
 import BackToTop from './BackToTop';
 import Socials from './components/Socials';
@@ -34,6 +35,7 @@ const socials = [
 interface IFooterProps {
   actionGetSettings: Function;
   settingsState: any;
+  t?: any;
 }
 
 class Footer extends React.Component<IFooterProps> {
@@ -41,13 +43,14 @@ class Footer extends React.Component<IFooterProps> {
     this.props.actionGetSettings()
   }
   render() {
+    const { t } = this.props
     return (
       <div className={`${S['footer']} container`}>
-        <BackToTop className={S['back-to-top']} title="BACK TO TOP"/>
+        <BackToTop className={S['back-to-top']} title={t('HOME_BACK_TO_TOP')}/>
         <div className="col-12">
-          <Socials items={socials} settings={this.props.settingsState}/>
+          <Socials t={t} items={socials} settings={this.props.settingsState}/>
         </div>
-        <FooterLinks settings={this.props.settingsState}/>
+        <FooterLinks t={t} settings={this.props.settingsState}/>
       </div>
     )
   }
@@ -60,4 +63,6 @@ const mapDispatchToProps = {
   actionGetSettings,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Footer)
+const TFooter = withNamespaces()(Footer as any)
+
+export default connect(mapStateToProps, mapDispatchToProps)(TFooter)

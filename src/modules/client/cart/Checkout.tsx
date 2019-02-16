@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { withNamespaces } from 'react-i18next';
 
 import Icon from '../shared/layout/Icon';
 import { actionAddToCart, actionAddOrder, actionEmptyCart } from '@app/stores/cart/CartActions';
@@ -32,6 +33,7 @@ interface ICheckoutProps {
   history?: any;
   actionEmptyCart: Function;
   actionShowHideLoading: Function;
+  t?: any;
 }
 
 interface ICheckoutStates {
@@ -376,25 +378,26 @@ class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
   }
 
   render() {
+    const { t } = this.props
     return (
       <div className={`${S['checkout']} col-12`}>
         <div className="container">
           <div className="row">
             <div className={`col-sm-6 ${S['left']}`}>
               <div className={S['item']}>
-                <label>Contact information</label>
+                <label>{t('CART_CHECKOUT_INFO')}</label>
                   <input
                     onChange={this.onChangeToGetUserInfomation}
                     name="order_client_name"
-                    type="text" placeholder="Full name"/>
+                    type="text" placeholder={t('CART_CK_NAME')}/>
                   <input
                     onChange={this.onChangeToGetUserInfomation}
                     name="order_client_email"
-                    type="text" placeholder="Email"/>
+                    type="text" placeholder={t('CART_CK_EMAIL')}/>
                   <input
                     onChange={this.onChangeToGetUserInfomation}
                     name="order_client_phone"
-                    type="text" placeholder="Phone"/>
+                    type="text" placeholder={t('CART_CK_PHONE')}/>
                   <p className={S['red']}>
                     {
                       this.onError(this.state.error) === 'contact'
@@ -404,38 +407,38 @@ class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
                   </p>
               </div>
               <div className={S['item']}>
-                <label>Shipping address</label>
+                <label>{t('CART_CK_SHIPPING')}</label>
 
                 <div className={S['select']}>
-                  <span>Province</span>
+                  <span>{t('CART_CK_PROVINCE')}</span>
                   <Icon name="chevron-down" className={S['icon']}/>
                   <select
                     value={this.state.province}
                     onChange={this.onGetDistricts}>
-                    <option>Choose</option>
+                    <option>{t('CHOOSE')}</option>
                     {this.renderProvinces()}
                   </select>
                 </div>
 
                 <div className={S['select']}>
-                  <span>District</span>
+                  <span>{t('CART_CK_DISTRICT')}</span>
                   <Icon name="chevron-down" className={S['icon']}/>
                   <select
                     value={this.state.district}
                     onChange={this.onGetWards}>
-                    <option>Choose</option>
+                    <option>{t('CHOOSE')}</option>
                     {this.renderDistricts()}
                   </select>
                 </div>
 
                 <div className={S['select']}>
-                  <span>Ward</span>
+                  <span>{t('CART_CK_WARD')}</span>
                   <Icon name="chevron-down" className={S['icon']}/>
                   <select
                     value={this.state.ward}
                     onChange={this.onGetValueOfWard}
                   >
-                    <option>Choose</option>
+                    <option>{t('CHOOSE')}</option>
                     {this.renderWards()}
                   </select>
                 </div>
@@ -448,7 +451,7 @@ class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
                     <input
                       onChange={this.onGetStreet}
                       value={this.state.order.street}
-                      type="text" placeholder="Street"/>
+                      type="text" placeholder={t('CART_CK_STREET')}/>
                   )
                 }
 
@@ -470,13 +473,13 @@ class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
                     <textarea
                       onChange={this.onChangeToGetUserInfomation}
                       name="order_client_note"
-                      rows={3} placeholder="Note"/>
+                      rows={3} placeholder={t('CART_CK_NOTE')}/>
                   </div>
                   <div>
-                    <span>Total</span>
+                    <span>{t('CART_TOTAL')}</span>
                     <span>{this.onFormatNumber(this.onMakeSumaryPrice())}đ</span>
                   </div>
-                  <div onClick={this.onCompleteOrder}>Complete order</div>
+                  <div onClick={this.onCompleteOrder}>{t('CART_ORDER')}</div>
                 </div>
             </div>
           </div>
@@ -504,7 +507,9 @@ const mapDispatchToProps = {
   actionShowHideLoading,
 }
 
+const TwithNamespaces = withNamespaces()(Checkout)
+
 // @ts-ignore
-const tempCheckout = connect(mapStateToProps, mapDispatchToProps)(Checkout)
+const tempCheckout = connect(mapStateToProps, mapDispatchToProps)(TwithNamespaces)
 // @ts-ignore
 export default withRouter(tempCheckout as any)

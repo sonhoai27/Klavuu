@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 // @ts-ignore
 import Loadable from 'react-loadable';
+import { withNamespaces } from 'react-i18next';
 
 const uuidv4 = require('uuid/v4');
 
@@ -34,6 +35,7 @@ interface IProductDetailProps {
   actionAddToCart: Function;
   cartState: any[];
   actionShowHideAlert: Function;
+  t?: any;
 }
 
 interface IProductDetailStates {
@@ -147,7 +149,7 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
     .then(() => {
       this.props.actionShowHideAlert({
         status: true,
-        title: 'Thêm vào giỏ hàng thành công!',
+        title: this.props.t('CART_ADD_TO_CART_SUCESS'),
         icon: <Icon name="thumbs-up"/>,
         type: 'success',
       })
@@ -163,7 +165,7 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
     .catch(() => {
       this.props.actionShowHideAlert({
         status: true,
-        title: 'Thêm vào giỏ hàng thất bại!',
+        title: this.props.t('CART_ADD_TO_CART_FAILURE'),
         icon: <Icon name="thumbs-up"/>,
         type: 'warning',
       })
@@ -257,7 +259,7 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
           ? <Breadcrumb
               items={[
                 {
-                  title: 'Trang chủ',
+                  title: this.props.t('HOME_PAGE'),
                   href: '/',
                   active: false,
                 },
@@ -287,6 +289,7 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
             {
               (this.props.productState && this.props.productState.product)
               ? <ProductInfo
+                  t={this.props.t}
                   Styles={Styles}
                   isProduct={this.isProduct}
                   isReviews={this.isReviews}
@@ -309,12 +312,10 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
           </div>
         </div>
         <div className="row">
-          <React.Suspense fallback={<p>Loading...</p>}>
-            {
-              this.isProduct()['product_id']
-              && <ProductComment prdId={this.isProduct()['product_id']}/>
-            }
-          </React.Suspense>
+          {
+            this.isProduct()['product_id']
+            && <ProductComment t={this.props.t} prdId={this.isProduct()['product_id']}/>
+          }
         </div>
       </div>
      </>
@@ -333,4 +334,6 @@ const mapDispatchToProps = {
   actionShowHideAlert,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail)
+const TwithNamespaces = withNamespaces()(ProductDetail)
+
+export default connect(mapStateToProps, mapDispatchToProps)(TwithNamespaces)

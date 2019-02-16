@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
+import { withNamespaces } from 'react-i18next';
 
 const Styles = require('./styles/ActionHeader.scss')
 import Icon from '../Icon';
@@ -9,23 +10,30 @@ import SearchBar from './components/Search';
 interface IActionHeaderProps {
   actionShowShoppingCart: Function;
   cartState: any[];
+  t?: any;
 }
 
 const ActionHeader = (props: IActionHeaderProps) => {
   const [isShowHideSearchBar, onShowHideSearchBar] = React.useState(false)
-
+  const { t } = props
   return (
     <div className={`${Styles['action-header']} col-12 `}>
       <div className="container">
         <ul>
           <li>
-            Language
+            {t('MENU_LANGUAGE')}
           <Icon
             name="chevron-down"
             className={Styles['lang-icon']} />
             <ul>
-              <li>VN</li>
-              <li>US</li>
+              <li onClick={() => {
+                localStorage.setItem('i18nextLng', 'vi')
+                window.location.reload()
+              }}>VN</li>
+              <li onClick={() => {
+                localStorage.setItem('i18nextLng', 'en')
+                window.location.reload()
+              }}>US</li>
             </ul>
           </li>
           <li>
@@ -64,4 +72,6 @@ const mapDispatchToProps = {
   actionShowShoppingCart,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ActionHeader)
+const ActionHeaderConnect =  withNamespaces()(ActionHeader)
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActionHeaderConnect)

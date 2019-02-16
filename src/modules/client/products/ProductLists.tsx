@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import LazyLoad from 'react-lazyload';
+import { withNamespaces } from 'react-i18next';
 
 import Breadcrumb from '@app/shared/Breadcrumb';
 import Checkbox from '../shared/layout/checkbox';
@@ -29,6 +30,7 @@ interface IProductListsProps {
   match?: any;
   history?: any;
   location?: any;
+  t?: any;
 }
 interface IProductListsStates {
   filter: {
@@ -277,7 +279,7 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
     (this.onCheckBrandOrTag() === 't' || this.onCheckBrandOrTag() === undefined)
     && (
       <li>
-        <span>Hãng</span>
+        <span>{this.props.t('MENU_BRANDS')}</span>
         <ul className={Styles['product_lists__filter--sub']}>
           <div className="row">
             {this.renderListBrandTagsOrTagBrands(
@@ -293,7 +295,7 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
     (this.onCheckBrandOrTag() === 'b' || this.onCheckBrandOrTag() === undefined)
     && (
       <li>
-        <span>Nhãn</span>
+        <span>{this.props.t('MENU_SHOP_BY')}</span>
         <ul className={Styles['product_lists__filter--sub']}>
           <div className="row">
             {this.renderListBrandTagsOrTagBrands(
@@ -393,12 +395,12 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
         <Breadcrumb
           items={[
             {
-              title: 'Trang chủ',
+              title: this.props.t('HOME_PAGE'),
               href: '/',
               active: false,
             },
             {
-              title: 'Danh sách sản phẩm',
+              title: this.props.t('PRODUCTS'),
               href: '/page/products',
               active: true,
             },
@@ -413,7 +415,7 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
           {this.renderBrandFilter()}
           {this.renderTagFilter()}
           <li>
-            <span>Giá</span>
+            <span>{this.props.t('PRICE')}</span>
             <ul className={Styles['product_lists__filter--sub']}>
               <div className="row">
                 <div className="col-sm-4">
@@ -521,4 +523,6 @@ const mapDispatchToProps = {
   actionGetTagBrands,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductLists)
+const TwithNamespaces = withNamespaces()(ProductLists)
+
+export default connect(mapStateToProps, mapDispatchToProps)(TwithNamespaces)
