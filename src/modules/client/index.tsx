@@ -2,6 +2,8 @@ import * as React from 'react';
 import { setLocalStyles } from '@app/stores/init';
 import { connect } from 'react-redux';
 import { Route, BrowserRouter as Router } from 'react-router-dom'
+// @ts-ignore
+import Loadable from 'react-loadable';
 
 import Layout from './shared/layout';
 import { actionLoadCart } from '@app/stores/cart/CartActions';
@@ -12,17 +14,29 @@ import Popup from '@app/shared/popup';
 import ShoppingCart from './cart/ShoppingCart';
 import { actionGetBrands } from '@app/stores/brand/BrandActions';
 
-const ProductDetail = React.lazy(() => import(
-  /*webpackChunkName: "home_detail" */ '@app/modules/client/products/ProductDetail'));
+const ProductDetail = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "home_detail" */ '@app/modules/client/products/ProductDetail'),
+  loading: () => <div className="loading">loading...</div>,
+});
 
-const ProductList = React.lazy(() => import(
-  /*webpackChunkName: "home_list_product" */ '@app/modules/client/products/ProductLists'));
+const ProductList = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "home_list_product" */ '@app/modules/client/products/ProductLists'),
+  loading: () => <div className="loading">loading...</div>,
+});
 
-const Checkout = React.lazy(() => import(
-    /*webpackChunkName: "home_checkout" */ './cart/Checkout'));
+const Checkout = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "home_checkout" */ './cart/Checkout'),
+  loading: () => <div className="loading">loading...</div>,
+});
 
-const AboutUs = React.lazy(() => import(
-  /*webpackChunkName: "home_aboutus" */ './about/AboutUs'));
+const AboutUs = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "home_aboutus" */ './about/AboutUs'),
+  loading: () => <div className="loading">loading...</div>,
+});
 
 interface IClientProps {
   match?: any;
@@ -53,13 +67,11 @@ class Client extends React.Component<IClientProps> {
       <>
         <Router>
           <Layout>
-            <React.Suspense fallback={<div className="loading">loading...</div>}>
-              <Route exact path={`${match.url}/product/:alias`} component={ProductDetail} />
-              <Route path={`${match.url}/products/all`} component={ProductList} />
-              <Route path={`${match.url}/products/:type/:alias`} component={ProductList} />
-              <Route path={`${match.url}/checkout`} component={Checkout} />
-              <Route path={`${match.url}/about-us`} component={AboutUs} />
-            </React.Suspense>
+            <Route exact path={`${match.url}/product/:alias`} component={ProductDetail} />
+            <Route path={`${match.url}/products/all`} component={ProductList} />
+            <Route path={`${match.url}/products/:type/:alias`} component={ProductList} />
+            <Route path={`${match.url}/checkout`} component={Checkout} />
+            <Route path={`${match.url}/about-us`} component={AboutUs} />
             {
               this.props.isShowShoppingCartState && <ShoppingCart />
             }

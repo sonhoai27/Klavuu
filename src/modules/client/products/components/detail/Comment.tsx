@@ -108,6 +108,7 @@ class ProductComment extends React.Component<IProductCommentProps, IProductComme
             },
           })
         }, 2000)
+        this.onShowOrHideWriteAReview()
         const tempDom: any = document.getElementById('order-id-code')
         // @ts-ignore
         tempDom.value = '';
@@ -223,8 +224,13 @@ class ProductComment extends React.Component<IProductCommentProps, IProductComme
             {this.state.cmt.cmt_verify === 1 ? 'Verified Reviewer' : ''}
           </p>
         </div>
-        <div className={S['comment__submit']}>
-          <span onClick={this.onAddCmt}>POST</span>
+        <div style={{ display: 'flex', justifyItems: 'center' }}>
+          <div className={S['comment__cancel']}>
+            <span onClick={this.onShowOrHideWriteAReview}>CANCEL</span>
+          </div>
+          <div className={S['comment__submit']}>
+            <span onClick={this.onAddCmt}>POST</span>
+          </div>
         </div>
       </div>
     </Fade>

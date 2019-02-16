@@ -1,20 +1,26 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+// @ts-ignore
+import Loadable from 'react-loadable';
 
 import BrandStory from './brand-story';
-import { connect } from 'react-redux';
 import { actionLoadCart } from '@app/stores/cart/CartActions';
 import { actionGetTagsForMenu } from '@app/stores/tag/TagActions';
 import Popup from '@app/shared/popup';
 import { actionGetBrands } from '@app/stores/brand/BrandActions';
+import ShoppingCart from '../cart/ShoppingCart';
 
-const NewProducts = React.lazy(() => import(
-  /*webpackChunkName: "client_home_new_prd" */ './new-products'));
+const NewProducts = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "client_home_new_prd" */ './new-products'),
+  loading: () => '',
+});
 
-const Banner = React.lazy(() => import(
-  /*webpackChunkName: "client_home_banner" */ './banner'));
-
-const ShoppingCart = React.lazy(() => import(
-  /*webpackChunkName: "home_shopping_cart" */ '../cart/ShoppingCart'));
+const Banner = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "client_home_banner" */ './banner'),
+  loading: () => '',
+});
 
 interface IHomeProps {
   match?: any;

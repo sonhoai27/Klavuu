@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
 
-import './styles/index.scss'
 import ActionHeader from './ActionHeader';
 import PrimaryHeader from './PrimaryHeader';
 import Alert from './Alert';
+import PrimaryMenuForMobile from './components/PrimaryMenuForMobile';
 
 interface IHeaderProps {
   tagsForMenuState: any;
@@ -17,15 +17,32 @@ class Header extends React.Component<IHeaderProps> {
     super(props)
   }
 
+  onDetectedWithSize = () => window.screen.width
+
+  onShowPrimaryMenu = () => {
+    if (this.onDetectedWithSize() >= 768) {
+      return (
+        <>
+          <Alert/>
+          <ActionHeader/>
+          <PrimaryHeader
+                brands={this.props.brandsState.data ? this.props.brandsState.data : []}
+                settings={this.props.settingsState}
+                menus={this.props.tagsForMenuState}/>
+        </>
+      )
+    }
+
+    return <PrimaryMenuForMobile
+              brands={this.props.brandsState.data ? this.props.brandsState.data : []}
+              settings={this.props.settingsState}
+              menus={this.props.tagsForMenuState}/>
+  }
+
   render() {
     return(
       <React.Fragment>
-        <Alert/>
-        <ActionHeader/>
-        <PrimaryHeader
-          brands={this.props.brandsState.data ? this.props.brandsState.data : []}
-          settings={this.props.settingsState}
-          menus={this.props.tagsForMenuState}/>
+        {this.onShowPrimaryMenu()}
       </React.Fragment>
     )
   }

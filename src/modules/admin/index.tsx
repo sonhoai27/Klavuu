@@ -1,20 +1,31 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect, Switch } from 'react-router-dom';
+// @ts-ignore
+import Loadable from 'react-loadable';
 
 import { setLocalStyles, actionCheckLogin } from '@app/stores/init';
 import PrivateRouter from '@app/configs/PrivateRoute';
 import Loading from '@app/shared/Loading';
 import Alert from '@app/shared/alert/Alert';
 
-const AdminPage = React.lazy(() => import(
-  /*webpackChunkName: "admin_page" */ '@app/modules/admin/AdminRouter'));
+const AdminPage = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "admin_page" */ '@app/modules/admin/AdminRouter'),
+  loading: () => '',
+});
 
-const AdminLogin =  React.lazy(() => import(
-  /*webpackChunkName: "admin_login" */ '@app/modules/admin/auth/Login'));
+const AdminLogin =  Loadable({
+  loader: () => import(
+    /*webpackChunkName: "admin_login" */ '@app/modules/admin/auth/Login'),
+  loading: () => '',
+});
 
-const Popup =  React.lazy(() => import(
-  /*webpackChunkName: "admin_popup" */ '@app/shared/popup'));
+const Popup =  Loadable({
+  loader: () => import(
+    /*webpackChunkName: "admin_popup" */ '@app/shared/popup'),
+  loading: () => '',
+});
 
 interface IClientProps {
   match?: any;
@@ -53,26 +64,24 @@ class Admin extends React.Component<IClientProps, IClientStates> {
 
     return (
       <>
-        <React.Suspense fallback={''}>
-          <Switch>
-            <Route path={`${match.url}/login`} component={AdminLogin}/>
-            {
-              this.state.login.status
-              && (
-                  <PrivateRouter
-                    apiLogin={this.state.login}
-                    path={`${match.url}/app`}
-                    component={AdminPage}
-                  />
-              )
-            }
-            {
-              this.state.login.status
-              && this.state.login.status === 202
-              && <Redirect from={`${match.url}`} to={`${match.url}/app`} />
-            }
-          </Switch>
-        </React.Suspense>
+        <Switch>
+          <Route path={`${match.url}/login`} component={AdminLogin}/>
+          {
+            this.state.login.status
+            && (
+                <PrivateRouter
+                  apiLogin={this.state.login}
+                  path={`${match.url}/app`}
+                  component={AdminPage}
+                />
+            )
+          }
+          {
+            this.state.login.status
+            && this.state.login.status === 202
+            && <Redirect from={`${match.url}`} to={`${match.url}/app`} />
+          }
+        </Switch>
         {
           this.props.isLoading && <Loading/>
         }

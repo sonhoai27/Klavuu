@@ -18,10 +18,10 @@ interface ISubMenuProps {
     name: string;
   },
   type: string;
+  onCloseMenu: any;
 }
 
 const SubMenu = (props: ISubMenuProps) => {
-  console.log(props)
   const MenuChildItem = (items, kv) => {
     if (items.child) {
       return (
@@ -29,7 +29,9 @@ const SubMenu = (props: ISubMenuProps) => {
           {
             items.child.map(element => (
               <li key={uuidv4()}>
-                <Link to={`/page/products/${props.type}/${element[kv.alias]}`}>
+                <Link
+                  onClick={props.onCloseMenu}
+                  to={`/page/products/${props.type}/${element[kv.alias]}`}>
                   {element[kv.name]}
                 </Link>
               </li>
@@ -43,7 +45,9 @@ const SubMenu = (props: ISubMenuProps) => {
 
   const MenuParentItem = element => (
     <div className={Styles['submenu--header']}>
-      <Link to={`/page/products/${props.type}/${element[props.kv.alias]}`}>
+      <Link
+        onClick={props.onCloseMenu}
+        to={`/page/products/${props.type}/${element[props.kv.alias]}`}>
         {element[props.kv.name]}
       </Link>
     </div>
@@ -103,7 +107,7 @@ const SubMenu = (props: ISubMenuProps) => {
               {MakeMenu(props.items)}
             </div>
             <div className="row" id={Styles['show-all']}>
-              <Link to="/page/products/all">Tất cả</Link>
+              <Link onClick={props.onCloseMenu} to="/page/products/all">Tất cả</Link>
             </div>
           <div className="col-1" />
         </div>

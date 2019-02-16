@@ -15,7 +15,7 @@ const ProductInfo = ({
   renderTags,
 }) => (
   <>
-    <h4 className="brand">
+    <h4 className={Styles['brand']}>
       {isProduct()['brand_name']}
     </h4>
     <h4 className={Styles['title']}>

@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+// @ts-ignore
+import Loadable from 'react-loadable';
+
 const uuidv4 = require('uuid/v4');
 
 import { actionGetProduct } from '@app/stores/product/ProductActions';
@@ -18,8 +21,11 @@ import
 
 const Styles = require('./styles/ProductDetail.scss')
 
-const ProductComment = React.lazy(() => import(
-  /*webpackChunkName: "home_prd_cmt" */ './components/detail/Comment'));
+const ProductComment = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "home_prd_cmt" */ './components/detail/Comment'),
+  loading: () => '',
+});
 
 interface IProductDetailProps {
   actionGetProduct: Function;
@@ -172,6 +178,76 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
     })
   }
 
+  onDetectedWithSize = () => window.screen.width
+
+  onShowImage = () => {
+    if (this.onDetectedWithSize() <= 768) {
+      return (
+        <>
+          <div className={Styles['zoom-in-container']} style={{ overflow: 'hidden' }}>
+            <div className="content">
+            {
+              (this.state.currentProductImage && this.state.currentProductImage.img_src)
+              ? <img
+                  className={`
+                    ${Styles['zoom-in-container__image-preview']} img-fluid`}
+                  // tslint:disable-next-line:max-line-length
+                  src={
+                    (this.state.currentProductImage && this.state.currentProductImage.img_src)
+                    ? `${CDN}${this.state.currentProductImage.img_src}`
+                    : './images/no_image.jpg'
+                  }
+                  />
+              : <ProductImageLoading/>
+            }
+            </div>
+          </div>
+          <div className={Styles['product_detail__images-list-main']}>
+            {
+              (this.props.productState && this.props.productState.images)
+              ? <ul className={Styles['product_detail__images-list']}>
+                  {this.renderListImages()}
+                </ul>
+              : <ProductSmallImageLoading/>
+            }
+          </div>
+        </>
+      )
+    }
+
+    return (
+      <>
+        <div className={Styles['product_detail__images-list-main']}>
+          {
+            (this.props.productState && this.props.productState.images)
+            ? <ul className={Styles['product_detail__images-list']}>
+                {this.renderListImages()}
+              </ul>
+            : <ProductSmallImageLoading/>
+          }
+        </div>
+        <div className={Styles['zoom-in-container']} style={{ overflow: 'hidden' }}>
+          <div className="content">
+          {
+            (this.state.currentProductImage && this.state.currentProductImage.img_src)
+            ? <img
+                className={`
+                  ${Styles['zoom-in-container__image-preview']} img-fluid`}
+                // tslint:disable-next-line:max-line-length
+                src={
+                  (this.state.currentProductImage && this.state.currentProductImage.img_src)
+                  ? `${CDN}${this.state.currentProductImage.img_src}`
+                  : './images/no_image.jpg'
+                }
+                />
+            : <ProductImageLoading/>
+          }
+          </div>
+        </div>
+      </>
+    )
+  }
+
   render() {
     return (
      <>
@@ -197,31 +273,7 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
         <div className="row">
           <div className="col-sm-7">
             <div className={Styles['product_detail__images']}>
-              {
-                (this.props.productState && this.props.productState.images)
-                ? <ul className={Styles['product_detail__images-list']}>
-                    {this.renderListImages()}
-                  </ul>
-                : <ProductSmallImageLoading/>
-              }
-              <div className={Styles['zoom-in-container']} style={{ overflow: 'hidden' }}>
-                <div className="content">
-                {
-                  (this.state.currentProductImage && this.state.currentProductImage.img_src)
-                  ? <img
-                      className={`
-                        ${Styles['zoom-in-container__image-preview']} img-fluid`}
-                      // tslint:disable-next-line:max-line-length
-                      src={
-                        (this.state.currentProductImage && this.state.currentProductImage.img_src)
-                        ? `${CDN}${this.state.currentProductImage.img_src}`
-                        : './images/no_image.jpg'
-                      }
-                      />
-                  : <ProductImageLoading/>
-                }
-                </div>
-              </div>
+              {this.onShowImage()}
             </div>
             <div className={Styles['product-intro']}>
               {
@@ -247,6 +299,13 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
                 />
               : <ProductLeftInfoLoading/>
             }
+          </div>
+          <div className={Styles['product-intro--bottom']}>
+              {
+                (this.props.productState && this.props.productState.product)
+                ? <div dangerouslySetInnerHTML={{ __html: this.isProduct()['product_intro'] }}/>
+                :  <InfoLoading/>
+              }
           </div>
         </div>
         <div className="row">

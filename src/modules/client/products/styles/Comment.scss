@@ -27,6 +27,16 @@
         }
     }
     .comment__write-review {
+        @media only screen and (max-width: 768px) {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #fff;
+            z-index: 2001;
+            padding: 16px;
+        }
         &__item {
             margin-bottom: 24px;
             p {
@@ -71,7 +81,8 @@
             }
         }
     }
-    .comment__submit {
+    .comment__submit,
+    .comment__cancel {
         text-align: right;
         margin-top: 32px;
         span {
@@ -86,6 +97,24 @@
             &:hover {
                 background: var(--primary-dark-color);
                 color: #fff;
+            }
+            @media only screen and (max-width: 768px) {
+                display: block;
+                font-size: 11px;
+                padding: 8px;
+            }
+        }
+        @media only screen and (max-width: 768px) {
+            flex: 1;
+        }
+    }
+    .comment__cancel {
+        display: none;
+        @media only screen and (max-width: 768px) {
+            display: block;
+            margin-right: 16px;
+            span {
+                background: #eee;
             }
         }
     }

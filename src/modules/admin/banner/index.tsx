@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios'
+// @ts-ignore
+import Loadable from 'react-loadable';
+
 const uuidv4 = require('uuid/v4');
 
 import AdminHeader from '../shared/layout/Header';
@@ -13,8 +16,11 @@ import { actionShowHidePopup, actionShowHideAlert, actionShowHideLoading } from 
 const S = require('./styles/AdminBanner.scss')
 const GlobalStyles = require('@app/shared/styles/Box.scss');
 
-const AdminAddBanner = React.lazy(() => import(
-  /*webpackChunkName: "admin_add_banner" */ './add'));
+const AdminAddBanner = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "admin_add_banner" */ './add'),
+  loading: () => '',
+});
 
 interface IAdminBannerProps {
   actionGetBanners: Function;

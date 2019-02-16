@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+// @ts-ignore
+import Loadable from 'react-loadable';
 
 const uuidv4 = require('uuid/v4');
 
@@ -11,8 +13,11 @@ import Icon from '@app/modules/client/shared/layout/Icon';
 
 const GlobalStyles = require('@app/shared/styles/Box.scss');
 
-const AdminAddBrand = React.lazy(() => import(
-  /*webpackChunkName: "admin_add_brand" */ './addOrUpdate'));
+const AdminAddBrand = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "admin_add_brand" */ './addOrUpdate'),
+  loading: () => '',
+});
 
 interface IAdminBrandProps {
   actionGetBrands: Function;

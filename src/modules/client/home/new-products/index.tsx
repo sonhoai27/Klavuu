@@ -26,6 +26,8 @@ class NewProducts extends React.Component<INewProductsProps> {
     this.carousel.setDimensions()
   }
 
+  onDetectedWithSize = () => window.screen.width
+
   renderProducts = () => (
     this.props.newProductsState
     && this.props.newProductsState.length > 0
@@ -84,7 +86,7 @@ class NewProducts extends React.Component<INewProductsProps> {
                     <Icon className={S['new-products__action']}
                       name="chevron-right" onClick={nextSlide}/>
                   )}
-                  slidesToShow={3}>
+                  slidesToShow={this.onDetectedWithSize() <= 768 ? 1 : 3}>
                   {this.renderProducts()}
                 </Carousel>
               )

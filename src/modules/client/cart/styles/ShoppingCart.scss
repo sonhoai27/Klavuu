@@ -18,6 +18,9 @@
         right: 0;
         bottom: 0;
         top: 0;
+        @media only screen and (max-width: 768px) {
+            width: 100%;
+        }
         &__header {
             background-color: rgba(83, 94, 99, 0.06);
             padding: 8px 16px;

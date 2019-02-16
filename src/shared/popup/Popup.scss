@@ -14,6 +14,10 @@
         background-color: #fcfcfc;
         padding: 15px;
         width: 400px;
+        @media only screen and (max-width: 768px) {
+            width: 84%;
+            min-width: 84%;
+        }
     }
     &__header {
         span {
@@ -36,17 +40,26 @@
         text-align: center;
         &__icon {
             font-size: 64px;
+            @media only screen and (max-width: 768px) {
+                font-size: 54px;
+            }
         }
         &__title {
             font-size: 24px;
             font-weight: 700;
             color: #32323d;
+            @media only screen and (max-width: 768px) {
+                font-size: 20px;
+            }
         }
         &_message {
             line-height: 1.8;
             font-size: 14px;
             color: #32323d;
             margin-top: 5px;
+            @media only screen and (max-width: 768px) {
+                font-size: 12px;
+            }
         }
     }
     &__footer {
@@ -62,6 +75,10 @@
             text-transform: uppercase;
             border-radius: 4px;
             cursor: pointer;
+            @media only screen and (max-width: 768px) {
+                font-size: 12px;
+                padding: 6px 24px;
+            }
         }
         .ne-btn {
             background: #f7f7f7;

@@ -372,16 +372,16 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
 
   renderLazyLoading = () => (
     <>
-      <div className="col sm-3">
+      <div className="col-sm-3">
         <LazyLoading/>
       </div>
-      <div className="col sm-3">
+      <div className="col-sm-3">
         <LazyLoading/>
       </div>
-      <div className="col sm-3">
+      <div className="col-sm-3">
         <LazyLoading/>
       </div>
-      <div className="col sm-3">
+      <div className="col-sm-3">
         <LazyLoading/>
       </div>
     </>

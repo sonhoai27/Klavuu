@@ -100,7 +100,7 @@ module.exports = {
             cacheGroups: {
                 default: false,
                 vendors: false,
-                vendor: {
+                vendors: {
                     chunks: 'all',
                     test: /node_modules/,
                 }

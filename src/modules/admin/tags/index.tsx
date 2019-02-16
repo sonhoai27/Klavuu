@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+// @ts-ignore
+import Loadable from 'react-loadable';
 
 const uuidv4 = require('uuid/v4');
 
@@ -11,8 +13,11 @@ import { actionGetTags, actionDeleteTag } from '@app/stores/tag/TagActions';
 
 const GlobalStyles = require('@app/shared/styles/Box.scss');
 
-const AdminAddTag = React.lazy(() => import(
-  /*webpackChunkName: "admin_add_tag" */ './addOrUpdate'));
+const AdminAddTag = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "admin_add_tag" */ './addOrUpdate'),
+  loading: () => '',
+});
 
 interface IAdminTagsProps {
   actionGetTags: Function;

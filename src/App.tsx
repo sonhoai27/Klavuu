@@ -1,24 +1,36 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
+// @ts-ignore
+import Loadable from 'react-loadable';
+
+import Layout from '@app/modules/client/shared/layout';
 
 const localStyles = require('./App.css');
 
 import { setLocalStyles } from '@app/stores/init';
-import Layout from '@app/modules/client/shared/layout';
 
 interface IAppProps {
   setLocalStyles?: (styles: any) => void;
 }
 
-const Client = React.lazy(() => import(
-  /*webpackChunkName: "client" */ '@app/modules/client'));
+const Client = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "client" */ '@app/modules/client'),
+  loading: () => <h1>Loading</h1>,
+});
 
-const Admin = React.lazy(() => import(
-  /*webpackChunkName: "admin" */ '@app/modules/admin'));
+const Admin = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "admin" */ '@app/modules/admin'),
+  loading: () => <h1>Loading</h1>,
+});
 
-const Home = React.lazy(() => import(
-  /*webpackChunkName: "client_home" */ '@app/modules/client/home'));
+const Home = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "client_home" */ '@app/modules/client/home'),
+  loading: () => <h1>Loading</h1>,
+});
 
 class App extends React.Component<IAppProps> {
   constructor(props) {
@@ -34,13 +46,11 @@ class App extends React.Component<IAppProps> {
 
     return (
       <Router>
-        <React.Suspense fallback={''}>
-          <Switch>
-            <Route exact path="/" render={props => <Layout><Home {...props}/></Layout>}/>
-            <Route path="/page" component={Client}/>
-            <Route path="/xxx" component={Admin}/>
-          </Switch>
-        </React.Suspense>
+        <Switch>
+          <Route exact path="/" render={props => <Layout><Home {...props}/></Layout>}/>
+          <Route path="/page" component={Client}/>
+          <Route path="/xxx" component={Admin}/>
+        </Switch>
       </Router>
     )
   }

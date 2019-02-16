@@ -1,48 +1,60 @@
 import * as React from 'react'
+import { connect } from 'react-redux';
 
 const Styles = require('./styles/ActionHeader.scss')
 import Icon from '../Icon';
-import { connect } from 'react-redux';
 import { actionShowShoppingCart } from '@app/stores/init';
+import SearchBar from './components/Search';
 
 interface IActionHeaderProps {
   actionShowShoppingCart: Function;
   cartState: any[];
 }
 
-const ActionHeader = (props: IActionHeaderProps) => (
-  <div className={`${Styles['action-header']} col-12 `}>
-    <div className="container">
-      <ul>
-        <li>
-          Language
-        <Icon name="chevron-down" className={Styles['lang-icon']} />
-          <ul>
-            <li>VN</li>
-            <li>US</li>
-          </ul>
-        </li>
-        <li>
-          <Icon name="magnifier" className={Styles['icon']}/>
-        </li>
-        <li className={Styles['relative']}>
+const ActionHeader = (props: IActionHeaderProps) => {
+  const [isShowHideSearchBar, onShowHideSearchBar] = React.useState(false)
+
+  return (
+    <div className={`${Styles['action-header']} col-12 `}>
+      <div className="container">
+        <ul>
+          <li>
+            Language
           <Icon
-            onClick={() => {
-              props.actionShowShoppingCart(true)
-            }}
-            name="cart" className={Styles['icon']}/>
-          <span
-            onClick={() => {
-              props.actionShowShoppingCart(true)
-            }}
-            className={Styles['items']}>
-            {props.cartState.length}
-          </span>
-        </li>
-      </ul>
+            name="chevron-down"
+            className={Styles['lang-icon']} />
+            <ul>
+              <li>VN</li>
+              <li>US</li>
+            </ul>
+          </li>
+          <li>
+            <Icon
+              style={{ border: '1px solid transparent' }}
+              onClick={() => onShowHideSearchBar(!isShowHideSearchBar)}
+              name="magnifier"
+              className={Styles['icon']}/>
+              { isShowHideSearchBar && <SearchBar/> }
+          </li>
+          <li className={Styles['relative']}>
+            <Icon
+              onClick={() => {
+                props.actionShowShoppingCart(true)
+              }}
+              name="cart" className={Styles['icon']}/>
+            <span
+              onClick={() => {
+                props.actionShowShoppingCart(true)
+              }}
+              className={Styles['items']}>
+              {props.cartState.length}
+            </span>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 const mapStateToProps = storeState => ({
   cartState: storeState.cartReducer.cartState,

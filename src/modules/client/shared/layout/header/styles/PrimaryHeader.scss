@@ -11,34 +11,31 @@
         text-align: left;
         li {
             display: inline-block;
-            text-transform: uppercase;
+            text-transform: capitalize;
             font-size: 12px;
             font-weight: 600;
-            padding: 25px 20px;
+            padding: 20px 20px;
             letter-spacing: 1.35px;
             transition: all .3s;
             cursor: pointer;
             .primary-menu__submenu {
-                visibility: hidden;
                 position: absolute;
                 top: 100%;
                 left: 0;
                 right: 0;
                 z-index: -1;
                 transition: all .24s!important;
-                animation: offSubMenu .24s linear;
                 ul {
                     all: unset;
                 }
             }
-            &:hover {
-                a {
-                    color: var(--primary-color)!important;
-                }
-                .primary-menu__submenu {
-                    visibility: visible;
-                    animation: showSubMenu .24s linear;
-                }
+            .off {
+                animation: offSubMenu .24s linear;
+                visibility: hidden;
+            }
+            .on {
+                animation: showSubMenu .24s linear;
+                visibility: visible;
             }
             li.active {
                 a {
@@ -69,11 +66,10 @@
             font-size: 12px;
             font-weight: 600;
             margin: 0;
-            padding-bottom: 8px;
-            text-transform: uppercase;
+            text-transform: capitalize;
             letter-spacing: 1.3px;
             a {
-                color: var(--primary-dark-color)!important;
+                color: var(--third-dark-color)!important;
                 text-decoration: none!important;
             }
         }
@@ -86,6 +82,7 @@
         .item>ul {
             padding: 0;
             margin: 0;
+            margin-top: 8px;
             li {
                 padding: 0;
                 width: 100%;
@@ -109,7 +106,7 @@
     #show-all {
         margin: 8px 0;
         a {
-            color: var(--primary-dark-color)!important;
+            color: var(--third-dark-color)!important;
             &:hover {
                 color: var(--second-color)!important;
             }
@@ -118,7 +115,7 @@
     @keyframes showSubMenu {
         from {
             opacity: 0;
-            transform: translateY(-64px)
+            transform: translateY(-32px)
         }
         to {
             opacity: 1;
@@ -132,7 +129,7 @@
         }
         to {
             opacity: 0;
-            transform: translateY(-64px)
+            transform: translateY(-32px)
         }
     }
 }
