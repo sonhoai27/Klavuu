@@ -2,71 +2,78 @@ import * as React from 'react';
 import { Switch, Route } from 'react-router-dom';
 // @ts-ignore
 import Loadable from 'react-loadable';
+import GlobalLoading from '@app/shared/global-loading';
 
 const AdminHome = Loadable({
   loader: () => import(
     /*webpackChunkName: "admin_home" */ '@app/modules/admin/home'),
-  loading: () => '',
+  loading: () => <GlobalLoading/>,
 });
 
 const AdminProducts = Loadable({
   loader: () => import(
     /*webpackChunkName: "admin_home" */ '@app/modules/admin/product'),
-  loading: () => '',
+  loading: () => <GlobalLoading/>,
 });
 
 const AdminProductsAdd = Loadable({
   loader: () => import(
     /*webpackChunkName: "admin_product_add" */ '@app/modules/admin/product/add'),
-  loading: () => '',
+  loading: () => <GlobalLoading/>,
 });
 
 const AdminProductsDetail = Loadable({
   loader: () => import(
     /*webpackChunkName: "admin_product_detail" */ '@app/modules/admin/product/detail'),
-  loading: () => '',
+  loading: () => <GlobalLoading/>,
 });
 
 const AdminOrder = Loadable({
   loader: () => import(
     /*webpackChunkName: "admin_order" */ '@app/modules/admin/order'),
-  loading: () => '',
+  loading: () => <GlobalLoading/>,
 });
 
 const AdminOrderDetail = Loadable({
   loader: () => import(
     /*webpackChunkName: "admin_order_detail" */ '@app/modules/admin/order/OrderDetail'),
-  loading: () => '',
+  loading: () => <GlobalLoading/>,
 });
 
 const AdminBanner = Loadable({
   loader: () => import(
     /*webpackChunkName: "admin_banner" */ '@app/modules/admin/banner'),
-  loading: () => '',
+  loading: () => <GlobalLoading/>,
 });
 
 const AdminBrand = Loadable({
   loader: () => import(
     /*webpackChunkName: "admin_banner" */ '@app/modules/admin/brand'),
-  loading: () => '',
+  loading: () => <GlobalLoading/>,
 });
 
 const AdminTags = Loadable({
   loader: () => import(
     /*webpackChunkName: "admin_tag" */ '@app/modules/admin/tags'),
-  loading: () => '',
+  loading: () => <GlobalLoading/>,
 });
 
 const AdminComments = Loadable({
   loader: () => import(
     /*webpackChunkName: "admin_comments" */ '@app/modules/admin/comment'),
-  loading: () => '',
+  loading: () => <GlobalLoading/>,
 });
 
 const AdminSettings = Loadable({
   loader: () => import(
     /*webpackChunkName: "admin_settings" */ '@app/modules/admin/settings'),
-  loading: () => '',
+  loading: () => <GlobalLoading/>,
+});
+
+const AdminLanguage = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "admin_language" */ '@app/modules/admin/language'),
+  loading: () => <GlobalLoading/>,
 });
 
 const AdminRouter = (props) => {
@@ -83,6 +90,7 @@ const AdminRouter = (props) => {
       <Route path={`${props.match.url}/tags`} component={AdminTags}/>
       <Route path={`${props.match.url}/comments`} component={AdminComments}/>
       <Route path={`${props.match.url}/settings`} component={AdminSettings}/>
+      <Route path={`${props.match.url}/language`} component={AdminLanguage}/>
     </Switch>
   )
 }

@@ -46,7 +46,10 @@ class Footer extends React.Component<IFooterProps> {
     const { t } = this.props
     return (
       <div className={`${S['footer']} container`}>
-        <BackToTop className={S['back-to-top']} title={t('HOME_BACK_TO_TOP')}/>
+        <BackToTop
+          scrollStepInPx={50}
+          delayInMs={16.66}
+          className={S['back-to-top']} title={t('HOME_BACK_TO_TOP')}/>
         <div className="col-12">
           <Socials t={t} items={socials} settings={this.props.settingsState}/>
         </div>

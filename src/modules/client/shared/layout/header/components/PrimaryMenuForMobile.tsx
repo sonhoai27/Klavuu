@@ -156,7 +156,7 @@ class PrimaryMenuForMobile extends React.Component<
                 <li className={S['menu-item']}>
                   <Link
                     onClick={this.onCloseMenu}
-                    to="/page/products/all}">
+                    to="/page/products/all">
                     {t('MENU_SHOP_BY')}
                   </Link>
                   <ul>
@@ -173,7 +173,7 @@ class PrimaryMenuForMobile extends React.Component<
                 <li className={S['menu-item']}>
                   <Link
                     onClick={this.onCloseMenu}
-                    to="/page/products/all}">
+                    to="/page/products/all">
                     {t('MENU_BRANDS')}
                   </Link>
                   <ul>

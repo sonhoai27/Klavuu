@@ -9,7 +9,7 @@
         padding-left: 8px;
         padding-top: 16px;
         padding-bottom: 16px;
-        color: rgba(78, 89, 93, .7);
+        color: rgba(78, 89, 93, 0.452);
         font-size: .875rem;
         line-height: 1.5rem;
         @media only screen and (max-width: 768px) {
@@ -24,7 +24,6 @@
             color: rgba(78, 89, 93, .7);
             font-size: .875rem;
             line-height: 1.5rem;
-            text-decoration: underline!important;
             &:after {
                 content: '/';
                 padding-left: 8px;

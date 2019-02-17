@@ -88,7 +88,7 @@ const SubMenu = (props: ISubMenuProps) => {
       })
 
       tempParentDom = [...tempParentDom, React.createElement('div', {
-        className: `${Styles['item']} col-sm-3`,
+        className: 'col-sm-3',
         key: uuidv4(),
       }, tempChildrenDom)]
 

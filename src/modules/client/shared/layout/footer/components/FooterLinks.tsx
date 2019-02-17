@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { CDN } from '@app/shared/const';
 
 const S = require('./FoorLinks.scss')
 
@@ -12,7 +13,16 @@ const FooterLinks = (props: IFooterLinksProps) => (
   <div className={`col-12 ${S['footer']}`}>
       <div className="row">
         <div className="col-sm-4">
-          <div className={S['footer__icon-website']}>22 ZONE</div>
+          <div className={S['footer__icon-website']}>
+          {
+            props.settings.WEBSITE_ICON
+            ? <img
+                width="80px"
+                src={`${CDN}icons/${props.settings.WEBSITE_ICON}`}
+                className="img-fluid"/>
+            : 'ZONE 22'
+          }
+          </div>
             <div className={S['footer__hot-link']}>
               <ul>
                 <li>

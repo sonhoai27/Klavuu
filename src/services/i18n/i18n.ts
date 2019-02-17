@@ -1,8 +1,8 @@
 import i18n from 'i18next'
-
 import * as Backend from 'i18next-xhr-backend';
 import * as reactI18nextModule from 'react-i18next';
 import * as LngDetector from 'i18next-browser-languagedetector';
+import { API } from '@app/shared/const';
 
 const lngDetector = new LngDetector(null, {
   order: ['localStorage', 'querystring', 'cookie'],
@@ -35,7 +35,7 @@ i18n
       wait: true,
     },
     backend: {
-      loadPath: '/locales/{{lng}}/{{lng}}.json',
+      loadPath: `${API}languages/{{lng}}`,
     },
   });
 

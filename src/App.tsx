@@ -9,6 +9,7 @@ import Layout from '@app/modules/client/shared/layout';
 const localStyles = require('./App.css');
 
 import { setLocalStyles } from '@app/stores/init';
+import GlobalLoading from './shared/global-loading';
 
 interface IAppProps {
   setLocalStyles?: (styles: any) => void;
@@ -17,19 +18,19 @@ interface IAppProps {
 const Client = Loadable({
   loader: () => import(
     /*webpackChunkName: "client" */ '@app/modules/client'),
-  loading: () => <h1>Loading</h1>,
+  loading: () => <GlobalLoading/>,
 });
 
 const Admin = Loadable({
   loader: () => import(
     /*webpackChunkName: "admin" */ '@app/modules/admin'),
-  loading: () => <h1>Loading</h1>,
+  loading: () => <GlobalLoading/>,
 });
 
 const Home = Loadable({
   loader: () => import(
     /*webpackChunkName: "client_home" */ '@app/modules/client/home'),
-  loading: () => <h1>Loading</h1>,
+  loading: () => <GlobalLoading/>,
 });
 
 class App extends React.Component<IAppProps> {

@@ -8,23 +8,24 @@ import { setLocalStyles, actionCheckLogin } from '@app/stores/init';
 import PrivateRouter from '@app/configs/PrivateRoute';
 import Loading from '@app/shared/Loading';
 import Alert from '@app/shared/alert/Alert';
+import GlobalLoading from '@app/shared/global-loading';
 
 const AdminPage = Loadable({
   loader: () => import(
     /*webpackChunkName: "admin_page" */ '@app/modules/admin/AdminRouter'),
-  loading: () => '',
+  loading: () => <GlobalLoading/>,
 });
 
 const AdminLogin =  Loadable({
   loader: () => import(
     /*webpackChunkName: "admin_login" */ '@app/modules/admin/auth/Login'),
-  loading: () => '',
+  loading: () => <GlobalLoading/>,
 });
 
 const Popup =  Loadable({
   loader: () => import(
     /*webpackChunkName: "admin_popup" */ '@app/shared/popup'),
-  loading: () => '',
+  loading: () => <GlobalLoading/>,
 });
 
 interface IClientProps {

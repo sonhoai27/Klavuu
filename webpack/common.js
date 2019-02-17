@@ -98,13 +98,28 @@ module.exports = {
     optimization: {
         splitChunks: {
             chunks: 'all',
+            name: true,
             cacheGroups: {
                 default: false,
                 vendors: false,
-                vendors: {
+                i18: {
                     chunks: 'all',
-                    test: /node_modules/,
-                }
+                    test: /[\\/]node_modules[\\/](i18next|i18next-browser-languagedetector|react-i18next)[\\/]/,
+                    reuseExistingChunk: true,
+                    name: 'i18',
+                },
+                rd: {
+                    name: 'rd',
+                    chunks: 'all',
+                    test: /[\\/]node_modules[\\/](react-router|react-router-dom|react-reveal)[\\/]/,
+                    reuseExistingChunk: true,
+                },
+                ck: {
+                    name: 'ck',
+                    chunks: 'all',
+                    test: /[\\/]node_modules[\\/](ckeditor4-react)[\\/]/,
+                    reuseExistingChunk: true,
+                },
             }
         }
     }

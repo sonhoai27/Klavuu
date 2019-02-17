@@ -61,6 +61,11 @@
 }
 
 .wrap_action {
+    &__btn {
+        background: #3995ca!important;
+        color: #fff;
+    }
+    &__btn,
     span {
         background: #fff;
         outline: none;

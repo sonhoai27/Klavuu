@@ -31,7 +31,9 @@ module.exports = merge(commonConfig, {
                     compress: {
                         inline: false
                     }
-                }
+                },
+                test: /\.js(\?.*)?$/i,
+                cache: true,
             })
         ]
     }

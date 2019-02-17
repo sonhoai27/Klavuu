@@ -2,6 +2,7 @@
 const pro = location.protocol
 const API = `${pro}//22.zonesgroup.vn/api/`;
 const CDN = `${pro}//22.zonesgroup.vn/api/uploads/`;
+const LOCALES = `${pro}//22.zonesgroup.vn/api/locales/`;
 const ADMIN_URL = '/xxx/app/'
 const HOME_URL = '//'
 
@@ -10,4 +11,5 @@ export {
   CDN,
   ADMIN_URL,
   HOME_URL,
+  LOCALES,
 }

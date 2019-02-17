@@ -19,6 +19,7 @@ import ProductLeftInfoLoading from './components/detail/Loading/ProductLeftInfoL
 import
   ProductImageLoading,
   { ProductSmallImageLoading } from './components/detail/Loading/ProductImageLoading';
+import { Link } from 'react-router-dom';
 
 const Styles = require('./styles/ProductDetail.scss')
 
@@ -126,7 +127,9 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
       return (
         <span
           key={uuidv4()}>
-          {tag.tag_name}
+          <Link to={`/page/products/t/${tag.tag_alias}`}>
+            {tag.tag_name}
+          </Link>
         </span>
       )
     })
@@ -261,6 +264,11 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
                 {
                   title: this.props.t('HOME_PAGE'),
                   href: '/',
+                  active: false,
+                },
+                {
+                  title: this.isProduct()['brand_name'],
+                  href: `/page/products/b/${this.isProduct()['brand_alias']}`,
                   active: false,
                 },
                 {

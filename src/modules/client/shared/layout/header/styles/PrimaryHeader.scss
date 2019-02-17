@@ -14,7 +14,7 @@
         }
         li {
             display: inline-block;
-            text-transform: capitalize;
+            text-transform: uppercase;
             font-weight: 600;
             padding: 20px 20px;
             letter-spacing: 1.35px;
@@ -62,8 +62,8 @@
     }
     .primary-menu__submenu {
         border: 0;
-        background: #fff;
-        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+        background: #fbfbfb;
+        box-shadow: 2px 6px 8px -6px rgba(0, 0, 0, .26);
         .submenu--header {
             font-size: 12px;
             font-weight: 600;
@@ -106,7 +106,10 @@
         }
     }
     #show-all {
-        margin: 8px 0;
+        margin: 22px 0 8px 0;
+        font-size: 13px;
+        text-transform: capitalize;
+        display: block;
         a {
             color: var(--third-dark-color)!important;
             &:hover {
