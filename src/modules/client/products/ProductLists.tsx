@@ -15,6 +15,7 @@ import queryParams from '@app/shared/utils/Query';
 import { actionGetBrandTags } from '@app/stores/brand/BrandActions';
 import { actionGetTagBrands } from '@app/stores/tag/TagActions';
 import LazyLoading from '../shared/layout/loading';
+import Pagination from '@app/shared/Pagination';
 
 const uuidv4 = require('uuid/v4');
 
@@ -37,6 +38,7 @@ interface IProductListsStates {
     brand: any[];
     tag: any[];
     price: any[];
+    page: any[],
   };
 }
 
@@ -48,6 +50,7 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
         brand: [],
         tag: [],
         price: [],
+        page: [],
       },
     }
   }
@@ -91,6 +94,7 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
   onGetProducts = () => {
     const { alias } = this.props.match.params
     const { search } = this.props.location
+    console.log(search)
     const isNullSearch = search.length > 0 ? `&${search.substring(1)}` : ''
 
     if (this.onCheckBrandOrTag() === 'b') {
@@ -168,6 +172,7 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
         filter: {
           ...this.state.filter,
           [key]: this.onRemoveItemIfIsset(key, value),
+          page: [],
         },
       }, () => {
         this.props.history.push(
@@ -179,6 +184,7 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
         filter: {
           ...this.state.filter,
           [key]: [...this.state.filter[key], value],
+          page: [],
         },
       }, () => {
         this.props.history.push(
@@ -193,6 +199,7 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
       filter: {
         ...this.state.filter,
         price: [...[], value],
+        page: [],
       },
     }, () => {
       this.props.history.push(
@@ -222,6 +229,18 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
         `${this.props.match.url}${queryParams(this.onMakeFilter())}`,
       )
     })
+  }
+
+  isMeta = () => {
+    if (this.props.productsFilterState
+      && this.props.productsFilterState.meta) {
+      return this.props.productsFilterState.meta
+    }
+
+    return {
+      total: 0,
+      page_size: 0,
+    }
   }
 
   renderProducts = () => (
@@ -506,6 +525,30 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
             : this.renderLazyLoading()
           }
         </div>
+
+        <Pagination
+          currentPage={Number(this.state.filter.page)}
+          pageLimit={Number(this.isMeta()['page_size'])}
+          pageNeighbours={2}
+          onPageChanged={(e) => {
+            this.setState({
+              filter: {
+                ...this.state.filter,
+                page: [...[], {
+                  title: e.currentPage,
+                  value: e.currentPage,
+                }],
+              },
+            }, () => {
+              console.log(this.state.filter)
+              this.props.history.push(
+                `${this.props.match.url}${queryParams(this.onMakeFilter())}`,
+              )
+            })
+            window.scrollTo(0, 0)
+          }}
+          totalRecords={Number(this.isMeta()['total'])}
+        />
       </div>
     )
   }

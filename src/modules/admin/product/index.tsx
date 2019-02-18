@@ -10,6 +10,7 @@ import Icon from '@app/modules/client/shared/layout/Icon';
 import FormatNumber from '@app/shared/utils/FormatNumber';
 import { ADMIN_URL } from '@app/shared/const';
 import { actionShowHidePopup, actionShowHideAlert } from '@app/stores/init';
+import Pagination from '@app/shared/Pagination';
 
 const GlobalStyles = require('@app/shared/styles/Box.scss');
 
@@ -19,15 +20,12 @@ interface IProductsProps {
   actionShowHidePopup: Function;
   actionDeleteProduct: Function;
   actionShowHideAlert: Function;
+  match?: any;
 }
 
 class Products extends React.Component<IProductsProps> {
   constructor(props) {
     super(props)
-  }
-
-  componentDidMount(): void {
-    this.props.actionGetProducts()
   }
 
   isProduct = () => {
@@ -36,6 +34,15 @@ class Products extends React.Component<IProductsProps> {
       return this.props.productsState.items
     }
     return []
+  }
+
+  onMakeCurrentPage = () => {
+    const page = (window.location.href).split('page=')[1]
+    if (page !== undefined || page != null) {
+      return page
+    }
+
+    return 1
   }
 
   renderProducts = () => (
@@ -109,6 +116,18 @@ class Products extends React.Component<IProductsProps> {
     })
   }
 
+  isMeta = () => {
+    if (this.props.productsState
+      && this.props.productsState.meta) {
+      return this.props.productsState.meta
+    }
+
+    return {
+      total: 0,
+      page_size: 0,
+    }
+  }
+
   render() {
     return (
       <>
@@ -153,6 +172,18 @@ class Products extends React.Component<IProductsProps> {
                 </tbody>
               </table>
             </div>
+
+            <Pagination
+              currentPage={Number(this.onMakeCurrentPage())}
+              pageLimit={Number(this.isMeta()['page_size'])}
+              pageNeighbours={2}
+              onPageChanged={(e) => {
+                this.props.actionGetProducts(`?page=${e.currentPage}`)
+                window.scrollTo(0, 0)
+                window.history.pushState('', '', `${this.props.match.url}?page=${e.currentPage}`);
+              }}
+              totalRecords={Number(this.isMeta()['total'])}
+            />
           </div>
         </div>
       </>

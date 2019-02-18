@@ -40,10 +40,10 @@ const actionTagProduct = form => async (dispatch) => {
   })
 };
 
-const actionGetProducts = () => async (dispatch) => {
+const actionGetProducts = query => async (dispatch) => {
   return await dispatch({
     type: LIST_PRODUCTS,
-    payload: axios.get(`${API}products`),
+    payload: axios.get(`${API}products${query}`),
   })
 };
 
