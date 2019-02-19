@@ -49,6 +49,9 @@ class AdminSideLeftMenu extends React.Component {
             <li>
               <Link to="/xxx/app/language">Ngôn ngữ</Link>
             </li>
+            <li>
+              <Link to="/xxx/app/accounts">Tài khoản</Link>
+            </li>
           </ul>
         </div>
       </div>

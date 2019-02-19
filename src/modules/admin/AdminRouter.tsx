@@ -76,6 +76,12 @@ const AdminLanguage = Loadable({
   loading: () => <GlobalLoading/>,
 });
 
+const AdminRoles = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "admin_roles" */ '@app/modules/admin/auth/roles'),
+  loading: () => <GlobalLoading/>,
+});
+
 const AdminRouter = (props) => {
   return (
     <Switch>
@@ -91,6 +97,7 @@ const AdminRouter = (props) => {
       <Route path={`${props.match.url}/comments`} component={AdminComments}/>
       <Route path={`${props.match.url}/settings`} component={AdminSettings}/>
       <Route path={`${props.match.url}/language`} component={AdminLanguage}/>
+      <Route path={`${props.match.url}/accounts`} component={AdminRoles}/>
     </Switch>
   )
 }

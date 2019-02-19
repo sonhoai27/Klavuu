@@ -207,9 +207,9 @@ const mapStateToProps = storeState => ({
 const mapDispatchToProps = {
   actionGetBanners,
   actionShowHidePopup,
-  actionDeleteBanner,
   actionShowHideLoading,
   actionShowHideAlert,
+  actionDeleteBanner,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminBanner)

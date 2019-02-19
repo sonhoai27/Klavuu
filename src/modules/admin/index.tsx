@@ -78,8 +78,14 @@ class Admin extends React.Component<IClientProps, IClientStates> {
             )
           }
           {
-            this.state.login.status
-            && this.state.login.status === 202
+            (
+              this.state.login.status
+              && this.state.login.status === 202
+            )
+            || (
+              this.state.login.status
+              && this.state.login.status === 404
+            )
             && <Redirect from={`${match.url}`} to={`${match.url}/app`} />
           }
         </Switch>
