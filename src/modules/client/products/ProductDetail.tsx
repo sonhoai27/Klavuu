@@ -37,6 +37,7 @@ interface IProductDetailProps {
   cartState: any[];
   actionShowHideAlert: Function;
   t?: any;
+  settingsState: any;
 }
 
 interface IProductDetailStates {
@@ -307,6 +308,7 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
                   currentProductImage={this.state.currentProductImage}
                   onCollapse={this.onCollapse}
                   renderTags={this.renderTags}
+                  settings={this.props.settingsState}
                 />
               : <ProductLeftInfoLoading/>
             }
@@ -334,6 +336,7 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
 const mapStateToProps = storeState => ({
   productState: storeState.productReducer.productState,
   cartState: storeState.cartReducer.cartState,
+  settingsState: storeState.initReducer.settingsState,
 })
 
 const mapDispatchToProps = {

@@ -13,6 +13,7 @@ const ProductInfo = ({
   currentProductImage,
   onCollapse,
   renderTags,
+  settings,
   t,
 }) => (
   <>
@@ -62,9 +63,9 @@ const ProductInfo = ({
               </div>
     </div>
     <ul className={Styles['additional-info']}>
-      <li><Icon name="thumbs-up" /> Cam kết 100% chính hãng</li>
-      <li><Icon name="train" /> Giao hàng dự kiến: Thứ 5 17/1 - Thứ 3 22/1</li>
-      <li><Icon name="sync" /> Đổi trả trong 7 ngày</li>
+      <li><Icon name="thumbs-up" /> {settings.WEBSITE_REAL_PRODUCT}</li>
+      <li><Icon name="train" /> {settings.WEBSITE_EXPECTED_DELIVERY_DATE}</li>
+      <li><Icon name="sync" /> {settings.WEBSITE_PRODUCT_RETURNS}</li>
     </ul>
     <div className={Styles['product-tags']}>
       {renderTags()}

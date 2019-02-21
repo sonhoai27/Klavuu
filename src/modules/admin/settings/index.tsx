@@ -21,6 +21,7 @@ interface IAdminSettingsStates {
   info: any;
   address: any;
   socials: any;
+  hope: any;
 }
 
 class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsStates> {
@@ -42,6 +43,12 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
         WEBSITE_YOUTUBE: '',
         WEBSITE_TWITTER: '',
         WEBSITE_INSTAGRAM: '',
+      },
+      hope: {
+        WEBSITE_ADS: '',
+        WEBSITE_EXPECTED_DELIVERY_DATE: '',
+        WEBSITE_PRODUCT_RETURNS: '',
+        WEBSITE_REAL_PRODUCT: '',
       },
     }
   }
@@ -68,6 +75,12 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
           WEBSITE_YOUTUBE: this.props.settingsState.WEBSITE_YOUTUBE,
           WEBSITE_TWITTER: this.props.settingsState.WEBSITE_TWITTER,
           WEBSITE_INSTAGRAM: this.props.settingsState.WEBSITE_INSTAGRAM,
+        },
+        hope: {
+          WEBSITE_ADS: this.props.settingsState.WEBSITE_ADS,
+          WEBSITE_EXPECTED_DELIVERY_DATE: this.props.settingsState.WEBSITE_EXPECTED_DELIVERY_DATE,
+          WEBSITE_PRODUCT_RETURNS: this.props.settingsState.WEBSITE_PRODUCT_RETURNS,
+          WEBSITE_REAL_PRODUCT: this.props.settingsState.WEBSITE_REAL_PRODUCT,
         },
       })
     }
@@ -281,6 +294,58 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
                 <div>
                   <span
                     onClick={() => this.onSave('address')}
+                    className={S['settings__btn']}>Lưu</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row" style={{ paddingBottom: 32 }}>
+            <div className="col-sm-4">
+              <p><b>Thông tin bán hàng và quảng cáo</b></p>
+              <p>
+                Quảng cáo sẽ hiện ở đầu trang web,
+                các cam kết thông tin sẽ ỏ trong phần chi tiết sản phẩm.<br />
+              </p>
+            </div>
+            <div className="col-sm-1" />
+            <div className="col-sm-7">
+              <div className={GlobalStyles['wrap-content']}>
+                <div className={GlobalStyles['form-item']}>
+                  <label>Tiêu đề quảng cáo đầu trang</label>
+                  <input
+                    onChange={e => this.onChange(e, 'hope')}
+                    type="text"
+                    defaultValue={this.props.settingsState.WEBSITE_ADS}
+                    name="WEBSITE_ADS" />
+                </div>
+                <div className={GlobalStyles['form-item']}>
+                  <label>Cam kết 1</label>
+                  <input
+                    onChange={e => this.onChange(e, 'hope')}
+                    type="text"
+                    defaultValue={this.props.settingsState.WEBSITE_EXPECTED_DELIVERY_DATE}
+                    name="WEBSITE_EXPECTED_DELIVERY_DATE" />
+                </div>
+                <div className={GlobalStyles['form-item']}>
+                  <label>Cam kết 2</label>
+                  <input
+                    onChange={e => this.onChange(e, 'hope')}
+                    type="text"
+                    defaultValue={this.props.settingsState.WEBSITE_PRODUCT_RETURNS}
+                    name="WEBSITE_PRODUCT_RETURNS" />
+                </div>
+                <div className={GlobalStyles['form-item']}>
+                  <label>Cam kết 3</label>
+                  <input
+                    onChange={e => this.onChange(e, 'hope')}
+                    type="text"
+                    defaultValue={this.props.settingsState.WEBSITE_REAL_PRODUCT}
+                    name="WEBSITE_REAL_PRODUCT" />
+                </div>
+                <div>
+                  <span
+                    onClick={() => this.onSave('hope')}
                     className={S['settings__btn']}>Lưu</span>
                 </div>
               </div>

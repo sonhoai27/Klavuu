@@ -9,7 +9,6 @@ import cartReducer from './cart/CartReducer';
 import cmtReducer from './comment/CommentReducer';
 import bannerReducer from './banner/BannerReducer';
 import languageReducer from './language/LanguageReducer';
-import accountReducer from './account/AccountReducer';
 
 const rootReducer = combineReducers({
   initReducer,
@@ -21,7 +20,6 @@ const rootReducer = combineReducers({
   cmtReducer,
   bannerReducer,
   languageReducer,
-  accountReducer,
 });
 
 export default rootReducer;

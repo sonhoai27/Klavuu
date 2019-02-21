@@ -23,7 +23,7 @@ class Header extends React.Component<IHeaderProps> {
     if (this.onDetectedWithSize() >= 768) {
       return (
         <>
-          <Alert/>
+          <Alert settings={this.props.settingsState}/>
           <ActionHeader/>
           <PrimaryHeader
                 brands={this.props.brandsState.data ? this.props.brandsState.data : []}

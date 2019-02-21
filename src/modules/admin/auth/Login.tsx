@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { actionLogin, actionShowHideAlert } from '@app/stores/init';
+import { actionLogin, actionShowHideAlert, actionShowHideLoading } from '@app/stores/init';
 
 const S = require('./styles/login.scss')
 
@@ -8,6 +8,7 @@ interface IAdminLoginProps {
   actionLogin: Function;
   actionShowHideAlert: Function;
   LoginCheckState: any;
+  actionShowHideLoading: Function;
 }
 
 interface IAdminLoginStates {
@@ -41,9 +42,11 @@ class AdminLogin extends React.Component<IAdminLoginProps, IAdminLoginStates> {
   }
 
   onLogin = () => {
+    this.props.actionShowHideLoading(true)
     if (this.state.user.user_email !== '' && this.state.user.user_password !== '') {
       this.props.actionLogin(this.state.user)
       .then((result) => {
+        this.props.actionShowHideLoading(false)
         this.props.actionShowHideAlert({
           type: 'success',
           title: 'Đăng nhập thành công!',
@@ -58,6 +61,7 @@ class AdminLogin extends React.Component<IAdminLoginProps, IAdminLoginStates> {
         }, 1500)
       })
       .catch(() => {
+        this.props.actionShowHideLoading(false)
         this.props.actionShowHideAlert({
           type: 'warning',
           title: 'Có lỗi vui lòng xem lại!',
@@ -69,6 +73,18 @@ class AdminLogin extends React.Component<IAdminLoginProps, IAdminLoginStates> {
           })
         }, 1500)
       })
+    } else {
+      this.props.actionShowHideLoading(false)
+      this.props.actionShowHideAlert({
+        type: 'warning',
+        title: 'Có lỗi vui lòng xem lại!',
+        status: true,
+      })
+      setTimeout(() => {
+        this.props.actionShowHideAlert({
+          status: false,
+        })
+      }, 1500)
     }
   }
 
@@ -115,6 +131,7 @@ const mapStateToProps = storeState => ({
 const mapDispatchToProps = {
   actionLogin,
   actionShowHideAlert,
+  actionShowHideLoading,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminLogin);

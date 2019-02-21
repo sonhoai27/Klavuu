@@ -2,10 +2,10 @@ import * as React from 'react';
 
 const Styles = require('./styles/index.scss')
 
-const Alert = () => (
+const Alert = ({ settings }) => (
   <div
     className={`${Styles['section-notification-bar']} col-12`}>
-    FREE US GROUND SHIPPING FOR ORDERS OVER $50
+    {settings.WEBSITE_ADS}
   </div>
 )
 

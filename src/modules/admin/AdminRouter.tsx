@@ -76,12 +76,6 @@ const AdminLanguage = Loadable({
   loading: () => <GlobalLoading/>,
 });
 
-const AdminRoles = Loadable({
-  loader: () => import(
-    /*webpackChunkName: "admin_roles" */ '@app/modules/admin/auth/roles'),
-  loading: () => <GlobalLoading/>,
-});
-
 const AdminRouter = (props) => {
   return (
     <Switch>
@@ -89,15 +83,14 @@ const AdminRouter = (props) => {
       <Route path={`${props.match.url}/products`} component={AdminProducts}/>
       <Route path={`${props.match.url}/product/add`} component={AdminProductsAdd}/>
       <Route path={`${props.match.url}/product/:alias`} component={AdminProductsDetail}/>
-      <Route path={`${props.match.url}/orders`} component={AdminOrder}/>
-      <Route path={`${props.match.url}/order/:id`} component={AdminOrderDetail}/>
       <Route path={`${props.match.url}/banners`} component={AdminBanner}/>
       <Route path={`${props.match.url}/brands`} component={AdminBrand}/>
       <Route path={`${props.match.url}/tags`} component={AdminTags}/>
       <Route path={`${props.match.url}/comments`} component={AdminComments}/>
       <Route path={`${props.match.url}/settings`} component={AdminSettings}/>
       <Route path={`${props.match.url}/language`} component={AdminLanguage}/>
-      <Route path={`${props.match.url}/accounts`} component={AdminRoles}/>
+      <Route path={`${props.match.url}/orders`} component={AdminOrder}/>
+      <Route path={`${props.match.url}/order/:id`} component={AdminOrderDetail}/>
     </Switch>
   )
 }
