@@ -16,6 +16,13 @@ interface IActionHeaderProps {
 const ActionHeader = (props: IActionHeaderProps) => {
   const [isShowHideSearchBar, onShowHideSearchBar] = React.useState(false)
   const { t } = props
+
+  const onKeyUp = (e) => {
+    if (e.keyCode === 13 && e.target.value !== '') {
+      window.location.href = `/page/search/${e.target.value}`
+    }
+  }
+
   return (
     <div className={`${Styles['action-header']} col-12 `}>
       <div className="container">
@@ -42,7 +49,7 @@ const ActionHeader = (props: IActionHeaderProps) => {
               onClick={() => onShowHideSearchBar(!isShowHideSearchBar)}
               name="magnifier"
               className={Styles['icon']}/>
-              { isShowHideSearchBar && <SearchBar/> }
+              { isShowHideSearchBar && <SearchBar onKeyUp={onKeyUp}/> }
           </li>
           <li className={Styles['relative']}>
             <Icon

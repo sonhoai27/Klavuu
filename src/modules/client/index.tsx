@@ -38,6 +38,12 @@ const AboutUs = Loadable({
   loading: () => <div className="loading">loading...</div>,
 });
 
+const Search = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "client_search" */ './search'),
+  loading: () => <div className="loading">loading...</div>,
+});
+
 interface IClientProps {
   match?: any;
   isShowShoppingCartState: boolean;
@@ -68,10 +74,11 @@ class Client extends React.Component<IClientProps> {
         <Router>
           <Layout>
             <Route exact path={`${match.url}/product/:alias`} component={ProductDetail} />
-            <Route path={`${match.url}/products/all`} component={ProductList} />
-            <Route path={`${match.url}/products/:type/:alias`} component={ProductList} />
-            <Route path={`${match.url}/checkout`} component={Checkout} />
-            <Route path={`${match.url}/about-us`} component={AboutUs} />
+            <Route exact path={`${match.url}/products/all`} component={ProductList} />
+            <Route exact path={`${match.url}/products/:type/:alias`} component={ProductList} />
+            <Route exact path={`${match.url}/checkout`} component={Checkout} />
+            <Route exact path={`${match.url}/about-us`} component={AboutUs} />
+            <Route exact path={`${match.url}/search/:query`} component={Search} />
             {
               this.props.isShowShoppingCartState && <ShoppingCart />
             }

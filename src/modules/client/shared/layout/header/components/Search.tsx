@@ -5,12 +5,13 @@ const S = require('../styles/SearchBar.scss')
 
 interface ISearchBarProps {
   t?: any;
+  onKeyUp?: any;
 }
 
-const SearchBar = ({ t }: ISearchBarProps) => (
+const SearchBar = ({ t, onKeyUp }: ISearchBarProps) => (
   <div className={S['search-bar']}>
-    <input placeholder={t('MENU_WHAT_ARE_YOU_LOOKING_FOR')}/>
+    <input onKeyUp={onKeyUp} placeholder={t('MENU_WHAT_ARE_YOU_LOOKING_FOR')}/>
   </div>
 )
 
-export default withNamespaces()(SearchBar as any)
+export default withNamespaces()(SearchBar)

@@ -93,6 +93,12 @@ class PrimaryMenuForMobile extends React.Component<
     ))
   )
 
+  onKeyUp = (e) => {
+    if (e.keyCode === 13 && e.target.value !== '') {
+      window.location.href = `/page/search/${e.target.value}`
+    }
+  }
+
   render() {
     const { t } = this.props
 
@@ -102,7 +108,10 @@ class PrimaryMenuForMobile extends React.Component<
           <Icon
             onClick={this.onCloseMenu}
             name="menu" className={S['mobile-primary-menu__toggle-btn']} />
-          <input type="text" placeholder={t('MENU_WHAT_ARE_YOU_LOOKING_FOR')} />
+          <input
+            onKeyUp={this.onKeyUp}
+            type="text"
+            placeholder={t('MENU_WHAT_ARE_YOU_LOOKING_FOR')} />
           <div className={S['mobile-primary-menu__cart']}>
             <Icon
               onClick={() => {
