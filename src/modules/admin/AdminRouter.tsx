@@ -76,6 +76,12 @@ const AdminLanguage = Loadable({
   loading: () => <GlobalLoading/>,
 });
 
+const AdminHelps = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "admin_helps" */ '@app/modules/admin/helps'),
+  loading: () => <GlobalLoading/>,
+});
+
 const AdminRouter = (props) => {
   return (
     <Switch>
@@ -91,6 +97,7 @@ const AdminRouter = (props) => {
       <Route path={`${props.match.url}/language`} component={AdminLanguage}/>
       <Route path={`${props.match.url}/orders`} component={AdminOrder}/>
       <Route path={`${props.match.url}/order/:id`} component={AdminOrderDetail}/>
+      <Route path={`${props.match.url}/helps`} component={AdminHelps}/>
     </Switch>
   )
 }

@@ -59,7 +59,7 @@ class AdminSideLeftMenu extends React.Component<IAdminSideLeftMenuProps> {
                 <Link to="/xxx/app/settings">Thông tin chung</Link>
               </li>
               <li>
-                <Link to="/xxx/app/priorities">Chính sách</Link>
+                <Link to="/xxx/app/helps">Trợ giúp</Link>
               </li>
               <li>
                 <Link to="/xxx/app/language">Ngôn ngữ</Link>

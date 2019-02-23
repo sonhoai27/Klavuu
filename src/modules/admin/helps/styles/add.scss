@@ -1,0 +1,49 @@
+.form-item {
+    margin-bottom: 16px;
+    p {
+        margin-bottom: 4px;
+    }
+    input {
+        box-shadow: none;
+        outline: none;
+        transition: all .2s ease-out;
+        margin: 0;
+        border-radius: 0;
+        color: #000;
+        padding: 5px 10px;
+        border: 1px solid #c4cdd5;
+        border-radius: 3px;
+        font-weight: 400;
+        line-height: 24px;
+        text-transform: none;
+        letter-spacing: normal;
+        box-sizing: border-box;
+        display: block;
+        width: 100%;
+        &:hover,
+        &:focus,
+        &:visited {
+            border-color: #0078bd;
+            -webkit-box-shadow: 0 0 0 1px #0078bd;
+            box-shadow: 0 0 0 1px #0078bd;
+            outline: none;
+            z-index: 1;
+        }
+    }
+}
+
+.btn-action {
+    display: block;
+    text-align: right;
+    margin-top: 32px;
+    span {
+        padding: 4px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 16px;
+    }
+    span:last-child {
+        background: var(--second-color);
+        color: #fff;
+    }
+}
