@@ -45,4 +45,32 @@
         padding-top: 64px;
         text-align: justify;
     }
+    .faqs__item {
+        background-color: rgba(255, 229, 220, 0.116);
+        text-align: left;
+        padding: 16px;
+        box-shadow: 0 4px 11px rgba(0, 0, 0, .08);
+        white-space: normal;
+        transition: all .25s cubic-bezier(.02, .01, .47, 1);
+        color: #333;
+        margin-bottom: 32px;
+        border-radius: 8px;
+        a {
+            display: block;
+            transition: all .25s cubic-bezier(.02, .01, .47, 1);
+        }
+        &:hover {
+            background: #f5b095;
+            a {
+                color: #fff!important;
+            }
+        }
+    }
+}
+
+.faqs__img {
+    img {
+        max-width: 100%;
+        height: auto;
+    }
 }

@@ -153,7 +153,7 @@ class AdminHelpAdd extends React.Component<IAdminHelpAddProps, IAdminHelpAddStat
     return (
       <Modal style={{ maxWidth: '50%' }} isShow={this.props.isShowAddHelp}>
         <Modal.Header
-          title={!this.props.isAddOrUpdate ? 'Thêm hãng mới' : 'Cập nhật hãng'}
+          title={!this.props.isAddOrUpdate ? 'Thêm hãng trợ giúp' : 'Cập nhật trợ giúp'}
           onClose={() => {
             this.setState({
               help: {
@@ -177,21 +177,6 @@ class AdminHelpAdd extends React.Component<IAdminHelpAddProps, IAdminHelpAddStat
               <div className={S['form-item']}>
                 <p>Nội dung</p>
                 <CKEditor
-                  config={{
-                    toolbar: [
-                      { name: 'basicstyles',
-                        items: ['Bold', 'Italic', 'Underline', 'Strike']},
-                      { name: 'styles', items: ['Styles', 'Format', 'FontSize'] },
-                      { name: 'colors', items: ['TextColor', 'BGColor'] },
-                      { name: 'paragraph', groups: ['list', 'indent',
-                        'blocks', 'align', 'bidi'], items: ['NumberedList',
-                          'BulletedList', '-',
-                          'Blockquote', 'JustifyLeft',
-                          'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
-                      { name: 'links', items: ['Link', 'Unlink'] },
-                      { name: 'FontAwesome', items: ['FontAwesome', 'insertimage', 'Image'] },
-                    ],
-                  }}
                   onChange={e => this.onChangeCKEditor(e, 'helps_content')}
                   data={this.state.help.helps_content}/>
               </div>
