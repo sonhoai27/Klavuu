@@ -13,47 +13,48 @@ import Loading from '@app/shared/Loading';
 import Popup from '@app/shared/popup';
 import ShoppingCart from './cart/ShoppingCart';
 import { actionGetBrands } from '@app/stores/brand/BrandActions';
+import GlobalLoading from '@app/shared/global-loading';
 
 const ProductDetail = Loadable({
   loader: () => import(
     /*webpackChunkName: "home_detail" */ '@app/modules/client/products/ProductDetail'),
-  loading: () => <div className="loading">loading...</div>,
+  loading: () => <GlobalLoading/>,
 });
 
 const ProductList = Loadable({
   loader: () => import(
     /*webpackChunkName: "home_list_product" */ '@app/modules/client/products/ProductLists'),
-  loading: () => <div className="loading">loading...</div>,
+  loading: () => <GlobalLoading/>,
 });
 
 const Checkout = Loadable({
   loader: () => import(
     /*webpackChunkName: "home_checkout" */ './cart/Checkout'),
-  loading: () => <div className="loading">loading...</div>,
+  loading: () => <GlobalLoading/>,
 });
 
 const AboutUs = Loadable({
   loader: () => import(
     /*webpackChunkName: "home_aboutus" */ './about/AboutUs'),
-  loading: () => <div className="loading">loading...</div>,
+  loading: () => <GlobalLoading/>,
 });
 
 const Search = Loadable({
   loader: () => import(
     /*webpackChunkName: "client_search" */ './search'),
-  loading: () => <div className="loading">loading...</div>,
+  loading: () => <GlobalLoading/>,
 });
 
 const Faqs = Loadable({
   loader: () => import(
     /*webpackChunkName: "client_faqs" */ './faq'),
-  loading: () => <div className="loading">loading...</div>,
+  loading: () => <GlobalLoading/>,
 });
 
 const FaqsDetail = Loadable({
   loader: () => import(
     /*webpackChunkName: "client_faqs_detail" */ './faq/FaqDetail'),
-  loading: () => <div className="loading">loading...</div>,
+  loading: () => <GlobalLoading/>,
 });
 
 interface IClientProps {
