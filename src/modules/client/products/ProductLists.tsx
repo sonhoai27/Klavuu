@@ -2,16 +2,16 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import LazyLoad from 'react-lazyload';
 import { withNamespaces } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import Breadcrumb from '@app/shared/Breadcrumb';
 import Checkbox from '../shared/layout/checkbox';
 import { actionGetProductsFiler } from '@app/stores/product/ProductActions';
 import FormatNumber from '@app/shared/utils/FormatNumber';
 import { CDN } from '@app/shared/const';
-import { Link } from 'react-router-dom';
 import Radio from '../shared/layout/checkbox/Radio';
 import ProductFilterItems from './components/list/FilterItems';
-import queryParams from '@app/shared/utils/Query';
+import queryParams, { getParameterByName } from '@app/shared/utils/Query';
 import { actionGetBrandTags } from '@app/stores/brand/BrandActions';
 import { actionGetTagBrands } from '@app/stores/tag/TagActions';
 import LazyLoading from '../shared/layout/loading';
@@ -20,6 +20,21 @@ import Pagination from '@app/shared/Pagination';
 const uuidv4 = require('uuid/v4');
 
 const Styles = require('./styles/ProductLists.scss')
+
+const price = [
+  {
+    title: 'Dưới 500.000đ',
+    value: '500000',
+  },
+  {
+    title: 'Từ 500.000đ -> 1.000.000đ',
+    value: '1000000',
+  },
+  {
+    title: 'Trên 1.000.000đ',
+    value: '1000001',
+  },
+]
 
 interface IProductListsProps {
   actionGetProductsFiler: Function;
@@ -408,6 +423,18 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
     </>
   )
 
+  onCheckNullQueryParams = (name, query): any[] => {
+    if (query !== '') {
+      const temp = getParameterByName(name, query)
+
+      if (temp !== null) return temp.split('.');
+
+      return []
+    }
+
+    return []
+  }
+
   render() {
     return (
       <div className={`${Styles['product_lists']} container`}>
@@ -531,16 +558,19 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
           pageLimit={Number(this.isMeta()['page_size'])}
           pageNeighbours={2}
           onPageChanged={(e) => {
+            const { search } = this.props.location
+            console.log(search)
             this.setState({
               filter: {
-                ...this.state.filter,
+                brand: this.onCheckNullQueryParams('brand', search),
+                tag: this.onCheckNullQueryParams('tag', search),
+                price: this.onCheckNullQueryParams('price', search),
                 page: [...[], {
                   title: e.currentPage,
                   value: e.currentPage,
                 }],
               },
             }, () => {
-              console.log(this.state.filter)
               this.props.history.push(
                 `${this.props.match.url}${queryParams(this.onMakeFilter())}`,
               )
