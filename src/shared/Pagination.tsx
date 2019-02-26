@@ -22,6 +22,7 @@ interface IPaginationProps {
   pageNeighbours?: number;
   onPageChanged?: Function;
   currentPage?: number;
+  autoLoad?: boolean;
 }
 
 interface IPaginationStates {
@@ -82,9 +83,11 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
         this.setState({
           isInit: true,
         }, () => {
-          this.props.onPageChanged({
-            currentPage: this.props.currentPage ? this.props.currentPage : 1,
-          })
+          if (this.props.autoLoad) {
+            this.props.onPageChanged({
+              currentPage: this.props.currentPage ? this.props.currentPage : 1,
+            })
+          }
         })
       }
     })

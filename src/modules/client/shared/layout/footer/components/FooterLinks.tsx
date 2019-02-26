@@ -10,7 +10,7 @@ interface IFooterLinksProps {
 }
 
 const FooterLinks = (props: IFooterLinksProps) => (
-  <div className={`col-12 ${S['footer']}`}>
+  <div className={`col-12 ${S['footer']}`} style={{ paddingLeft: 0, paddingRight: 0 }}>
       <div className="row">
         <div className="col-sm-4">
           <div className={S['footer__icon-website']}>

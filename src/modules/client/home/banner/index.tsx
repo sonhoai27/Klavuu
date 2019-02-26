@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { actionGetBanners } from '@app/stores/banner/BannerActions';
 import { CDN } from '@app/shared/const';
 import BannerLazyLoading from './loading';
+import Icon from '../../shared/layout/Icon';
+const S = require('../new-products/NewProducts.scss')
 
 const uuidv4 = require('uuid/v4');
 
@@ -44,7 +46,16 @@ class Banner extends React.PureComponent<IBannerProps> {
   render() {
     if (this.props.bannersState && this.props.bannersState.length > 0) {
       return (
-        <Carousel ref={c => this.carousel = c} >
+        <Carousel
+          renderCenterLeftControls={({ previousSlide }) => (
+            <Icon className={S['new-products__action']}
+              name="chevron-left" onClick={previousSlide}/>
+          )}
+          renderCenterRightControls={({ nextSlide }) => (
+            <Icon className={S['new-products__action']}
+              name="chevron-right" onClick={nextSlide}/>
+          )}
+          ref={c => this.carousel = c} >
             {this.renderListBanners()}
         </Carousel>
       )

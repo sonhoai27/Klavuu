@@ -71,15 +71,64 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
   }
 
   componentDidMount(): void {
+    const { search } = this.props.location;
+
     this.onGetTagOrBrand()
     this.onGetProducts()
+    this.onAutoRevertFilterItem('price', search, price, {
+      title: 'title',
+      value: 'value',
+    })
   }
 
   componentDidUpdate(preProps) {
+    const { search } = this.props.location;
+
     if (this.props.location !== preProps.location) {
       this.onGetProducts()
       this.onGetTagOrBrand()
     }
+
+    if (preProps.brandTagsState !== this.props.brandTagsState) {
+      this.onAutoRevertFilterItem('tag', search, this.props.brandTagsState, {
+        title: 'tag_name',
+        value: 'tag_alias',
+      })
+    }
+
+    if (preProps.tagBrandsState !== this.props.tagBrandsState) {
+      this.onAutoRevertFilterItem('brand', search, this.props.tagBrandsState, {
+        title: 'brand_name',
+        value: 'brand_alias',
+      })
+    }
+  }
+
+  onAutoRevertFilterItem = (type, search, list, what) => {
+    const items = this.onCheckNullQueryParams(type, search)
+
+    let temp = []
+
+    if (items !== null) {
+      for (const item of items) {
+        const tempFilter = list.filter(e => item === e[what.value])
+        if (tempFilter.length > 0) {
+          temp = [...temp, {
+            title: tempFilter[0][what.title],
+            value: tempFilter[0][what.value],
+          }]
+        }
+      }
+    }
+
+    this.setState({
+      filter: {
+        ...this.state.filter,
+        [type]: temp,
+      },
+    }, () => {
+      console.log(this.state)
+    })
   }
 
   onGetTagOrBrand = () => {
@@ -435,6 +484,15 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
     return []
   }
 
+  onMakeCurrentPage = () => {
+    const page = (window.location.href).split('page=')[1]
+    if (page !== undefined || page != null) {
+      return page
+    }
+
+    return 1
+  }
+
   render() {
     return (
       <div className={`${Styles['product_lists']} container`}>
@@ -554,17 +612,14 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
         </div>
 
         <Pagination
-          currentPage={Number(this.state.filter.page)}
+          currentPage={Number(this.onMakeCurrentPage())}
           pageLimit={Number(this.isMeta()['page_size'])}
           pageNeighbours={2}
+          autoLoad={false}
           onPageChanged={(e) => {
-            const { search } = this.props.location
-            console.log(search)
             this.setState({
               filter: {
-                brand: this.onCheckNullQueryParams('brand', search),
-                tag: this.onCheckNullQueryParams('tag', search),
-                price: this.onCheckNullQueryParams('price', search),
+                ...this.state.filter,
                 page: [...[], {
                   title: e.currentPage,
                   value: e.currentPage,
