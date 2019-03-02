@@ -32,11 +32,23 @@ class PrimaryHeader extends React.Component<IPrimaryHeaderProps, IPrimaryHeaderS
       this.onClickHideMenu,
       false,
     );
+
+    window.addEventListener(
+      'scroll',
+      this.onCheckPositionOfScrollbar,
+      false,
+    );
   }
   componentWillUnMount() {
     window.addEventListener(
       'mousedown',
       this.onClickHideMenu,
+      false,
+    );
+
+    window.addEventListener(
+      'scroll',
+      this.onCheckPositionOfScrollbar,
       false,
     );
   }
@@ -68,11 +80,27 @@ class PrimaryHeader extends React.Component<IPrimaryHeaderProps, IPrimaryHeaderS
 
   onSetCurrentItemMenu = (choose: string) => this.setState({ choose })
 
+  onCheckPositionOfScrollbar = () => {
+    const scrollY = window.scrollY
+    const primaryMenu: any = document.getElementById('primary-menu')
+
+    if (scrollY > 40) {
+      primaryMenu.classList.add(Styles['primary-header__fixed'])
+    } else {
+      primaryMenu.classList.remove(Styles['primary-header__fixed'])
+    }
+  }
+
   render() {
     const { t } = this.props;
 
     return (
-      <div className={`${Styles['primary-header']} col-12`}>
+      <div
+        id="primary-menu"
+        className={`
+        ${Styles['primary-header']}
+        col-12
+      `}>
         <div className="container">
           <div className={`${Styles['row']} row`}>
             <div className={Styles['primary-header__logo']}>

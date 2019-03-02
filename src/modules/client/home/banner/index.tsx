@@ -6,6 +6,7 @@ import { actionGetBanners } from '@app/stores/banner/BannerActions';
 import { CDN } from '@app/shared/const';
 import BannerLazyLoading from './loading';
 import Icon from '../../shared/layout/Icon';
+import { Link } from 'react-router-dom';
 const S = require('../new-products/NewProducts.scss')
 
 const uuidv4 = require('uuid/v4');
@@ -35,6 +36,19 @@ class Banner extends React.PureComponent<IBannerProps> {
           style={{ width: '100%' }}
           className="img-fluid"
           src={`${CDN}banners/${element.banner_image}`} />
+          {
+            element.banner_title !== null
+            && (
+              <div className={S['new-products__link']}>
+                <Link to={element.banner_link}>
+                  <div className={S['new-products__link__info']}>
+                    <h3>{element.banner_title}</h3>
+                    <p>{element.banner_desc}</p>
+                  </div>
+                </Link>
+              </div>
+            )
+          }
       </div>
     ))
   )

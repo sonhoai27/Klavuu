@@ -321,9 +321,14 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
                 <Link to={`/page/product/${element.product_alias}`}>
                   <img className="img-fluid" src={`${CDN}${element.img_src}`} />
                 </Link>
-                <div className={Styles['product_list__item__discount']}>
-                  {element.product_discount}% OFF
-                </div>
+                {
+                  Number(element.product_discount) > 0
+                  && (
+                    <div className={Styles['product_list__item__discount']}>
+                      {element.product_discount}% OFF
+                    </div>
+                  )
+                }
               </div>
               <div className={Styles['product_list__item__brand']}>
                 {element.brand_name}
@@ -615,7 +620,7 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
           currentPage={Number(this.onMakeCurrentPage())}
           pageLimit={Number(this.isMeta()['page_size'])}
           pageNeighbours={2}
-          autoLoad={false}
+          autoLoad={true}
           onPageChanged={(e) => {
             this.setState({
               filter: {

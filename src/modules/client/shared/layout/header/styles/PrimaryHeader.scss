@@ -4,6 +4,18 @@
     z-index: 100;
     padding-left: 15px;
     padding-right: 15px;
+    &__fixed {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1000;
+        box-shadow: 0 5px 6px 0 hsla(0, 0%, 0%, 0.05);
+        background: #fff;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        transition: all 0.5s;
+    }
     ul {
         list-style: none;
         padding: 0;

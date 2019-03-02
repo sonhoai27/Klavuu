@@ -52,9 +52,10 @@
         box-shadow: 0 4px 11px rgba(0, 0, 0, .08);
         white-space: normal;
         transition: all .25s cubic-bezier(.02, .01, .47, 1);
-        color: #333;
+        color: #222;
         margin-bottom: 32px;
         border-radius: 8px;
+        font-weight: 600;
         a {
             display: block;
             transition: all .25s cubic-bezier(.02, .01, .47, 1);

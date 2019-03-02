@@ -31,7 +31,6 @@ interface IPaginationStates {
   totalRecords: number;
   pageLimit: number;
   pageNeighbours: number;
-  isInit: boolean;
 }
 
 class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
@@ -43,7 +42,6 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
       pageLimit: 20,
       pageNeighbours: 2,
       currentPage: 1,
-      isInit: false,
     }
   }
 
@@ -79,15 +77,9 @@ class Pagination extends React.Component<IPaginationProps, IPaginationStates> {
       pageNeighbours,
       currentPage: this.props.currentPage ? this.props.currentPage : 1,
     }, () => {
-      if (!this.state.isInit) {
-        this.setState({
-          isInit: true,
-        }, () => {
-          if (this.props.autoLoad) {
-            this.props.onPageChanged({
-              currentPage: this.props.currentPage ? this.props.currentPage : 1,
-            })
-          }
+      if (!this.props.autoLoad) {
+        this.props.onPageChanged({
+          currentPage: this.props.currentPage ? this.props.currentPage : 1,
         })
       }
     })

@@ -35,8 +35,8 @@ class ClientFaq extends React.Component<IClientFaqProps, IClientFaqStates> {
   renderListHelps = () => (
     this.state.helpsState
     && this.state.helpsState.length > 0
-    && this.state.helpsState.map(element => (
-      <div className="col-sm-3" key={Math.random()}>
+    && this.state.helpsState.map((element, index) => (
+      <div key={index}>
         <div className={S['faqs__item']}>
           <Link to={`/page/faqs/${element.helps_alias}`}>
             {element.helps_name}
@@ -58,7 +58,11 @@ class ClientFaq extends React.Component<IClientFaqProps, IClientFaqStates> {
         </div>
         <div className={`${S['about-us__content']} container`}>
           <div className="row">
-            {this.renderListHelps()}
+            <div className="col-sm-3"></div>
+            <div className="col-sm-6">
+              {this.renderListHelps()}
+            </div>
+            <div className="col-sm-3"></div>
           </div>
         </div>
       </div>
