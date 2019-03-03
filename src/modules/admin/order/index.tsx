@@ -8,6 +8,7 @@ import { actionGetOrders, actionUpdateOrder } from '@app/stores/cart/CartActions
 import { Link } from 'react-router-dom';
 import { actionShowHideLoading, actionShowHideAlert } from '@app/stores/init';
 import Pagination from '@app/shared/Pagination';
+import FormatNumber from '@app/shared/utils/FormatNumber';
 
 const GlobalStyles = require('@app/shared/styles/Box.scss');
 const S = require('./styles/Order.scss')
@@ -100,7 +101,8 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
           </td>
           <td>{element.order_client_name}</td>
           <td>{element.order_address}</td>
-          <td>{element.order_sumary_price}</td>
+          <td>{FormatNumber(element.order_sumary_price)}đ</td>
+          <td>{element.order_created_date}</td>
           <td>
             {
               this.state.currenRowState !== element.order_id
@@ -179,11 +181,12 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
               <table className="table">
                 <thead>
                   <tr>
-                    <th style={{ width: '20%' }} scope="col">#ID</th>
-                    <th style={{ width: '25%' }} scope="col">Khách hàng</th>
+                    <th style={{ width: '15%' }} scope="col">#ID</th>
+                    <th style={{ width: '20%' }} scope="col">Khách hàng</th>
                     <th style={{ width: '15%' }} scope="col">Đại chỉ</th>
                     <th style={{ width: '20%' }} scope="col">Tổng giá trị</th>
-                    <th style={{ width: '20%' }} scope="col">Ghi chú</th>
+                    <th style={{ width: '15%' }} scope="col">Ngày mua</th>
+                    <th style={{ width: '15%' }} scope="col">Ghi chú</th>
                     <th />
                   </tr>
                 </thead>

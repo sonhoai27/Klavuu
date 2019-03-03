@@ -5,5 +5,6 @@ export default () => {
   const hours = tempDate.getHours()
   const minutes = tempDate.getMinutes();
   const seconds = tempDate.getUTCMilliseconds()
+
   return `${tempDate.getFullYear()}${month}${day}${seconds}${minutes}${hours}`
 }

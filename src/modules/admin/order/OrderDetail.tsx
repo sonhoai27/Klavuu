@@ -190,6 +190,11 @@ class OrderDetail extends React.Component<IOrderDetailProps, IOrderDetailStates>
                   {this.renderListProduct()}
                 </ul>
                 <p className={S['line']}/>
+                <div className={S['total_price']} style={{ marginBottom: 16 }}>
+                  <span>Mã giới thiệu</span>
+                  <span>{this.isOrder()['order'].order_intro_code}</span>
+                </div>
+                <p className={S['line']}/>
                 <div className={S['total_price']}>
                   <span>Tổng đơn hàng</span>
                   <span>{this.onFormatNumber(this.onMakeSumaryPrice())}đ</span>

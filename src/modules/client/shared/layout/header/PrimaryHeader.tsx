@@ -144,6 +144,9 @@ class PrimaryHeader extends React.Component<IPrimaryHeaderProps, IPrimaryHeaderS
                 }
               </li>
               <li>
+                <Link to="/page/blogs">Blogs</Link>
+              </li>
+              <li>
                 <Link to="/page/about-us">{t('MENU_ABOUT_US')}</Link>
               </li>
               <li>

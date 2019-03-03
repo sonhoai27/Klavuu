@@ -6,6 +6,7 @@ import BackToTop from './BackToTop';
 import Socials from './components/Socials';
 import FooterLinks from './components/FooterLinks';
 import { actionGetSettings } from '@app/stores/init';
+import InfoSection from './components/InfoSection';
 
 const S = require('./Footer.scss')
 
@@ -46,6 +47,7 @@ class Footer extends React.Component<IFooterProps> {
     const { t } = this.props
     return (
       <div className={`${S['footer']} container`}>
+        <InfoSection/>
         <BackToTop
           scrollStepInPx={50}
           delayInMs={16.66}

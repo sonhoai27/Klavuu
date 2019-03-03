@@ -9,6 +9,7 @@ const AdminLayout = (props: IAdminLayoutProps) => {
   return (
     <div className="col-12" style={{
       background: '#f1f1f0',
+      paddingBottom: '80px',
     }}>
       <div className="row">
         <AdminSideLeftMenu/>

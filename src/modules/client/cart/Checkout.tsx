@@ -11,7 +11,7 @@ import {
   actionGetDistrict,
   actionGetWard,
 } from '@app/stores/product/ProductActions';
-import Moment from '@app/shared/utils/Moment';
+import { MomentDateTime } from '@app/shared/utils/Moment';
 import { actionShowHidePopup, actionShowHideLoading } from '@app/stores/init';
 import Uuid from '@app/shared/utils/Uuid';
 
@@ -71,7 +71,7 @@ class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
         contact: {
           ...this.state.order.contact,
           order_id: Uuid(),
-          order_created_date: Moment(),
+          order_created_date: MomentDateTime(),
         },
       },
     })
@@ -474,6 +474,10 @@ class Checkout extends React.Component<ICheckoutProps, ICheckoutStates> {
                       onChange={this.onChangeToGetUserInfomation}
                       name="order_client_note"
                       rows={3} placeholder={t('CART_CK_NOTE')}/>
+                      <input
+                        onChange={this.onChangeToGetUserInfomation}
+                        name="order_intro_code"
+                        type="text" placeholder="Employee code"/>
                   </div>
                   <div>
                     <span>{t('CART_TOTAL')}</span>
