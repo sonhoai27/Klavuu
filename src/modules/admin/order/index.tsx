@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { actionShowHideLoading, actionShowHideAlert } from '@app/stores/init';
 import Pagination from '@app/shared/Pagination';
 import FormatNumber from '@app/shared/utils/FormatNumber';
+import Calendar from '@app/shared/calendar';
 
 const GlobalStyles = require('@app/shared/styles/Box.scss');
 const S = require('./styles/Order.scss')
@@ -194,6 +195,12 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
                   {this.renderListOrders()}
                 </tbody>
               </table>
+              <Calendar
+                default="2019/05/01"
+                onChange={(date) => {
+                  console.log(date)
+                }}
+              />
             </div>
             <Pagination
               currentPage={Number(this.onMakeCurrentPage())}

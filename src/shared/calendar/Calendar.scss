@@ -1,0 +1,73 @@
+.UICalendar {
+    width: 256px;
+    box-shadow: 0 6px 6px 0 rgba(22, 45, 61, 0.06), 0 0 18px 0 rgba(22, 45, 61, 0.12);
+    border-radius: 8px;
+    background-color: #fff;
+    display: inline-block;
+    margin: 24px;
+    border: 1px solid #eee;
+    padding: 8px;
+    .UICalendar__row {
+        width: 100%;
+        span {
+            width: calc(100% / 7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            float: left;
+            padding: 14px 10px;
+            font-size: 14px;
+        }
+        &__item {
+            cursor: pointer;
+            transition: all .3s ease-in-out;
+            border-radius: 4px;
+            &:hover,
+            &--selected {
+                background: rgb(228, 231, 231);
+            }
+            &--active {
+                background: #3899EC;
+                color: #fff;
+            }
+        }
+    }
+    &__toolbar {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 4px;
+        span {
+            cursor: pointer;
+            transition: all .3s ease-in-out;
+            line-height: 1;
+            padding: 4px;
+            &:hover {
+                background: rgb(228, 231, 231);
+                border-radius: 100%;
+            }
+        }
+        &__picker {
+            display: flex;
+            select {
+                text-align: center;
+                margin: 0px 4px;
+                appearance: none;
+                border: 1px solid #eee;
+                padding: 2px 8px;
+                font-size: 12px;
+                background: #fff;
+            }
+        }
+    }
+    &__days {
+        display: flex;
+        font-size: 10px;
+        width: 100%;
+        padding: 8px 0;
+        span {
+            width: calc(100% / 7);
+            text-align: center;
+        }
+    }
+}
