@@ -65,9 +65,9 @@ class Calendar extends React.Component<ICalendarProps, ICalendarStates> {
               onClick={() => {
                 const { date } = this.state.date
                 const calDate = i - firstDay_day + 1
-                const day = calDate > 10 ? calDate : `0${calDate}`
+                const day = calDate >= 10 ? calDate : `0${calDate}`
                 // tslint:disable-next-line:max-line-length
-                const month = (date.getMonth() + 1) > 10 ? (date.getMonth() + 1) : `0${date.getMonth() + 1}`
+                const month = (date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : `0${date.getMonth() + 1}`
                 const chooseDate = `${date.getFullYear()}/${month}/${day}`
 
                 this.setState({
@@ -201,7 +201,7 @@ class Calendar extends React.Component<ICalendarProps, ICalendarStates> {
     const { date } = this.state.date
     const calMonth = (date.getMonth() + 2) > 12 ? 1 : (date.getMonth() + 2)
     const year = (date.getMonth() + 2) > 12 ? (date.getFullYear() + 1) : date.getFullYear()
-    const month = calMonth > 10 ? calMonth : `0${calMonth}`
+    const month = calMonth >= 10 ? calMonth : `0${calMonth}`
 
     this.setState({
       currentDate: 1,
@@ -212,7 +212,7 @@ class Calendar extends React.Component<ICalendarProps, ICalendarStates> {
     const { date } = this.state.date
     const calMonth = date.getMonth() > 0 ? date.getMonth() : 12
     const year = date.getMonth() > 0 ? date.getFullYear() : (date.getFullYear() - 1)
-    const month = calMonth > 10 ? calMonth : `0${calMonth}`
+    const month = calMonth >= 10 ? calMonth : `0${calMonth}`
 
     this.setState({
       currentDate: 1,
@@ -228,7 +228,7 @@ class Calendar extends React.Component<ICalendarProps, ICalendarStates> {
             <select value={this.getCurrentMonth()} onChange={(e) => {
               const { date } = this.state.date
               let month: any = Number(e.target.value)
-              month = month > 10 ? month : `0${month}`
+              month = month >= 10 ? month : `0${month}`
 
               this.initDate(new Date(`${date.getFullYear()}/${month}/01`))
             }}>
