@@ -178,6 +178,12 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
         </AdminHeader>
         <div className={`col-12 ${S['order']}`}>
           <div className={GlobalStyles['wrap-content']}>
+          <Calendar
+                default="2019/05/01"
+                onChange={(date) => {
+                  console.log(date)
+                }}
+              />
             <div className="table-responsive">
               <table className="table">
                 <thead>
@@ -195,12 +201,6 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
                   {this.renderListOrders()}
                 </tbody>
               </table>
-              <Calendar
-                default="2019/05/01"
-                onChange={(date) => {
-                  console.log(date)
-                }}
-              />
             </div>
             <Pagination
               currentPage={Number(this.onMakeCurrentPage())}

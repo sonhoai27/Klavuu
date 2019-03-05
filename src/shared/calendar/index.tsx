@@ -16,6 +16,8 @@ interface ICalendarStates {
     date?: any;
   },
   currentDate: any;
+  chooseDate: any;
+  isShowingCalendar: boolean;
 }
 
 class Calendar extends React.Component<ICalendarProps, ICalendarStates> {
@@ -26,6 +28,8 @@ class Calendar extends React.Component<ICalendarProps, ICalendarStates> {
         date: new Date(),
       },
       currentDate: this.getCurrentDate(),
+      chooseDate: '',
+      isShowingCalendar: false,
     }
   }
 
@@ -219,36 +223,46 @@ class Calendar extends React.Component<ICalendarProps, ICalendarStates> {
     }, () => this.initDate(new Date(`${year}/${month}/01`)))
   }
 
+  showHideCalendar = () => this.setState({ isShowingCalendar: !this.state.isShowingCalendar })
+
   render() {
     return (
       <div className={S['UICalendar']}>
-        <div className={S['UICalendar__toolbar']}>
-          <Icon name="chevron-left" onClick={this.onPrevDate} />
-          <div className={S['UICalendar__toolbar__picker']}>
-            <select value={this.getCurrentMonth()} onChange={(e) => {
-              const { date } = this.state.date
-              let month: any = Number(e.target.value)
-              month = month >= 10 ? month : `0${month}`
+        <input placeholder={this.props.default} onClick={this.showHideCalendar}/>
+        <div className={`
+          ${S['UICalendar__main']}
+          ${this.state.isShowingCalendar ? S['UICalendar__main--show'] : ''}
+        `}>
+          <div className={S['UICalendar__toolbar']}>
+            <Icon name="chevron-left" onClick={this.onPrevDate} />
+            <div className={S['UICalendar__toolbar__picker']}>
+              <select value={this.getCurrentMonth()} onChange={(e) => {
+                const { date } = this.state.date
+                // @ts-ignore
+                let month: any = Number(e.target.value)
+                month = month >= 10 ? month : `0${month}`
 
-              this.initDate(new Date(`${date.getFullYear()}/${month}/01`))
-            }}>
-              {this.renderMonths()}
-            </select>
-            <select value={this.getCurrentYear()} onChange={(e) => {
-              const { date } = this.state.date
-              const year: any = Number(e.target.value)
+                this.initDate(new Date(`${date.getFullYear()}/${month}/01`))
+              }}>
+                {this.renderMonths()}
+              </select>
+              <select value={this.getCurrentYear()} onChange={(e) => {
+                const { date } = this.state.date
+                // @ts-ignore
+                const year: any = Number(e.target.value)
 
-              this.initDate(new Date(`${year}/${date.getMonth() + 1}/${date.getDate()}`))
-            }}>
-              {this.renderYears()}
-            </select>
+                this.initDate(new Date(`${year}/${date.getMonth() + 1}/${date.getDate()}`))
+              }}>
+                {this.renderYears()}
+              </select>
+            </div>
+            <Icon name="chevron-right" onClick={this.onNextDate} />
           </div>
-          <Icon name="chevron-right" onClick={this.onNextDate} />
+          <div className={S['UICalendar__days']}>
+            {this.renderDays()}
+          </div>
+          {this.renderListDate()}
         </div>
-        <div className={S['UICalendar__days']}>
-          {this.renderDays()}
-        </div>
-        {this.renderListDate()}
       </div>
     )
   }
