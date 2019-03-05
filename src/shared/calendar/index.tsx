@@ -21,6 +21,7 @@ interface ICalendarStates {
 }
 
 class Calendar extends React.Component<ICalendarProps, ICalendarStates> {
+  private CalendarRef;
   constructor(props) {
     super(props)
     this.state = {
@@ -34,7 +35,29 @@ class Calendar extends React.Component<ICalendarProps, ICalendarStates> {
   }
 
   componentDidMount() {
+    this.setState({
+      chooseDate: this.props.default,
+    })
     this.initDate(new Date(this.props.default ? this.props.default : ''))
+  }
+
+  componentWillMount() {
+    window.addEventListener('mousedown', this.showOffBodyCalendar, false)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('mousedown', this.showOffBodyCalendar, false)
+  }
+
+  showOffBodyCalendar = (e) => {
+    try {
+      if (!this.CalendarRef.contains(e.target)) {
+        this.setState({
+          isShowingCalendar: false,
+        });
+        return;
+      }
+    } catch (e) {}
   }
 
   initDate = (date) => {
@@ -185,7 +208,14 @@ class Calendar extends React.Component<ICalendarProps, ICalendarStates> {
     return years;
   }
 
-  onClickDate = date => this.props.onChange(date)
+  onClickDate = (date) => {
+    this.setState({
+      chooseDate: date,
+    }, () => {
+      this.props.onChange(date)
+      this.showHideCalendar()
+    })
+  }
 
   getCurrentYear = (): any => this.state.date.date.getFullYear()
 
@@ -227,8 +257,8 @@ class Calendar extends React.Component<ICalendarProps, ICalendarStates> {
 
   render() {
     return (
-      <div className={S['UICalendar']}>
-        <input placeholder={this.props.default} onClick={this.showHideCalendar}/>
+      <div className={S['UICalendar']} ref={node => this.CalendarRef = node}>
+        <input placeholder={this.state.chooseDate} onClick={this.showHideCalendar}/>
         <div className={`
           ${S['UICalendar__main']}
           ${this.state.isShowingCalendar ? S['UICalendar__main--show'] : ''}

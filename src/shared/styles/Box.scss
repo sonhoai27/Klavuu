@@ -89,6 +89,28 @@
     }
 }
 
+.wrap-_action--btn {
+    background: #fff;
+    outline: none;
+    padding: 7px 12px;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid #c4cdd5;
+    margin-left: 8px;
+    cursor: pointer;
+    &:last-child {
+        background: #3995ca;
+        color: #fff;
+    }
+    a {
+        color: #fff!important;
+    }
+}
+
 .wrap-content__right {
     background: #f5f6f7;
 }

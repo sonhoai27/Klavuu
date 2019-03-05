@@ -7,6 +7,9 @@ import Modal from '../../shared/layout/Modal';
 import Alias from '@app/shared/utils/Alias';
 import Axios from 'axios';
 import { API } from '@app/shared/const';
+import { configForProductIntro } from '@app/shared/CKEditorConfig';
+
+CKEditor.editorUrl = 'https://cdn.ckeditor.com/4.10.1/full/ckeditor.js';
 
 const S = require('../styles/add.scss');
 
@@ -177,6 +180,9 @@ class AdminHelpAdd extends React.Component<IAdminHelpAddProps, IAdminHelpAddStat
               <div className={S['form-item']}>
                 <p>Nội dung</p>
                 <CKEditor
+                  config={{
+                    ...configForProductIntro,
+                  }}
                   onChange={e => this.onChangeCKEditor(e, 'helps_content')}
                   data={this.state.help.helps_content}/>
               </div>

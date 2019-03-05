@@ -56,6 +56,9 @@ class AdminSideLeftMenu extends React.Component<IAdminSideLeftMenuProps> {
               </li>
               <li className={styles['line']} />
               <li>
+                <Link to="/xxx/app/blogs">Blogs</Link>
+              </li>
+              <li>
                 <Link to="/xxx/app/settings">Thông tin chung</Link>
               </li>
               <li>

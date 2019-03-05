@@ -1,12 +1,17 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios'
+import { ChromePicker } from 'react-color';
+import CKEditor from 'ckeditor4-react';
 
 import AdminHeader from '../shared/layout/Header';
 import Breadcrumb from '../shared/layout/Breadcrumb';
 import { actionShowHideAlert, actionGetSettings } from '@app/stores/init';
 import SingleUploadImage from './SingleUploadImage';
 import { API } from '@app/shared/const';
+import { configForProductIntro } from '@app/shared/CKEditorConfig';
+
+CKEditor.editorUrl = 'https://cdn.ckeditor.com/4.10.1/full/ckeditor.js';
 
 const GlobalStyles = require('@app/shared/styles/Box.scss');
 const S = require('./Settings.scss');
@@ -22,6 +27,7 @@ interface IAdminSettingsStates {
   address: any;
   socials: any;
   hope: any;
+  color: any;
 }
 
 class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsStates> {
@@ -31,6 +37,11 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
       info: {
         WEBSITE_TITLE: '',
         WEBSITE_DESC: '',
+        WEBSITE_CONFIG_MAIL: '',
+      },
+      color: {
+        WEBSITE_PRIMARY_COLOR: '#fff',
+        WEBSITE_SECOND_COLOR: '#fff',
       },
       address: {
         WEBSITE_EMAIL: '',
@@ -63,6 +74,7 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
         info: {
           WEBSITE_TITLE: this.props.settingsState.WEBSITE_TITLE,
           WEBSITE_DESC: this.props.settingsState.WEBSITE_DESC,
+          WEBSITE_CONFIG_MAIL: this.props.settingsState.WEBSITE_CONFIG_MAIL,
         },
         address: {
           WEBSITE_EMAIL: this.props.settingsState.WEBSITE_EMAIL,
@@ -81,6 +93,13 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
           WEBSITE_EXPECTED_DELIVERY_DATE: this.props.settingsState.WEBSITE_EXPECTED_DELIVERY_DATE,
           WEBSITE_PRODUCT_RETURNS: this.props.settingsState.WEBSITE_PRODUCT_RETURNS,
           WEBSITE_REAL_PRODUCT: this.props.settingsState.WEBSITE_REAL_PRODUCT,
+        },
+        color: {
+          WEBSITE_PRIMARY_COLOR:
+            this.props.settingsState.WEBSITE_PRIMARY_COLOR === null
+              ? '#fff' : this.props.settingsState.WEBSITE_PRIMARY_COLOR,
+          WEBSITE_SECOND_COLOR: this.props.settingsState.WEBSITE_SECOND_COLOR === null
+            ? '#fff' : this.props.settingsState.WEBSITE_SECOND_COLOR,
         },
       })
     }
@@ -156,8 +175,7 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
                 Favicon sẽ hiển thị trên thanh tiêu đề trình duyệt.
             </p>
             </div>
-            <div className="col-sm-1" />
-            <div className="col-sm-7">
+            <div className="col-sm-8">
               <div className={GlobalStyles['wrap-content']}>
                 <div className="row">
                   <div className="col-sm-6">
@@ -166,20 +184,20 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
                       <SingleUploadImage
                         onDelete={() => {
                           axios.delete(`${API}configs/images/WEBSITE_LOGO/${WEBSITE_LOGO}`)
-                          .then(() => this.onShowAlert('success', 'Xóa thành công logo!'))
-                          .catch(() => this.onShowAlert('danger', 'Lỗi xóa logo!'))
+                            .then(() => this.onShowAlert('success', 'Xóa thành công logo!'))
+                            .catch(() => this.onShowAlert('danger', 'Lỗi xóa logo!'))
                         }}
                         onUpdate={(e) => {
                           const formData = new FormData()
                           formData.append('upload-image', e)
                           axios.post(`${API}configs/images/WEBSITE_LOGO`, formData)
-                          .then(() => this.onShowAlert('success', 'Cập nhật thành công logo!'))
-                          .catch(() => this.onShowAlert('danger', 'Lỗi cập nhật logo!'))
+                            .then(() => this.onShowAlert('success', 'Cập nhật thành công logo!'))
+                            .catch(() => this.onShowAlert('danger', 'Lỗi cập nhật logo!'))
                         }}
                         src={
                           this.props.settingsState.WEBSITE_LOGO
-                          ? this.props.settingsState.WEBSITE_LOGO
-                          : ''
+                            ? this.props.settingsState.WEBSITE_LOGO
+                            : ''
                         } />
                     </div>
                   </div>
@@ -189,20 +207,20 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
                       <SingleUploadImage
                         src={
                           this.props.settingsState.WEBSITE_ICON
-                          ? this.props.settingsState.WEBSITE_ICON
-                          : ''
+                            ? this.props.settingsState.WEBSITE_ICON
+                            : ''
                         }
                         onDelete={() => {
                           axios.delete(`${API}configs/images/WEBSITE_ICON/${WEBSITE_ICON}`)
-                          .then(() => this.onShowAlert('success', 'Xóa thành công logo!'))
-                          .catch(() => this.onShowAlert('danger', 'Lỗi xóa logo!'))
+                            .then(() => this.onShowAlert('success', 'Xóa thành công logo!'))
+                            .catch(() => this.onShowAlert('danger', 'Lỗi xóa logo!'))
                         }}
                         onUpdate={(e) => {
                           const formData = new FormData()
                           formData.append('upload-image', e)
                           axios.post(`${API}configs/images/WEBSITE_ICON`, formData)
-                          .then(() => this.onShowAlert('success', 'Cập nhật thành công icon!'))
-                          .catch(() => this.onShowAlert('danger', 'Lỗi cập nhật icon!'))
+                            .then(() => this.onShowAlert('success', 'Cập nhật thành công icon!'))
+                            .catch(() => this.onShowAlert('danger', 'Lỗi cập nhật icon!'))
                         }}
                       />
                     </div>
@@ -220,8 +238,7 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
                 Thẻ mô tả giúp mô tả trang web của bạn.
             </p>
             </div>
-            <div className="col-sm-1" />
-            <div className="col-sm-7">
+            <div className="col-sm-8">
               <div className={GlobalStyles['wrap-content']}>
                 <div className={GlobalStyles['form-item']}>
                   <label>Tên cửa hàng</label>
@@ -250,14 +267,117 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
 
           <div className="row" style={{ paddingBottom: 32 }}>
             <div className="col-sm-4">
+              <p><b>Màu</b></p>
+              <p>
+                Màu gồm màu chính - primary color và màu phụ - second color.
+            </p>
+            </div>
+            <div className="col-sm-8">
+              <div className={GlobalStyles['wrap-content']}>
+                <div className="row">
+                  <div className="col-sm-6">
+                    <div className={GlobalStyles['form-item']}>
+                      <label>Primary color</label>
+                      <ChromePicker
+                        color={this.state.color.WEBSITE_PRIMARY_COLOR}
+                        onChangeComplete={(color) => {
+                          this.setState({
+                            ...this.state,
+                            color: {
+                              ...this.state.color,
+                              WEBSITE_PRIMARY_COLOR: color.hex,
+                            },
+                          })
+                        }}
+                      />
+                      <input
+                        style={{ marginTop: 16 }}
+                        value={this.state.color.WEBSITE_PRIMARY_COLOR}
+                        type="text"
+                        name="WEBSITE_PRIMARY_COLOR" />
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <div className={GlobalStyles['form-item']}>
+                      <label>Second color</label>
+                      <ChromePicker
+                        onChangeComplete={(color) => {
+                          this.setState({
+                            ...this.state,
+                            color: {
+                              ...this.state.color,
+                              WEBSITE_SECOND_COLOR: color.hex,
+                            },
+                          })
+                        }}
+                        color={this.state.color.WEBSITE_SECOND_COLOR}
+                      />
+                      <input
+                        style={{ marginTop: 16 }}
+                        value={this.state.color.WEBSITE_SECOND_COLOR}
+                        type="text"
+                        name="WEBSITE_SECOND_COLOR" />
+                    </div>
+                  </div>
+                  <div style={{ marginLeft: 15, marginRight: 15 }}>
+                    <span
+                      onClick={() => this.onSave('color')}
+                      className={S['settings__btn']}>Lưu</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row" style={{ paddingBottom: 32 }}>
+            <div className="col-sm-4">
+              <p><b>Email template</b></p>
+              <p>
+                Danh sách TAG {'{}'}:<br />
+                - {'{client_name}'}: tên khách hàng<br />
+                - {'{client_info}'}: gồm những thông tin cá nhân khách hàng sẽ hiển thị<br />
+                - {'{client_products}'}: danh sách sản phẩm<br /><br />
+                Vui lòng viết đúng TAG {'{}'} và đặt vào vị trí bạn muốn.
+              </p>
+            </div>
+            <div className="col-sm-8">
+              <div className={GlobalStyles['wrap-content']}>
+                <div className={GlobalStyles['form-item']}>
+                  <label>Email template</label>
+                  <CKEditor
+                    type="classic"
+                    config={{
+                      ...configForProductIntro,
+                    }}
+                    onChange={e => {
+                      this.setState({
+                        info: {
+                          ...this.state.info,
+                          WEBSITE_CONFIG_MAIL: e.editor.getData(),
+                        }
+                      })
+                    }}
+                    data={this.props.settingsState.WEBSITE_CONFIG_MAIL}
+                  />
+                </div>
+                <div>
+                  <span
+                    onClick={() => this.onSave('info')}
+                    className={S['settings__btn']}>Lưu</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row" style={{ paddingBottom: 32 }}>
+            <div className="col-sm-4">
               <p><b>Địa chỉ</b></p>
               <p>
                 Địa chỉ này sẽ xuất hiện ở mục liên hệ, footer của trang web
               và để khách hàng liên lạc.<br />
               </p>
             </div>
-            <div className="col-sm-1" />
-            <div className="col-sm-7">
+            <div className="col-sm-8">
               <div className={GlobalStyles['wrap-content']}>
                 <div className={GlobalStyles['form-item']}>
                   <label>Giấy phép kinh doanh</label>
@@ -308,8 +428,7 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
                 các cam kết thông tin sẽ ỏ trong phần chi tiết sản phẩm.<br />
               </p>
             </div>
-            <div className="col-sm-1" />
-            <div className="col-sm-7">
+            <div className="col-sm-8">
               <div className={GlobalStyles['wrap-content']}>
                 <div className={GlobalStyles['form-item']}>
                   <label>Tiêu đề quảng cáo đầu trang</label>
@@ -359,8 +478,7 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
                 Mạng xã hội để khách có thể liên hệ.
             </p>
             </div>
-            <div className="col-sm-1" />
-            <div className="col-sm-7">
+            <div className="col-sm-8">
               <div className={GlobalStyles['wrap-content']}>
                 <div className="row">
                   <div className="col-sm-6">

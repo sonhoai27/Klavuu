@@ -1,11 +1,12 @@
 import * as React from 'react';
 const uuidv4 = require('uuid/v4');
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import AdminHeader from '../shared/layout/Header';
 import Breadcrumb from '../shared/layout/Breadcrumb';
-import { connect } from 'react-redux';
-import { actionGetOrders, actionUpdateOrder } from '@app/stores/cart/CartActions';
-import { Link } from 'react-router-dom';
+import { actionGetOrders } from '@app/stores/cart/CartActions';
 import { actionShowHideLoading, actionShowHideAlert } from '@app/stores/init';
 import Pagination from '@app/shared/Pagination';
 import FormatNumber from '@app/shared/utils/FormatNumber';
@@ -17,7 +18,6 @@ const S = require('./styles/Order.scss')
 interface IOrderProps {
   actionGetOrders: Function;
   ordersState: any;
-  actionUpdateOrder: Function;
   actionShowHideLoading: Function;
   actionShowHideAlert: Function;
   match?: any;
@@ -41,46 +41,6 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
     })
   }
 
-  onUpdateOrderNote = (orderId) => {
-    this.props.actionShowHideLoading(true)
-    const tempDom: any = document.getElementById(orderId)
-    this.props.actionUpdateOrder({
-      // @ts-ignore
-      order_staff_note: tempDom.value,
-    }, orderId)
-    .then(() => {
-      this.setState({
-        currenRowState: '',
-      }, () => {
-        this.props.actionGetOrders('')
-        this.props.actionShowHideLoading(false)
-        this.props.actionShowHideAlert({
-          status: true,
-          type: 'success',
-          title: 'Thêm/sửa ghi chú thành công!',
-        })
-        setTimeout(() => {
-          this.props.actionShowHideAlert({
-            status: false,
-          })
-        }, 1500)
-      })
-    })
-    .catch(() => {
-      this.props.actionShowHideLoading(false)
-      this.props.actionShowHideAlert({
-        status: true,
-        type: 'danger',
-        title: 'Lỗi thêm/sửa ghi chú!',
-      })
-      setTimeout(() => {
-        this.props.actionShowHideAlert({
-          status: false,
-        })
-      }, 1500)
-    })
-  }
-
   onMakeCurrentPage = () => {
     const page = (window.location.href).split('page=')[1]
     if (page !== undefined || page != null) {
@@ -96,52 +56,53 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
     && this.props.ordersState.items.length > 0
     && this.props.ordersState.items.map((element) => {
       return (
-        <tr key={uuidv4()} style={{ fontSize: 15 }}>
+        <tr key={uuidv4()} style={{ fontSize: 13 }}>
           <td>
-            <Link to={`/xxx/app/order/${element.order_id}`}>{element.order_id}</Link>
+            <Link to={`/xxx/app/order/${element.order_id}`}>{`#${element.order_id}`}</Link>
           </td>
-          <td>{element.order_client_name}</td>
-          <td>{element.order_address}</td>
+          <td>
+            - {element.order_client_name}<br/>
+            - {element.order_address}<br/>
+            - {element.order_client_email}<br/>
+            - {element.order_client_phone}<br/>
+          </td>
           <td>{FormatNumber(element.order_sumary_price)}đ</td>
           <td>{element.order_created_date}</td>
+          <td>{element.order_intro_code}</td>
           <td>
-            {
-              this.state.currenRowState !== element.order_id
-              && (
-                <div>{element.order_staff_note}</div>
-              )
-            }
-            <div className={S['order__edit-note']}>
-              {
-                this.state.currenRowState === element.order_id
-                ? (
-                  <>
-                    <textarea
-                      id={element.order_id}
-                      defaultValue={
-                        element.order_staff_note
-                        ? element.order_staff_note
-                        : ''
-                      }/>
-                    <span
-                      onClick={() => this.onUpdateOrderNote(element.order_id)}
-                      className={S['save']}>Lưu</span>
-                    <span
-                      onClick={() => this.onChooseOrder('')}
-                      className={S['edit']}>Hủy</span>
-                  </>
-                )
-                : (
-                  <span
-                    onClick={() => this.onChooseOrder(element.order_id)}
-                    className={S['edit']}>Sửa</span>
-                )
-              }
-            </div>
+            <table style={{ width: '100%' }}>
+              <thead>
+                <th style={{ borderBottom: 'none', borderTop: 'none' }}>Tên</th>
+                <th style={{ borderBottom: 'none', borderTop: 'none' }}>SL</th>
+                <th style={{ borderBottom: 'none', borderTop: 'none' }}>Giá</th>
+                <th style={{ borderBottom: 'none', borderTop: 'none' }}>OFF</th>
+              </thead>
+              <tbody>{this.renderProducts(element.products)}</tbody>
+            </table>
           </td>
         </tr>
       )
     })
+  )
+
+  renderProducts = (products: any[]) => (
+    products.length > 0
+    && products.map(element => (
+      <tr key={element.product_name} className={S['order__products']}>
+        <td style={{ borderTop: 'none' }}>
+          {element.product_name}
+        </td>
+        <td style={{ borderTop: 'none' }}>
+          {element.product_qty}
+        </td>
+        <td style={{ borderTop: 'none' }}>
+          {FormatNumber(element.product_price)}đ
+        </td>
+        <td style={{ borderTop: 'none' }}>
+          {element.product_discount}
+        </td>
+      </tr>
+    ))
   )
 
   isMeta = () => {
@@ -175,26 +136,34 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
               },
             ]}
           />
-        </AdminHeader>
-        <div className={`col-12 ${S['order']}`}>
-          <div className={GlobalStyles['wrap-content']}>
-          <Calendar
+          <div style={{ display: 'flex' }}>
+            <Calendar
                 default="2019/05/01"
                 onChange={(date) => {
                   console.log(date)
                 }}
               />
+            <ReactHTMLTableToExcel
+              id="test-table-xls-button"
+              className={`download-table-xls-button ${GlobalStyles['wrap-_action--btn']}`}
+              table="table-to-xls"
+              filename="tablexls"
+              sheet="tablexls"
+              buttonText="Export" />
+          </div>
+        </AdminHeader>
+        <div className={`col-12 ${S['order']}`}>
+          <div className={GlobalStyles['wrap-content']}>
             <div className="table-responsive">
-              <table className="table">
+              <table className="table" id="table-to-xls">
                 <thead>
                   <tr>
-                    <th style={{ width: '15%' }} scope="col">#ID</th>
-                    <th style={{ width: '20%' }} scope="col">Khách hàng</th>
-                    <th style={{ width: '15%' }} scope="col">Đại chỉ</th>
-                    <th style={{ width: '20%' }} scope="col">Tổng giá trị</th>
-                    <th style={{ width: '15%' }} scope="col">Ngày mua</th>
-                    <th style={{ width: '15%' }} scope="col">Ghi chú</th>
-                    <th />
+                    <th>#</th>
+                    <th>Khách hàng</th>
+                    <th>Tổng giá trị</th>
+                    <th>Ngày mua</th>
+                    <th>Mã g.thiệu</th>
+                    <th>Sản phẩm</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -226,7 +195,6 @@ const mapStateToProps = storeState => ({
 
 const mapDispatchToProps = {
   actionGetOrders,
-  actionUpdateOrder,
   actionShowHideLoading,
   actionShowHideAlert,
 }

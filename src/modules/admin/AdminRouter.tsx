@@ -82,6 +82,12 @@ const AdminHelps = Loadable({
   loading: () => <GlobalLoading/>,
 });
 
+const AdminBlogs = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "admin_blogs" */ '@app/modules/admin/blog'),
+  loading: () => <GlobalLoading/>,
+});
+
 const AdminRouter = (props) => {
   return (
     <Switch>
@@ -98,6 +104,7 @@ const AdminRouter = (props) => {
       <Route path={`${props.match.url}/orders`} component={AdminOrder}/>
       <Route path={`${props.match.url}/order/:id`} component={AdminOrderDetail}/>
       <Route path={`${props.match.url}/helps`} component={AdminHelps}/>
+      <Route path={`${props.match.url}/blogs`} component={AdminBlogs}/>
     </Switch>
   )
 }
