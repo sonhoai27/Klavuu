@@ -81,6 +81,7 @@ class AdminPhoto extends React.Component<IAdminPhotoProps, IAdminPhotoStates> {
 
 // tslint:disable-next-line:no-unused
 const mapStateToProps = storeState => ({
+
 })
 
 const mapDispatchToProps = {
