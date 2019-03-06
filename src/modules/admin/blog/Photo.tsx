@@ -4,7 +4,13 @@ import Icon from '@app/modules/client/shared/layout/Icon';
 
 const S = require('./styles/Photo.scss')
 
-class AdminPhoto extends React.Component {
+interface IAdminPhotoProps {
+  onClose: () => {};
+}
+interface IAdminPhotoStates {
+}
+
+class AdminPhoto extends React.Component<IAdminPhotoProps, IAdminPhotoStates> {
   constructor(props) {
     super(props)
   }
@@ -14,75 +20,57 @@ class AdminPhoto extends React.Component {
       <div className={S['ui-photo']}>
         <div className={S['ui-photo__header']}>
           <span>Photo app</span>
-          <Icon name="cross"/>
+          <Icon name="cross" onClick={this.props.onClose}/>
         </div>
         <div className={S['ui-photo__action']}>
-        <Icon name="picture">Tải ảnh mới</Icon>
+          <span>
+            Tải ảnh mới
+            <input type="file"/>
+          </span>
         </div>
         <div className={S['ui-photo__photos']}>
           <ul>
             <li>
-              <img src="https://images.unsplash.com/flagged/photo-1551530891-42836e528e0d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
+              <img src="https://files.design/photo/7804/600x1299.png" alt=""/>
+              <div>
+                <span>Chèn</span>
+                <span>Xóa</span>
+              </div>
             </li>
             <li>
-              <img src="https://images.unsplash.com/photo-1551667090-244e7178d53e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
+              <img src="https://files.design/photo/7820/600x1299.png" alt=""/>
+              <div>
+                <span>Chèn</span>
+                <span>Xóa</span>
+              </div>
             </li>
             <li>
-              <img src="https://images.unsplash.com/photo-1551651057-f3f83700a831?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
+              <img src="https://files.design/photo/7820/600x1299.png" alt=""/>
+              <div>
+                <span>Chèn</span>
+                <span>Xóa</span>
+              </div>
             </li>
             <li>
-              <img src="https://images.unsplash.com/flagged/photo-1551530891-42836e528e0d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
+              <img src="https://files.design/photo/7822/600x1299.png" alt=""/>
+              <div>
+                <span>Chèn</span>
+                <span>Xóa</span>
+              </div>
             </li>
             <li>
-              <img src="https://images.unsplash.com/photo-1551667090-244e7178d53e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
+              <img src="https://files.design/photo/7827/600x1299.png" alt=""/>
+              <div>
+                <span>Chèn</span>
+                <span>Xóa</span>
+              </div>
             </li>
             <li>
-              <img src="https://images.unsplash.com/photo-1551651057-f3f83700a831?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
-            </li>
-            <li>
-              <img src="https://images.unsplash.com/flagged/photo-1551530891-42836e528e0d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
-            </li>
-            <li>
-              <img src="https://images.unsplash.com/photo-1551667090-244e7178d53e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
-            </li>
-            <li>
-              <img src="https://images.unsplash.com/photo-1551651057-f3f83700a831?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
-            </li>
-            <li>
-              <img src="https://images.unsplash.com/flagged/photo-1551530891-42836e528e0d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
-            </li>
-            <li>
-              <img src="https://images.unsplash.com/photo-1551667090-244e7178d53e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
-            </li>
-            <li>
-              <img src="https://images.unsplash.com/photo-1551651057-f3f83700a831?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
-            </li>
-            <li>
-              <img src="https://images.unsplash.com/flagged/photo-1551530891-42836e528e0d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
-            </li>
-            <li>
-              <img src="https://images.unsplash.com/photo-1551667090-244e7178d53e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
-            </li>
-            <li>
-              <img src="https://images.unsplash.com/photo-1551651057-f3f83700a831?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
-            </li>
-            <li>
-              <img src="https://images.unsplash.com/flagged/photo-1551530891-42836e528e0d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
-            </li>
-            <li>
-              <img src="https://images.unsplash.com/photo-1551667090-244e7178d53e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
-            </li>
-            <li>
-              <img src="https://images.unsplash.com/photo-1551651057-f3f83700a831?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
-            </li>
-            <li>
-              <img src="https://images.unsplash.com/flagged/photo-1551530891-42836e528e0d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
-            </li>
-            <li>
-              <img src="https://images.unsplash.com/photo-1551667090-244e7178d53e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
-            </li>
-            <li>
-              <img src="https://images.unsplash.com/photo-1551651057-f3f83700a831?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9" alt=""/>
+              <img src="http://22.zonesgroup.vn/api/uploads/3dec98ff72775686600000.jpg"/>
+              <div>
+                <span>Chèn</span>
+                <span>Xóa</span>
+              </div>
             </li>
           </ul>
         </div>

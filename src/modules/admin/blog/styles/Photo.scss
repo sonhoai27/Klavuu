@@ -8,6 +8,7 @@
     top: 0;
     bottom: 0;
     &__header {
+        font-weight: 600;
         display: flex;
         justify-content: space-between;
         line-height: 20px;
@@ -40,15 +41,24 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            position: relative;
             &:before {
                 margin-right: 8px;
+            }
+            input {
+                position: absolute;
+                opacity: 0;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
             }
         }
     }
     &__photos {
         padding: 16px;
         overflow-y: scroll;
-        height: calc(100% - 20%);
+        height: calc(100% - 13%);
         ul {
             padding: 0;
             margin: 0;
@@ -58,10 +68,54 @@
             column-gap: 8px;
             li {
                 float: left;
-                padding-bottom: 8px;
+                cursor: pointer;
+                position: relative;
+                margin: 4px 0px;
+                overflow: hidden;
+                z-index: 5;
+                transition: all .3s ease-in-out;
                 img {
                     max-width: 100%;
                     border-radius: 8px;
+                }
+                &:hover {
+                    &:after {
+                        content: '';
+                        background: rgba(34, 34, 34, 0.596);
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        border-radius: 8px;
+                        z-index: 1;
+                    }
+                }
+                >div {
+                    position: absolute;
+                    z-index: 5;
+                    bottom: -100px;
+                    left: 0;
+                    right: 0;
+                    opacity: 0;
+                    background: rgb(247, 247, 247);
+                    transition: all .3s ease-in-out;
+                    span {
+                        display: block;
+                        text-align: center;
+                        padding: 6px 4px;
+                        font-size: 13px;
+                        cursor: pointer;
+                        transition: all .3s ease-in-out;
+                        &:hover {
+                            background: #42548e;
+                            color: #fff;
+                        }
+                    }
+                }
+                &:hover>div {
+                    bottom: 0;
+                    opacity: 1;
                 }
             }
         }
