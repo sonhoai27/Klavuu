@@ -76,9 +76,7 @@ module.exports = {
     },
     plugins: [
         new CheckerPlugin(),
-        new webpack.ProvidePlugin({
-            'window.Quill': 'quill'
-        }),
+        new webpack.ProvidePlugin({}),
         new HtmlWebpackPlugin({
             template: '../public/index.html',
             minify: {
@@ -90,6 +88,7 @@ module.exports = {
             { from: '../public/manifest.json', to: '../build' },
             { from: '../public/images/', to: '../build/images' },
             { from: '../public/css/', to: '../build/css' },
+            { from: '../public/ckeditor/', to: '../build/ckeditor' },
             { from: '../public/locales/', to: '../build/locales' },
             { from: '../public/sw.js', to: '../build/sw.js' },
             { from: '../public/images/favicon.ico', to: '../build' }

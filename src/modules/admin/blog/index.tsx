@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import AdminPhoto from './Photo'
 import AdminHeader from '../shared/layout/Header';
 import Breadcrumb from '../shared/layout/Breadcrumb';
 
@@ -30,7 +29,6 @@ class AdminBlog extends React.Component {
             ]}
           />
         </AdminHeader>
-        <AdminPhoto/>
       </>
     )
   }

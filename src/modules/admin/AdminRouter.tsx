@@ -88,23 +88,31 @@ const AdminBlogs = Loadable({
   loading: () => <GlobalLoading/>,
 });
 
+const AdminBlogsAddOrUpdate = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "admin_blogs_add_update" */ '@app/modules/admin/blog/AddOrUpdate'),
+  loading: () => <GlobalLoading/>,
+});
+
 const AdminRouter = (props) => {
   return (
     <Switch>
       <Route exact path={`${props.match.url}`} component={AdminHome}/>
-      <Route path={`${props.match.url}/products`} component={AdminProducts}/>
-      <Route path={`${props.match.url}/product/add`} component={AdminProductsAdd}/>
-      <Route path={`${props.match.url}/product/:alias`} component={AdminProductsDetail}/>
-      <Route path={`${props.match.url}/banners`} component={AdminBanner}/>
-      <Route path={`${props.match.url}/brands`} component={AdminBrand}/>
-      <Route path={`${props.match.url}/tags`} component={AdminTags}/>
-      <Route path={`${props.match.url}/comments`} component={AdminComments}/>
-      <Route path={`${props.match.url}/settings`} component={AdminSettings}/>
-      <Route path={`${props.match.url}/language`} component={AdminLanguage}/>
-      <Route path={`${props.match.url}/orders`} component={AdminOrder}/>
-      <Route path={`${props.match.url}/order/:id`} component={AdminOrderDetail}/>
-      <Route path={`${props.match.url}/helps`} component={AdminHelps}/>
-      <Route path={`${props.match.url}/blogs`} component={AdminBlogs}/>
+      <Route exact path={`${props.match.url}/products`} component={AdminProducts}/>
+      <Route exact path={`${props.match.url}/product/add`} component={AdminProductsAdd}/>
+      <Route exact path={`${props.match.url}/product/:alias`} component={AdminProductsDetail}/>
+      <Route exact path={`${props.match.url}/banners`} component={AdminBanner}/>
+      <Route exact path={`${props.match.url}/brands`} component={AdminBrand}/>
+      <Route exact path={`${props.match.url}/tags`} component={AdminTags}/>
+      <Route exact path={`${props.match.url}/comments`} component={AdminComments}/>
+      <Route exact path={`${props.match.url}/settings`} component={AdminSettings}/>
+      <Route exact path={`${props.match.url}/language`} component={AdminLanguage}/>
+      <Route exact path={`${props.match.url}/orders`} component={AdminOrder}/>
+      <Route exact path={`${props.match.url}/order/:id`} component={AdminOrderDetail}/>
+      <Route exact path={`${props.match.url}/helps`} component={AdminHelps}/>
+      <Route exact path={`${props.match.url}/blogs`} component={AdminBlogs}/>
+      <Route exact path={`${props.match.url}/blogs/add`} component={AdminBlogsAddOrUpdate}/>
+      <Route exact path={`${props.match.url}/blog/:alias`} component={AdminBlogsAddOrUpdate}/>
     </Switch>
   )
 }
