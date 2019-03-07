@@ -5,7 +5,8 @@ import Icon from '@app/modules/client/shared/layout/Icon';
 const S = require('./styles/Photo.scss')
 
 interface IAdminPhotoProps {
-  onClose: () => {};
+  onClose: Function;
+  ckeditor: any;
 }
 interface IAdminPhotoStates {
 }
@@ -13,6 +14,17 @@ interface IAdminPhotoStates {
 class AdminPhoto extends React.Component<IAdminPhotoProps, IAdminPhotoStates> {
   constructor(props) {
     super(props)
+  }
+
+  insertImage = (img) => {
+    if (this.props.ckeditor.type === 'insert_image') {
+      this.props.ckeditor.editor.insertHtml(`<img src="${img}" class="img-fluid"/>`);
+      this.props.onClose()
+    } else {
+      const image: any = document.getElementById(this.props.ckeditor.editor)
+      image.src = img
+      this.props.onClose()
+    }
   }
 
   render() {
@@ -31,35 +43,39 @@ class AdminPhoto extends React.Component<IAdminPhotoProps, IAdminPhotoStates> {
         <div className={S['ui-photo__photos']}>
           <ul>
             <li>
-              <img src="https://files.design/photo/7804/600x1299.png" alt=""/>
+              <img src="http://22.zonesgroup.vn/api/uploads/d960915ef4775729800000.png" alt=""/>
+              <div>
+                <span
+                  // tslint:disable-next-line:max-line-length
+                  onClick={() => this.insertImage('http://22.zonesgroup.vn/api/uploads/d960915ef4775729800000.png')}>
+                  Chèn
+                </span>
+                <span>Xóa</span>
+              </div>
+            </li>
+            <li>
+              <img src="http://22.zonesgroup.vn/api/uploads/3a3ebfb48f775211400000.jpg" alt=""/>
               <div>
                 <span>Chèn</span>
                 <span>Xóa</span>
               </div>
             </li>
             <li>
-              <img src="https://files.design/photo/7820/600x1299.png" alt=""/>
+              <img src="http://22.zonesgroup.vn/api/uploads/90ebff026e775211400000.jpg" alt=""/>
               <div>
                 <span>Chèn</span>
                 <span>Xóa</span>
               </div>
             </li>
             <li>
-              <img src="https://files.design/photo/7820/600x1299.png" alt=""/>
+              <img src="hhttp://22.zonesgroup.vn/api/uploads/704cebf565775686600000.jpg" alt=""/>
               <div>
                 <span>Chèn</span>
                 <span>Xóa</span>
               </div>
             </li>
             <li>
-              <img src="https://files.design/photo/7822/600x1299.png" alt=""/>
-              <div>
-                <span>Chèn</span>
-                <span>Xóa</span>
-              </div>
-            </li>
-            <li>
-              <img src="https://files.design/photo/7827/600x1299.png" alt=""/>
+              <img src="http://22.zonesgroup.vn/api/uploads/01fbce4ae2775211400000.jpg" alt=""/>
               <div>
                 <span>Chèn</span>
                 <span>Xóa</span>
@@ -68,7 +84,13 @@ class AdminPhoto extends React.Component<IAdminPhotoProps, IAdminPhotoStates> {
             <li>
               <img src="http://22.zonesgroup.vn/api/uploads/3dec98ff72775686600000.jpg"/>
               <div>
-                <span>Chèn</span>
+                <span
+                  onClick={() => {
+                    // tslint:disable-next-line:max-line-length
+                    this.insertImage('http://22.zonesgroup.vn/api/uploads/3dec98ff72775686600000.jpg')
+                  }}>
+                  Chèn
+                </span>
                 <span>Xóa</span>
               </div>
             </li>

@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 
 import AdminHeader from '../shared/layout/Header';
 import Breadcrumb from '../shared/layout/Breadcrumb';
+import { Link } from 'react-router-dom';
+
+const GlobalStyles = require('@app/shared/styles/Box.scss');
 
 class AdminBlog extends React.Component {
   constructor(props) {
@@ -28,6 +31,11 @@ class AdminBlog extends React.Component {
               },
             ]}
           />
+          <div className={GlobalStyles['wrap_action']}>
+            <span>
+              <Link to="/xxx/app/blogs/add">Thêm mới</Link>
+            </span>
+          </div>
         </AdminHeader>
       </>
     )
