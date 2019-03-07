@@ -8,7 +8,7 @@ import Photo from './Photo';
 import Icon from '@app/modules/client/shared/layout/Icon';
 import BlogModel from '@app/shared/models/Blog';
 import Alias from '@app/shared/utils/Alias';
-import { actionAddBlog } from '@app/stores/blog/BlogActions';
+import { actionAddBlog, actionGetBlog } from '@app/stores/blog/BlogActions';
 import { actionShowHideAlert } from '@app/stores/init';
 
 // @ts-ignore
@@ -27,6 +27,8 @@ interface ISProps {
   match?: any;
   actionAddBlog: Function;
   actionShowHideAlert: Function;
+  actionGetBlog: Function;
+  blogState: any;
 }
 
 class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
@@ -41,7 +43,24 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
 
   componentDidMount() {
     this.configCKEditor()
-    console.log()
+    if (this.isUpdate()) {
+      this.props.actionGetBlog(this.props.match.params.alias)
+      .then((result) => {
+        const data: BlogModel = result.value.data
+        this.setState({
+          blog: {
+            blogs_alias: data.blogs_alias,
+            blogs_id: data.blogs_id,
+            blogs_content: data.blogs_content,
+            blogs_cover: data.blogs_cover,
+            blogs_desc: data.blogs_desc,
+            blogs_title: data.blogs_title,
+            blogs_views: data.blogs_views,
+          },
+        })
+      })
+      .catch(err => console.log(err))
+    }
   }
 
   showHidePhotoApp = () => this.setState({ isShowingPhotoApp: !this.state.isShowingPhotoApp })
@@ -212,15 +231,25 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
             <div className={GlobalStyles['title-product-main']}>Thông tin</div>
             <div className={GlobalStyles['form-item']}>
               <label>Tên</label>
-              <input type="text" name="blogs_title" onChange={this.onChange}/>
+              <input
+                defaultValue={this.state.blog.blogs_title}
+                type="text" name="blogs_title"
+                onChange={this.onChange}/>
             </div>
             <div className={GlobalStyles['form-item']}>
               <label>Mô tả</label>
-              <input type="text" name="blogs_desc" onChange={this.onChange}/>
+              <input
+                defaultValue={this.state.blog.blogs_desc}
+                type="text" name="blogs_desc" onChange={this.onChange}/>
             </div>
             <div className={GlobalStyles['form-item']}>
               <label>Nội dung</label>
-              <textarea cols={80} id="editor1" name="editor1" />
+              <textarea
+              cols={80}
+              id="editor1"
+              name="editor1"
+              value={this.props.blogState.blogs_content}
+              />
             </div>
           </div>
         </div>
@@ -254,13 +283,14 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
   }
 }
 
-// tslint:disable-next-line:no-unused
 const mapStateToProps = storeState => ({
+  blogState: storeState.blogReducer.blogState,
 })
 
 const mapDispatchToProps = {
   actionAddBlog,
   actionShowHideAlert,
+  actionGetBlog,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminBlogAddOrUpdate)

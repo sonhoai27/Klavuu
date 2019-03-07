@@ -19,21 +19,21 @@ const actionGetBlog = alias => async (dispatch) => {
 
 const actionDeleteBlog = id => async (dispatch) => {
   return await dispatch({
-    type: BlogTypes.DETAIL,
+    type: BlogTypes.DELETE,
     payload: axios.delete(`${API}blogs/${id}`),
   })
 }
 
 const actionAddBlog = form => async (dispatch) => {
   return await dispatch({
-    type: BlogTypes.DETAIL,
+    type: BlogTypes.ADD,
     payload: axios.post(`${API}blogs`, form),
   })
 }
 
 const actionUpdateBlog = (form, id) => async (dispatch) => {
   return await dispatch({
-    type: BlogTypes.DETAIL,
+    type: BlogTypes.UPDATE,
     payload: axios.put(`${API}blogs/${id}`, form),
   })
 }

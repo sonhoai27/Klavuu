@@ -28,14 +28,14 @@ const blogReducer = (state = initialState, action) => {
     case FAILURE(BlogTypes.LIST): {
       return state
     }
-    case REQUEST(BlogTypes.LIST): {
+    case SUCCESS(BlogTypes.LIST): {
       return {
         ...state,
         blogsState: action.payload.data,
       }
     }
 
-    case REQUEST(BlogTypes.DETAIL): {
+    case SUCCESS(BlogTypes.DETAIL): {
       return {
         ...state,
         blogState: action.payload.data,
