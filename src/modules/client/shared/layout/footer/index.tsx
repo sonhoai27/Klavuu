@@ -7,6 +7,9 @@ import Socials from './components/Socials';
 import FooterLinks from './components/FooterLinks';
 import { actionGetSettings } from '@app/stores/init';
 import InfoSection from './components/InfoSection';
+import Instagram from './components/Instagram';
+import Axios from 'axios';
+import { INSTAGRAM } from '@app/shared/const';
 
 const S = require('./Footer.scss')
 
@@ -39,15 +42,29 @@ interface IFooterProps {
   t?: any;
 }
 
-class Footer extends React.Component<IFooterProps> {
+interface IFooterStates{
+  instagram: any;
+}
+
+class Footer extends React.Component<IFooterProps, IFooterStates> {
+  constructor(props) {
+    super(props)
+  }
+
   componentDidMount() {
     this.props.actionGetSettings()
+    Axios.get(INSTAGRAM)
+    .then((result) => {
+      console.log(result)
+    })
+    .catch(err => console.log(err))
   }
   render() {
     const { t } = this.props
     return (
       <div className={`${S['footer']} container`}>
-        <InfoSection/>
+        <Instagram/>
+        <InfoSection t={t}/>
         <BackToTop
           scrollStepInPx={50}
           delayInMs={16.66}

@@ -8,7 +8,7 @@ import Photo from './Photo';
 import Icon from '@app/modules/client/shared/layout/Icon';
 import BlogModel from '@app/shared/models/Blog';
 import Alias from '@app/shared/utils/Alias';
-import { actionAddBlog, actionGetBlog } from '@app/stores/blog/BlogActions';
+import { actionAddBlog, actionGetBlog, actionUpdateBlog } from '@app/stores/blog/BlogActions';
 import { actionShowHideAlert } from '@app/stores/init';
 
 // @ts-ignore
@@ -29,6 +29,7 @@ interface ISProps {
   actionShowHideAlert: Function;
   actionGetBlog: Function;
   blogState: any;
+  actionUpdateBlog: Function;
 }
 
 class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
@@ -44,23 +45,27 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
   componentDidMount() {
     this.configCKEditor()
     if (this.isUpdate()) {
-      this.props.actionGetBlog(this.props.match.params.alias)
-      .then((result) => {
-        const data: BlogModel = result.value.data
-        this.setState({
-          blog: {
-            blogs_alias: data.blogs_alias,
-            blogs_id: data.blogs_id,
-            blogs_content: data.blogs_content,
-            blogs_cover: data.blogs_cover,
-            blogs_desc: data.blogs_desc,
-            blogs_title: data.blogs_title,
-            blogs_views: data.blogs_views,
-          },
-        })
-      })
-      .catch(err => console.log(err))
+      this.getBlog()
     }
+  }
+
+  getBlog = () => {
+    this.props.actionGetBlog(this.props.match.params.alias)
+    .then((result) => {
+      const data: BlogModel = result.value.data
+      this.setState({
+        blog: {
+          blogs_alias: data.blogs_alias,
+          blogs_id: data.blogs_id,
+          blogs_content: data.blogs_content,
+          blogs_cover: data.blogs_cover,
+          blogs_desc: data.blogs_desc,
+          blogs_title: data.blogs_title,
+          blogs_views: data.blogs_views,
+        },
+      })
+    })
+    .catch(err => console.log(err))
   }
 
   showHidePhotoApp = () => this.setState({ isShowingPhotoApp: !this.state.isShowingPhotoApp })
@@ -192,6 +197,37 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
     }, 1500)
   }
 
+  onUpdate = () => {
+    // @ts-ignore
+    const image: any = document.getElementById('cover-blog-id').src
+
+    this.props.actionUpdateBlog(
+      {
+        blogs_alias: Alias(this.state.blog.blogs_title),
+        blogs_content: this.state.blog.blogs_content,
+        blogs_cover: image,
+        blogs_desc: CKEDITOR.instances.editor1.getData(),
+        blogs_title: this.state.blog.blogs_title,
+      },
+      this.state.blog.blogs_id,
+    )
+    .then(() => {
+      this.onShowAlert({
+        type: 'success',
+        title: 'Cập nhật thành công bài viết!',
+      })
+      window.location.reload()
+    })
+    .catch(() => this.onShowAlert({
+      type: 'error',
+      title: 'Có lỗi, vui lòng xem lại!',
+    }))
+  }
+
+  componentWillUnmount() {
+    this.setState({ blog: {} })
+  }
+
   render() {
     return (
       <>
@@ -221,7 +257,7 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
             ]}
           />
           <div className={GlobalStyles['wrap_action']}>
-            <span onClick={this.onSave}>
+            <span onClick={() => this.isUpdate() ? this.onUpdate() : this.onSave()}>
               Lưu
             </span>
           </div>
@@ -268,7 +304,10 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
                 })
               }}>
                 <Icon name="picture" />
-                <img id="cover-blog-id" className="img-fluid"/>
+                <img
+                  src={this.state.blog.blogs_cover ? this.state.blog.blogs_cover : ''}
+                  id="cover-blog-id"
+                  className="img-fluid"/>
               </div>
             </div>
           </div>
@@ -291,6 +330,7 @@ const mapDispatchToProps = {
   actionAddBlog,
   actionShowHideAlert,
   actionGetBlog,
+  actionUpdateBlog,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminBlogAddOrUpdate)

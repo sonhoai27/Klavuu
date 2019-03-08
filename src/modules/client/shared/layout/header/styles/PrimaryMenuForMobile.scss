@@ -114,9 +114,9 @@
                 margin: 0;
                 padding: 0;
                 li {
-                    font-size: 14px;
                     a {
                         font-size: 14px;
+                        font-weight: 600;
                     }
                 }
                 .menu-item {
@@ -125,7 +125,10 @@
                     border-bottom: 1px solid #eee;
                     padding-bottom: 16px;
                     .menu-item__child {
-                        padding-left: 8px;
+                        padding-left: 10px;
+                        a {
+                            font-weight: 400;
+                        }
                     }
                 }
                 .menu-item>a {

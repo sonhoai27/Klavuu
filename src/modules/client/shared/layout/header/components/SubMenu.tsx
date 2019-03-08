@@ -59,7 +59,7 @@ const SubMenu = (props: ISubMenuProps) => {
     if (items && items.length > 0) {
 
       items.map((element, index) => {
-        if ((index + 1) % 5 === 0) {
+        if ((index + 1) % 1 === 0) {
 
           tempChildrenDom = [...tempChildrenDom, (
             <div className={Styles['item']} key={uuidv4()}>
