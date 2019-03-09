@@ -11,6 +11,11 @@ html {
     -moz-osx-font-smoothing: grayscale;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 .mg-t-16 {
     margin-top: 20px;
 }
@@ -89,7 +94,6 @@ h4,
 h5,
 h6 {
     margin-bottom: .5rem;
-    font-family: -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Arial, sans-serif;
     font-weight: 500;
     line-height: 1.2rem;
     color: #4e595d;

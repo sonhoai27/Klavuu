@@ -1,0 +1,39 @@
+.order-export {
+    &__tool {
+        display: flex;
+        align-items: center;
+        >span {
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 16px;
+            background: #eee;
+        }
+    }
+    &__main {
+        max-height: 60vh;
+        overflow-y: scroll;
+        margin-top: 32px;
+        td,
+        th {
+            padding: 4px;
+            font-size: 12px;
+        }
+    }
+    &__btn-action {
+        display: block;
+        text-align: right;
+        margin-top: 32px;
+        span,
+        .download-table-xls-button {
+            padding: 4px 8px!important;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 16px;
+        }
+        .download-table-xls-button {
+            background: var(--second-color);
+            color: #fff;
+        }
+    }
+}

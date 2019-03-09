@@ -165,6 +165,20 @@ class PrimaryMenuForMobile extends React.Component<
                 <li className={S['menu-item']}>
                   <Link
                     onClick={this.onCloseMenu}
+                    to="/page/blogs">
+                    {t('BLOGS')}
+                  </Link>
+                </li>
+                <li className={S['menu-item']}>
+                  <Link
+                    onClick={this.onCloseMenu}
+                    to="/page/faqs">
+                    {t('MENU_FAQS')}
+                  </Link>
+                </li>
+                <li className={S['menu-item']}>
+                  <Link
+                    onClick={this.onCloseMenu}
                     to="/page/products/all">
                     {t('MENU_SHOP_BY')}
                   </Link>
@@ -199,7 +213,7 @@ class PrimaryMenuForMobile extends React.Component<
                 <li className={S['menu-item']}>
                   <Link
                     onClick={this.onCloseMenu}
-                    to="/page/about-us}">
+                    to="/page/about-us">
                     {t('MENU_ABOUT_US')}
                   </Link>
                 </li>

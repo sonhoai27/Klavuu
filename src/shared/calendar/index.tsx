@@ -38,7 +38,7 @@ class Calendar extends React.Component<ICalendarProps, ICalendarStates> {
     this.setState({
       chooseDate: this.props.default,
     })
-    this.initDate(new Date(this.props.default ? this.props.default : ''))
+    this.initDate(new Date(this.props.default ? this.props.default : new Date()))
   }
 
   componentWillMount() {
@@ -258,7 +258,10 @@ class Calendar extends React.Component<ICalendarProps, ICalendarStates> {
   render() {
     return (
       <div className={S['UICalendar']} ref={node => this.CalendarRef = node}>
-        <input placeholder={this.state.chooseDate} onClick={this.showHideCalendar}/>
+        <input
+          defaultValue={this.state.chooseDate}
+          onClick={this.showHideCalendar}
+          placeholder="Chọn ngày"/>
         <div className={`
           ${S['UICalendar__main']}
           ${this.state.isShowingCalendar ? S['UICalendar__main--show'] : ''}

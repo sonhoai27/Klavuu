@@ -57,6 +57,18 @@ const FaqsDetail = Loadable({
   loading: () => <GlobalLoading/>,
 });
 
+const BlogDetail = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "client_blog_detail" */ './blog/Detail'),
+  loading: () => <GlobalLoading/>,
+});
+
+const Blogs = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "client_blogs" */ './blog'),
+  loading: () => <GlobalLoading/>,
+});
+
 interface IClientProps {
   match?: any;
   isShowShoppingCartState: boolean;
@@ -94,6 +106,8 @@ class Client extends React.Component<IClientProps> {
             <Route exact path={`${match.url}/search/:query`} component={Search} />
             <Route exact path={`${match.url}/faqs`} component={Faqs} />
             <Route exact path={`${match.url}/faqs/:alias`} component={FaqsDetail} />
+            <Route exact path={`${match.url}/blogs`} component={Blogs} />
+            <Route exact path={`${match.url}/blogs/:alias`} component={BlogDetail} />
             {
               this.props.isShowShoppingCartState && <ShoppingCart />
             }

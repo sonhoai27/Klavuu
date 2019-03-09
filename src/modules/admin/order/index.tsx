@@ -1,6 +1,5 @@
 import * as React from 'react';
 const uuidv4 = require('uuid/v4');
-import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +9,7 @@ import { actionGetOrders } from '@app/stores/cart/CartActions';
 import { actionShowHideLoading, actionShowHideAlert } from '@app/stores/init';
 import Pagination from '@app/shared/Pagination';
 import FormatNumber from '@app/shared/utils/FormatNumber';
-import Calendar from '@app/shared/calendar';
+import OrderExport from './Export';
 
 const GlobalStyles = require('@app/shared/styles/Box.scss');
 const S = require('./styles/Order.scss')
@@ -25,6 +24,7 @@ interface IOrderProps {
 
 interface IOrderStates {
   currenRowState: string;
+  isShowingOrderExport: boolean;
 }
 
 class Order extends React.Component<IOrderProps, IOrderStates> {
@@ -32,6 +32,7 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
     super(props)
     this.state = {
       currenRowState: '',
+      isShowingOrderExport: false,
     }
   }
 
@@ -61,7 +62,7 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
             <Link to={`/xxx/app/order/${element.order_id}`}>{`#${element.order_id}`}</Link>
           </td>
           <td>
-            - {element.order_client_name}<br/>
+            - <b>{element.order_client_name}</b><br/>
             - {element.order_address}<br/>
             - {element.order_client_email}<br/>
             - {element.order_client_phone}<br/>
@@ -69,40 +70,10 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
           <td>{FormatNumber(element.order_sumary_price)}đ</td>
           <td>{element.order_created_date}</td>
           <td>{element.order_intro_code}</td>
-          <td>
-            <table style={{ width: '100%' }}>
-              <thead>
-                <th style={{ borderBottom: 'none', borderTop: 'none' }}>Tên</th>
-                <th style={{ borderBottom: 'none', borderTop: 'none' }}>SL</th>
-                <th style={{ borderBottom: 'none', borderTop: 'none' }}>Giá</th>
-                <th style={{ borderBottom: 'none', borderTop: 'none' }}>OFF</th>
-              </thead>
-              <tbody>{this.renderProducts(element.products)}</tbody>
-            </table>
-          </td>
+          <td>{element.order_client_note}</td>
         </tr>
       )
     })
-  )
-
-  renderProducts = (products: any[]) => (
-    products.length > 0
-    && products.map(element => (
-      <tr key={element.product_name} className={S['order__products']}>
-        <td style={{ borderTop: 'none' }}>
-          {element.product_name}
-        </td>
-        <td style={{ borderTop: 'none' }}>
-          {element.product_qty}
-        </td>
-        <td style={{ borderTop: 'none' }}>
-          {FormatNumber(element.product_price)}đ
-        </td>
-        <td style={{ borderTop: 'none' }}>
-          {element.product_discount}
-        </td>
-      </tr>
-    ))
   )
 
   isMeta = () => {
@@ -116,6 +87,10 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
       page_size: 0,
     }
   }
+
+  showHideOrderExport = () => this.setState({
+    isShowingOrderExport: !this.state.isShowingOrderExport,
+  })
 
   render() {
     return (
@@ -136,34 +111,24 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
               },
             ]}
           />
-          <div style={{ display: 'flex' }}>
-            <Calendar
-                default="2019/05/01"
-                onChange={(date) => {
-                  console.log(date)
-                }}
-              />
-            <ReactHTMLTableToExcel
-              id="test-table-xls-button"
-              className={`download-table-xls-button ${GlobalStyles['wrap-_action--btn']}`}
-              table="table-to-xls"
-              filename="tablexls"
-              sheet="tablexls"
-              buttonText="Export" />
+          <div className={GlobalStyles['wrap_action']}>
+            <span onClick={this.showHideOrderExport}>
+              Xuất
+            </span>
           </div>
         </AdminHeader>
         <div className={`col-12 ${S['order']}`}>
           <div className={GlobalStyles['wrap-content']}>
             <div className="table-responsive">
-              <table className="table" id="table-to-xls">
+              <table className="table">
                 <thead>
-                  <tr>
+                  <tr style={{ fontSize: 12 }}>
                     <th>#</th>
                     <th>Khách hàng</th>
                     <th>Tổng giá trị</th>
                     <th>Ngày mua</th>
                     <th>Mã g.thiệu</th>
-                    <th>Sản phẩm</th>
+                    <th>Ghi chú</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -184,6 +149,9 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
             />
           </div>
         </div>
+        <OrderExport
+          isShowing={this.state.isShowingOrderExport}
+          onClose={this.showHideOrderExport}/>
       </>
     )
   }

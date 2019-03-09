@@ -59,7 +59,9 @@ class ClientFaqDetail extends React.Component<IClientFaqProps, IClientFaqDetailS
         />
         <div className="row">
           <div className="col-12">
-            <h1 style={{ marginBottom: 32, marginTop: 64 }}>{this.state.helpState.helps_name}</h1>
+            <h1 style={{ marginBottom: 32, marginTop: 64, lineHeight: 1 }}>
+              {this.state.helpState.helps_name}
+            </h1>
             <div className={S['faqs__img']}
               dangerouslySetInnerHTML={{ __html: this.state.helpState.helps_content }}/>
           </div>

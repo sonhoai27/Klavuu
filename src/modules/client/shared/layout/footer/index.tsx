@@ -49,13 +49,19 @@ interface IFooterStates{
 class Footer extends React.Component<IFooterProps, IFooterStates> {
   constructor(props) {
     super(props)
+
+    this.state = {
+      instagram: [],
+    }
   }
 
   componentDidMount() {
     this.props.actionGetSettings()
     Axios.get(INSTAGRAM)
     .then((result) => {
-      console.log(result)
+      this.setState({
+        instagram: result.data,
+      })
     })
     .catch(err => console.log(err))
   }
@@ -63,7 +69,7 @@ class Footer extends React.Component<IFooterProps, IFooterStates> {
     const { t } = this.props
     return (
       <div className={`${S['footer']} container`}>
-        <Instagram/>
+        <Instagram data={this.state.instagram}/>
         <InfoSection t={t}/>
         <BackToTop
           scrollStepInPx={50}
