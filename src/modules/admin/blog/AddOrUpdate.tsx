@@ -285,7 +285,9 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
               id="editor1"
               name="editor1"
               value={this.props.blogState.blogs_content}
-              />
+              >
+              {this.props.blogState.blogs_content}
+              </textarea>
             </div>
           </div>
         </div>
