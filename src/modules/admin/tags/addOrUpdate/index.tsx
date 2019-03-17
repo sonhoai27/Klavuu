@@ -73,6 +73,7 @@ class AdminTagAdd extends React.Component<IAdminTagAddProps, IAdminTagAddStates>
   onSave = () => {
     if (this.onCheckTag()) {
       this.props.actionAddTag({
+        tag_id: uuidv4(new Date()),
         tag_name: this.state.tag.tag_name,
         tag_alias: this.state.tag.tag_alias,
         tag_parent: this.state.tag.tag_parent,

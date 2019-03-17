@@ -76,7 +76,7 @@ class Products extends React.Component<IProductsProps> {
           this.props.actionShowHidePopup({ status: false })
           this.props.actionDeleteProduct(id)
           .then(() => {
-            this.props.actionGetProducts()
+            this.props.actionGetProducts(`?page=${this.onMakeCurrentPage()}`)
             .then(() => {
               this.props.actionShowHideAlert({
                 type: 'success',

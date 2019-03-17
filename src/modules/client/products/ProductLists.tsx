@@ -425,7 +425,7 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
             </li>
           )]
           tempParentDom = [...tempParentDom, React.createElement('div', {
-            className: 'col-sm-2',
+            className: 'col-sm-3',
             key: uuidv4(),
           }, tempChildrenDom)]
           tempChildrenDom = []
@@ -450,7 +450,7 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
         }
       })
       tempParentDom = [...tempParentDom, React.createElement('div', {
-        className: 'col-sm-2',
+        className: 'col-sm-3',
         key: uuidv4(),
       }, tempChildrenDom)]
 
@@ -613,6 +613,10 @@ class ProductLists extends React.Component<IProductListsProps, IProductListsStat
             && this.props.productsFilterState.items
             ? this.renderProducts()
             : this.renderLazyLoading()
+          }
+          {
+            this.isProduct().length === 0
+            && <div className="col-12"><h4>Không có sản phẩm nào!</h4></div>
           }
         </div>
 
