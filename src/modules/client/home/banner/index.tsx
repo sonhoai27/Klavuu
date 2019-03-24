@@ -40,7 +40,7 @@ class Banner extends React.PureComponent<IBannerProps> {
             element.banner_title !== null
             && (
               <div className={S['new-products__link']}>
-                <Link to={element.banner_link}>
+                <Link to={element.banner_link ? element.banner_link : '/'}>
                   <div className={S['new-products__link__info']}>
                     <h3>{element.banner_title}</h3>
                     <p>{element.banner_desc}</p>

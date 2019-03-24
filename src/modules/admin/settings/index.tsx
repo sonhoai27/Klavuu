@@ -28,6 +28,7 @@ interface IAdminSettingsStates {
   socials: any;
   hope: any;
   color: any;
+  about: any;
 }
 
 class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsStates> {
@@ -61,6 +62,9 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
         WEBSITE_PRODUCT_RETURNS: '',
         WEBSITE_REAL_PRODUCT: '',
       },
+      about: {
+        WEBSITE_ABOUTUS: '',
+      },
     }
   }
 
@@ -93,6 +97,9 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
           WEBSITE_EXPECTED_DELIVERY_DATE: this.props.settingsState.WEBSITE_EXPECTED_DELIVERY_DATE,
           WEBSITE_PRODUCT_RETURNS: this.props.settingsState.WEBSITE_PRODUCT_RETURNS,
           WEBSITE_REAL_PRODUCT: this.props.settingsState.WEBSITE_REAL_PRODUCT,
+        },
+        about: {
+          WEBSITE_ABOUTUS: this.props.settingsState.WEBSITE_ABOUTUS,
         },
         color: {
           WEBSITE_PRIMARY_COLOR:
@@ -349,12 +356,12 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
                     config={{
                       ...configForProductIntro,
                     }}
-                    onChange={e => {
+                    onChange={(e) => {
                       this.setState({
                         info: {
                           ...this.state.info,
                           WEBSITE_CONFIG_MAIL: e.editor.getData(),
-                        }
+                        },
                       })
                     }}
                     data={this.props.settingsState.WEBSITE_CONFIG_MAIL}
@@ -363,6 +370,42 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
                 <div>
                   <span
                     onClick={() => this.onSave('info')}
+                    className={S['settings__btn']}>Lưu</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row" style={{ paddingBottom: 32 }}>
+            <div className="col-sm-4">
+              <p><b>About us</b></p>
+              <p>
+                Thông tin website
+              </p>
+            </div>
+            <div className="col-sm-8">
+              <div className={GlobalStyles['wrap-content']}>
+                <div className={GlobalStyles['form-item']}>
+                  <label>About us</label>
+                  <CKEditor
+                    type="classic"
+                    config={{
+                      ...configForProductIntro,
+                    }}
+                    onChange={(e) => {
+                      this.setState({
+                        about: {
+                          ...this.state.about,
+                          WEBSITE_ABOUTUS: e.editor.getData(),
+                        },
+                      })
+                    }}
+                    data={this.props.settingsState.WEBSITE_ABOUTUS}
+                  />
+                </div>
+                <div>
+                  <span
+                    onClick={() => this.onSave('about')}
                     className={S['settings__btn']}>Lưu</span>
                 </div>
               </div>

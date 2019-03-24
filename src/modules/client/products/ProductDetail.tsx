@@ -127,6 +127,7 @@ class ProductDetail extends React.Component<IProductDetailProps, IProductDetailS
     && this.props.productState.tag.map((tag) => {
       return (
         <span
+          style={{ marginBottom: 8 }}
           key={uuidv4()}>
           <Link to={`/page/products/t/${tag.tag_alias}`}>
             {tag.tag_name}

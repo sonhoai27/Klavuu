@@ -121,5 +121,8 @@ module.exports = {
                 },
             }
         }
+    },
+    externals: {
+        CKEDITOR: 'CKEDITOR'
     }
 }
