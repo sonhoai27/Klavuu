@@ -3,8 +3,19 @@
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-CKEDITOR.editorConfig = function( config ) {
-	// Define changes to default configuration here. For example:
-	// config.language = 'fr';
-	// config.uiColor = '#AADC6E';
+CKEDITOR.editorConfig = function(config) {
+    // Define changes to default configuration here. For example:
+    // config.language = 'fr';
+    // config.uiColor = '#AADC6E';
+    config.filebrowserBrowseUrl = 'https://22.zonesgroup.vn/api/ckfinder/ckfinder.html';
+
+    config.filebrowserImageBrowseUrl = 'https://22.zonesgroup.vn/api/ckfinder/ckfinder.html?type=Images';
+
+    config.filebrowserFlashBrowseUrl = 'https://22.zonesgroup.vn/api/ckfinder/ckfinder.html?type=Flash';
+
+    config.filebrowserUploadUrl = 'https://22.zonesgroup.vn/api/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files';
+
+    config.filebrowserImageUploadUrl = 'https://22.zonesgroup.vn/api/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images';
+
+    config.filebrowserFlashUploadUrl = 'https://22.zonesgroup.vn/api/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash';
 };

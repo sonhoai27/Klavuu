@@ -39,6 +39,7 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
         WEBSITE_TITLE: '',
         WEBSITE_DESC: '',
         WEBSITE_CONFIG_MAIL: '',
+        WEBSITE_TITLE_MAIL: '',
       },
       color: {
         WEBSITE_PRIMARY_COLOR: '#fff',
@@ -79,6 +80,7 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
           WEBSITE_TITLE: this.props.settingsState.WEBSITE_TITLE,
           WEBSITE_DESC: this.props.settingsState.WEBSITE_DESC,
           WEBSITE_CONFIG_MAIL: this.props.settingsState.WEBSITE_CONFIG_MAIL,
+          WEBSITE_TITLE_MAIL: this.props.settingsState.WEBSITE_TITLE_MAIL,
         },
         address: {
           WEBSITE_EMAIL: this.props.settingsState.WEBSITE_EMAIL,
@@ -339,6 +341,7 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
           <div className="row" style={{ paddingBottom: 32 }}>
             <div className="col-sm-4">
               <p><b>Email template</b></p>
+              <p>Tiêu đề mail: ví dụ, đặt hàng thành công.</p>
               <p>
                 Danh sách TAG {'{}'}:<br />
                 - {'{client_name}'}: tên khách hàng<br />
@@ -349,6 +352,14 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
             </div>
             <div className="col-sm-8">
               <div className={GlobalStyles['wrap-content']}>
+                <div className={GlobalStyles['form-item']}>
+                  <label>Tiêu đề mail</label>
+                  <input
+                    onChange={e => this.onChange(e, 'info')}
+                    type="text"
+                    defaultValue={this.props.settingsState.WEBSITE_TITLE_MAIL}
+                    name="WEBSITE_TITLE_MAIL" />
+                </div>
                 <div className={GlobalStyles['form-item']}>
                   <label>Email template</label>
                   <CKEditor

@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet';
 
 import AdminHeader from '../shared/layout/Header';
 import Breadcrumb from '../shared/layout/Breadcrumb';
-import Photo from './Photo';
 import Icon from '@app/modules/client/shared/layout/Icon';
 import BlogModel from '@app/shared/models/Blog';
 import Alias from '@app/shared/utils/Alias';
@@ -13,13 +12,13 @@ import { actionShowHideAlert } from '@app/stores/init';
 
 // @ts-ignore
 declare var CKEDITOR: any;
+// @ts-ignore
+declare var CKFinder: any;
 
 const GlobalStyles = require('@app/shared/styles/Box.scss');
 const S = require('./styles/Blog.scss');
 
 interface IStates {
-  isShowingPhotoApp: boolean;
-  ckeditor: any;
   blog: BlogModel;
 }
 
@@ -36,8 +35,6 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
   constructor(props) {
     super(props)
     this.state = {
-      isShowingPhotoApp: false,
-      ckeditor: {},
       blog: {},
     }
   }
@@ -51,52 +48,28 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
 
   getBlog = () => {
     this.props.actionGetBlog(this.props.match.params.alias)
-    .then((result) => {
-      const data: BlogModel = result.value.data
-      this.setState({
-        blog: {
-          blogs_alias: data.blogs_alias,
-          blogs_id: data.blogs_id,
-          blogs_content: data.blogs_content,
-          blogs_cover: data.blogs_cover,
-          blogs_desc: data.blogs_desc,
-          blogs_title: data.blogs_title,
-          blogs_views: data.blogs_views,
-        },
+      .then((result) => {
+        const data: BlogModel = result.value.data
+        this.setState({
+          blog: {
+            blogs_alias: data.blogs_alias,
+            blogs_id: data.blogs_id,
+            blogs_content: data.blogs_content,
+            blogs_cover: data.blogs_cover,
+            blogs_desc: data.blogs_desc,
+            blogs_title: data.blogs_title,
+            blogs_views: data.blogs_views,
+          },
+        })
       })
-    })
-    .catch(err => console.log(err))
+      .catch(err => console.log(err))
   }
-
-  showHidePhotoApp = () => this.setState({ isShowingPhotoApp: !this.state.isShowingPhotoApp })
 
   // false -> add
   isUpdate = () => this.props.match.params.alias
 
   configCKEditor = () => {
     try {
-      CKEDITOR.plugins.add('insertimage', {
-        init: (editor) => {
-          editor.addCommand('insertImage', {
-            exec: (editor) => {
-              this.setState({
-                ckeditor: {
-                  editor,
-                  type: 'insert_image',
-                },
-              }, () => {
-                this.showHidePhotoApp()
-              })
-            },
-          });
-          editor.ui.addButton('insertimage', {
-            label: 'Insert Image',
-            command: 'insertImage',
-            icon: '/images/icons/picture.svg',
-          });
-        },
-      });
-
       CKEDITOR.replace('editor1', {
         height: 500,
         toolbar: [
@@ -123,15 +96,35 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
             name: 'insert', items: ['Table', 'HorizontalRule', 'Smiley',
               'SpecialChar', 'PageBreak', 'Iframe'],
           },
-          { name: 'FontAwesome', items: ['insertimage'] },
+          { name: 'FontAwesome', items: ['Image'] },
         ],
         extraAllowedContent: 'i;span;ul;li;table;td;style;*[id];*(*);*{*}',
         allowedContent: true,
-        extraPlugins: 'insertimage',
         htmlEncodeOutput: false,
         entities: false,
       });
-    } catch (e) {}
+    } catch (e) { }
+
+    const blogsCover = document.getElementById('image-picker');
+    blogsCover.onclick =  ()  => {
+      CKFinder.popup({
+        chooseFiles: true,
+        width: 800,
+        height: 600,
+        onInit(finder) {
+          finder.on('files:choose', (evt) => {
+            const file = evt.data.files.first();
+            // @ts-ignore
+            document.getElementById('cover-blog-id').src = file.getUrl();
+          });
+
+          finder.on('file:choose:resizedImage', (evt) => {
+            // @ts-ignore
+            document.getElementById('cover-blog-id').src = evt.data.resizedUrl
+          });
+        },
+      });
+    }
   }
 
   onChange = (e) => {
@@ -159,14 +152,14 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
 
     if (this.checkBlogNull(blog)) {
       this.props.actionAddBlog(blog)
-      .then(() => this.onShowAlert({
-        type: 'success',
-        title: 'Thêm thành công bài viết!',
-      }))
-      .catch(() => this.onShowAlert({
-        type: 'error',
-        title: 'Có lỗi, vui lòng xem lại!',
-      }))
+        .then(() => this.onShowAlert({
+          type: 'success',
+          title: 'Thêm thành công bài viết!',
+        }))
+        .catch(() => this.onShowAlert({
+          type: 'error',
+          title: 'Có lỗi, vui lòng xem lại!',
+        }))
     } else {
       this.onShowAlert({
         type: 'warning',
@@ -211,17 +204,17 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
       },
       this.state.blog.blogs_id,
     )
-    .then(() => {
-      this.onShowAlert({
-        type: 'success',
-        title: 'Cập nhật thành công bài viết!',
+      .then(() => {
+        this.onShowAlert({
+          type: 'success',
+          title: 'Cập nhật thành công bài viết!',
+        })
+        window.location.reload()
       })
-      window.location.reload()
-    })
-    .catch(() => this.onShowAlert({
-      type: 'error',
-      title: 'Có lỗi, vui lòng xem lại!',
-    }))
+      .catch(() => this.onShowAlert({
+        type: 'error',
+        title: 'Có lỗi, vui lòng xem lại!',
+      }))
   }
 
   componentWillUnmount() {
@@ -270,23 +263,23 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
               <input
                 defaultValue={this.state.blog.blogs_title}
                 type="text" name="blogs_title"
-                onChange={this.onChange}/>
+                onChange={this.onChange} />
             </div>
             <div className={GlobalStyles['form-item']}>
               <label>Mô tả</label>
               <input
                 defaultValue={this.state.blog.blogs_desc}
-                type="text" name="blogs_desc" onChange={this.onChange}/>
+                type="text" name="blogs_desc" onChange={this.onChange} />
             </div>
             <div className={GlobalStyles['form-item']}>
               <label>Nội dung</label>
               <textarea
-              cols={80}
-              id="editor1"
-              name="editor1"
-              value={this.props.blogState.blogs_content}
+                cols={80}
+                id="editor1"
+                name="editor1"
+                value={this.props.blogState.blogs_content}
               >
-              {this.props.blogState.blogs_content}
+                {this.props.blogState.blogs_content}
               </textarea>
             </div>
           </div>
@@ -295,30 +288,16 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
           <div className={GlobalStyles['wrap-content']}>
             <div className={GlobalStyles['form-item']}>
               <label>Cover</label>
-              <div className={S['image-picker']} onClick={() => {
-                this.setState({
-                  ckeditor: {
-                    editor: 'cover-blog-id',
-                    type: 'change_image',
-                  },
-                }, () => {
-                  this.showHidePhotoApp()
-                })
-              }}>
+              <div className={S['image-picker']} id="image-picker">
                 <Icon name="picture" />
                 <img
-                  src={this.state.blog.blogs_cover ? this.state.blog.blogs_cover : ''}
+                  src={this.props.blogState.blogs_cover}
                   id="cover-blog-id"
-                  className="img-fluid"/>
+                  className="img-fluid" />
               </div>
             </div>
           </div>
         </div>
-
-        {
-          this.state.isShowingPhotoApp
-          && <Photo onClose={this.showHidePhotoApp} ckeditor={this.state.ckeditor}/>
-        }
       </>
     )
   }
