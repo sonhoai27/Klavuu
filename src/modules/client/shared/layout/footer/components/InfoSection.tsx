@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { CDN } from '@app/shared/const';
 
 const S = require('./InfoSection.scss')
 
@@ -12,7 +13,7 @@ const InfoSection = props => (
             <Link to="/page/blogs">
               <img
                 // tslint:disable-next-line:max-line-length
-                src="https://cdn.shopify.com/s/files/1/0543/8301/t/73/assets/tutorialsdesktop-1-3-19.jpg"
+                src={`${CDN}icons/${props.settings.WEBSITE_IMAGE_BLOG}`}
                 className="img-fluid" />
               <p>{props.t('BLOGS')}</p>
             </Link>
@@ -20,10 +21,10 @@ const InfoSection = props => (
         </div>
         <div className="col-sm-4">
           <div className={S['item']}>
-            <Link to="/page/blogs">
+            <Link to="/page/about-us">
               <img
                 // tslint:disable-next-line:max-line-length
-                src="https://cdn.shopify.com/s/files/1/0543/8301/t/73/assets/about-us.jpg"
+                src={`${CDN}icons/${props.settings.WEBSITE_IMAGE_ABOUT_US}`}
                 className="img-fluid" />
               <p>{props.t('MENU_ABOUT_US')}</p>
             </Link>
@@ -34,7 +35,7 @@ const InfoSection = props => (
             <Link to="/page/blogs">
               <img
                 // tslint:disable-next-line:max-line-length
-                src="https://cdn.shopify.com/s/files/1/0543/8301/t/73/assets/GLOW_RECIPE_GLOW_EDITORIAL_DESKTOP.jpg"
+                src={`${CDN}icons/${props.settings.WEBSITE_IMAGE_HOT_PRODUCTS}`}
                 className="img-fluid" />
               <p>{props.t('BEST_SELLER')}</p>
             </Link>

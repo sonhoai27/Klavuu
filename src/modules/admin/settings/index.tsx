@@ -153,7 +153,13 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
   }
 
   render() {
-    const { WEBSITE_LOGO, WEBSITE_ICON } = this.props.settingsState
+    const {
+      WEBSITE_LOGO,
+      WEBSITE_ICON,
+      WEBSITE_IMAGE_BLOG,
+      WEBSITE_IMAGE_ABOUT_US,
+      WEBSITE_IMAGE_HOT_PRODUCTS
+    } = this.props.settingsState
 
     return (
       <>
@@ -232,6 +238,75 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
                             .catch(() => this.onShowAlert('danger', 'Lỗi cập nhật icon!'))
                         }}
                       />
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <div className={GlobalStyles['form-item']}>
+                      <label>Blogs cover</label>
+                      <SingleUploadImage
+                        onDelete={() => {
+                          axios.delete(`${API}configs/images/WEBSITE_IMAGE_BLOG/${WEBSITE_IMAGE_BLOG}`)
+                            .then(() => this.onShowAlert('success', 'Xóa thành công blog cover!'))
+                            .catch(() => this.onShowAlert('danger', 'Lỗi xóa blog cover!'))
+                        }}
+                        onUpdate={(e) => {
+                          const formData = new FormData()
+                          formData.append('upload-image', e)
+                          axios.post(`${API}configs/images/WEBSITE_IMAGE_BLOG`, formData)
+                            .then(() => this.onShowAlert('success', 'Cập nhật thành công blog cover!'))
+                            .catch(() => this.onShowAlert('danger', 'Lỗi cập nhật blog cover!'))
+                        }}
+                        src={
+                          this.props.settingsState.WEBSITE_IMAGE_BLOG
+                            ? this.props.settingsState.WEBSITE_IMAGE_BLOG
+                            : ''
+                        } />
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <div className={GlobalStyles['form-item']}>
+                      <label>About us cover</label>
+                      <SingleUploadImage
+                        onDelete={() => {
+                          axios.delete(`${API}configs/images/WEBSITE_IMAGE_ABOUT_US/${WEBSITE_IMAGE_ABOUT_US}`)
+                            .then(() => this.onShowAlert('success', 'Xóa thành công about us cover!'))
+                            .catch(() => this.onShowAlert('danger', 'Lỗi xóa about us cover!'))
+                        }}
+                        onUpdate={(e) => {
+                          const formData = new FormData()
+                          formData.append('upload-image', e)
+                          axios.post(`${API}configs/images/WEBSITE_IMAGE_ABOUT_US`, formData)
+                            .then(() => this.onShowAlert('success', 'Cập nhật thành công about us cover!'))
+                            .catch(() => this.onShowAlert('danger', 'Lỗi cập nhật about us cover!'))
+                        }}
+                        src={
+                          this.props.settingsState.WEBSITE_IMAGE_ABOUT_US
+                            ? this.props.settingsState.WEBSITE_IMAGE_ABOUT_US
+                            : ''
+                        } />
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <div className={GlobalStyles['form-item']}>
+                      <label>Bán chạy cover</label>
+                      <SingleUploadImage
+                        onDelete={() => {
+                          axios.delete(`${API}configs/images/WEBSITE_IMAGE_HOT_PRODUCTS/${WEBSITE_IMAGE_HOT_PRODUCTS}`)
+                            .then(() => this.onShowAlert('success', 'Xóa thành công bán chạy!'))
+                            .catch(() => this.onShowAlert('danger', 'Lỗi xóa bán chạy!'))
+                        }}
+                        onUpdate={(e) => {
+                          const formData = new FormData()
+                          formData.append('upload-image', e)
+                          axios.post(`${API}configs/images/WEBSITE_IMAGE_HOT_PRODUCTS`, formData)
+                            .then(() => this.onShowAlert('success', 'Cập nhật thành công bán chạy!'))
+                            .catch(() => this.onShowAlert('danger', 'Lỗi cập nhật bán chạy!'))
+                        }}
+                        src={
+                          this.props.settingsState.WEBSITE_IMAGE_HOT_PRODUCTS
+                            ? this.props.settingsState.WEBSITE_IMAGE_HOT_PRODUCTS
+                            : ''
+                        } />
                     </div>
                   </div>
                 </div>

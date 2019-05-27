@@ -70,7 +70,7 @@ class Footer extends React.Component<IFooterProps, IFooterStates> {
     return (
       <div className={`${S['footer']} container`}>
         <Instagram data={this.state.instagram}/>
-        <InfoSection t={t}/>
+        <InfoSection settings={this.props.settingsState} t={t}/>
         <BackToTop
           scrollStepInPx={50}
           delayInMs={16.66}
