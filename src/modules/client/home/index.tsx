@@ -9,6 +9,7 @@ import { actionGetTagsForMenu } from '@app/stores/tag/TagActions';
 import Popup from '@app/shared/popup';
 import { actionGetBrands } from '@app/stores/brand/BrandActions';
 import ShoppingCart from '../cart/ShoppingCart';
+import ContactUs from '@app/modules/client/home/popup'
 
 const NewProducts = Loadable({
   loader: () => import(
@@ -49,6 +50,7 @@ class Home extends React.Component<IHomeProps> {
           <Banner/>
           <BrandStory/>
           <NewProducts/>
+          <ContactUs/>
         </div>
         {
           this.props.isShowShoppingCartState && <ShoppingCart/>

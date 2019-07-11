@@ -32,6 +32,9 @@ class AdminSideLeftMenu extends React.Component<IAdminSideLeftMenuProps> {
               <li>
                 <Link to="/xxx/app/orders">Đơn hàng</Link>
               </li>
+              <li>
+                <Link to="/xxx/app/contact">Liên hệ</Link>
+              </li>
             </Rule>
             <Rule
               permision={['ADMIN']}

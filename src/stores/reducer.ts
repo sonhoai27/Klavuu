@@ -10,6 +10,7 @@ import cmtReducer from './comment/CommentReducer';
 import bannerReducer from './banner/BannerReducer';
 import languageReducer from './language/LanguageReducer';
 import blogReducer from './blog/BlogReducer';
+import contactReducer from './contact/ContactReducer';
 
 const rootReducer = combineReducers({
   initReducer,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   bannerReducer,
   languageReducer,
   blogReducer,
+  contactReducer,
 });
 
 export default rootReducer;

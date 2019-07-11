@@ -643,10 +643,10 @@
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.2.tgz#0e670ea254d559241b6eeb3894f8754991e73220"
   integrity sha512-ui3WwXmjTaY73fOQ3/m3nnajU/Orhi6cEu5rzX+BrAAJxa3eITXZ5ch9suPqtM03OWhAHhPSyBGCN4UKoxO20Q==
 
-"@types/i18next-browser-languagedetector@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@types/i18next-browser-languagedetector/-/i18next-browser-languagedetector-2.0.1.tgz#35490253884b15311c54108697d5a7147a75df95"
-  integrity sha512-9TwP0tw0PSXUtBtM12PFUjBsl9sP5bNHd54qdSXBrrZ4HJmtVdqbKvmXLH4Qd3KQzIS2g/Z7HhLhygL2LUSb8w==
+"@types/i18next-browser-languagedetector@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/i18next-browser-languagedetector/-/i18next-browser-languagedetector-2.0.0.tgz#b6c1b87d2de4213414290efd4af1f45ed9fbdb1a"
+  integrity sha512-/Jh8b56EogtKvMfQpA0qCoa8YhXD/vfjDhgHHdOKVl88W0dQtl0E68Kj40/YkHyCPMdh3R28xo40YOnzXO8IbA==
 
 "@types/node@*":
   version "10.12.18"
@@ -3626,7 +3626,7 @@ https-browserify@^1.0.0:
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
   integrity sha1-7AbBDgo0wPL68Zn3/X/Hj//QPHM=
 
-i18next-browser-languagedetector@2.0.1:
+i18next-browser-languagedetector@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/i18next-browser-languagedetector/-/i18next-browser-languagedetector-2.0.0.tgz#4d9df2bd1a5deda3c8c0a6d3db62d50388b9eedd"
   integrity sha1-TZ3yvRpd7aPIwKbT22LVA4i57t0=

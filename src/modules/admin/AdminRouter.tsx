@@ -94,6 +94,12 @@ const AdminBlogsAddOrUpdate = Loadable({
   loading: () => <GlobalLoading/>,
 });
 
+const AdminContact = Loadable({
+  loader: () => import(
+    /*webpackChunkName: "admin_contact" */ '@app/modules/admin/contact'),
+  loading: () => <GlobalLoading/>,
+});
+
 const AdminRouter = (props) => {
   return (
     <Switch>
@@ -104,6 +110,7 @@ const AdminRouter = (props) => {
       <Route exact path={`${props.match.url}/banners`} component={AdminBanner}/>
       <Route exact path={`${props.match.url}/brands`} component={AdminBrand}/>
       <Route exact path={`${props.match.url}/tags`} component={AdminTags}/>
+      <Route exact path={`${props.match.url}/contact`} component={AdminContact}/>
       <Route exact path={`${props.match.url}/comments`} component={AdminComments}/>
       <Route exact path={`${props.match.url}/settings`} component={AdminSettings}/>
       <Route exact path={`${props.match.url}/language`} component={AdminLanguage}/>

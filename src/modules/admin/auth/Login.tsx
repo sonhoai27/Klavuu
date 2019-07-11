@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { actionLogin, actionShowHideAlert, actionShowHideLoading } from '@app/stores/init';
 
-const S = require('./styles/login.scss')
+const S = require('./styles/Login.scss')
 
 interface IAdminLoginProps {
   actionLogin: Function;
