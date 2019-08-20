@@ -10,7 +10,7 @@ module.exports = merge(commonConfig, {
         filename: 'js/[name].[hash].js',
         chunkFilename: "js/[name].[hash].js",
         path: resolve(__dirname, '../build'),
-        publicPath: '/'
+        publicPath: '/dev/'
     },
     stats: {
         colors: false,

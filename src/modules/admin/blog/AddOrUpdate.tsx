@@ -145,17 +145,22 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
 
     const blog = {
       ...this.state.blog,
-      blogs_alias: Alias(this.state.blog.blogs_title),
+      blogs_alias: Alias(this.state.blog.blogs_title || ''),
       blogs_cover: image,
       blogs_content: CKEDITOR.instances.editor1.getData(),
     }
 
     if (this.checkBlogNull(blog)) {
       this.props.actionAddBlog(blog)
-        .then(() => this.onShowAlert({
-          type: 'success',
-          title: 'Thêm thành công bài viết!',
-        }))
+        .then(() => {
+          this.onShowAlert({
+            type: 'success',
+            title: 'Thêm thành công bài viết!',
+          })
+          setTimeout(() => {
+            window.location.href = '/xxx/app/blogs'
+          }, 1000)
+        })
         .catch(() => this.onShowAlert({
           type: 'error',
           title: 'Có lỗi, vui lòng xem lại!',
@@ -196,10 +201,10 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
 
     this.props.actionUpdateBlog(
       {
-        blogs_alias: Alias(this.state.blog.blogs_title),
-        blogs_content: this.state.blog.blogs_content,
+        blogs_alias: Alias(this.state.blog.blogs_title || ''),
+        blogs_content: CKEDITOR.instances.editor1.getData(),
         blogs_cover: image,
-        blogs_desc: CKEDITOR.instances.editor1.getData(),
+        blogs_desc: this.state.blog.blogs_desc,
         blogs_title: this.state.blog.blogs_title,
       },
       this.state.blog.blogs_id,

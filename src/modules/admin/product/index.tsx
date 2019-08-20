@@ -180,7 +180,7 @@ class Products extends React.Component<IProductsProps> {
               onPageChanged={(e) => {
                 this.props.actionGetProducts(`?page=${e.currentPage}`)
                 window.scrollTo(0, 0)
-                window.history.pushState('', '', `${this.props.match.url}?page=${e.currentPage}`);
+                window.history.pushState('', '', `/dev${this.props.match.url}?page=${e.currentPage}`);
               }}
               totalRecords={Number(this.isMeta()['total'])}
             />

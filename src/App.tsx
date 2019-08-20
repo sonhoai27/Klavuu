@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
+import { Route, BrowserRouter as Router, Switch, Redirect } from 'react-router-dom'
 // @ts-ignore
 import Loadable from 'react-loadable';
 
@@ -46,11 +46,12 @@ class App extends React.Component<IAppProps> {
   render() {
 
     return (
-      <Router>
+      <Router basename="/dev/">
         <Switch>
-          <Route exact path="/" render={props => <Layout><Home {...props}/></Layout>}/>
-          <Route path="/page" component={Client}/>
+          {/* <Route exact path="/" render={props => <Layout><Home {...props}/></Layout>}/>
+          <Route path="/page" component={Client}/> */}
           <Route path="/xxx" component={Admin}/>
+          <Redirect from="/" to="/xxx"/>
         </Switch>
       </Router>
     )

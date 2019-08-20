@@ -100,7 +100,7 @@ class Blogs extends React.Component<IBlogsProps, IBlogsStates> {
               onPageChanged={(e) => {
                 this.props.actionGetBlogs(`?page=${e.currentPage}`)
                 window.scrollTo(0, 0)
-                window.history.pushState('', '', `${this.props.match.url}?page=${e.currentPage}`);
+                window.history.pushState('', '', `/dev${this.props.match.url}?page=${e.currentPage}`);
               }}
               totalRecords={Number(this.isMeta()['total'])}
             />

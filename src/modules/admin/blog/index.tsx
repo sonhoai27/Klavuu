@@ -53,7 +53,7 @@ class AdminBlog extends React.Component<IAdminBlogProps> {
     && this.props.blogsState.items.map((element: BlogModel) => (
       <tr key={element.blogs_id}>
         <td>
-          <a href={`/xxx/app/blog/${element.blogs_alias}`}>{element.blogs_title}</a>
+          <a href={`/dev/xxx/app/blog/${element.blogs_alias}`}>{element.blogs_title}</a>
         </td>
         <td>
           <Icon name="trash" onClick={() => this.onDelete(element.blogs_id)}/>
@@ -161,7 +161,7 @@ class AdminBlog extends React.Component<IAdminBlogProps> {
               onPageChanged={(e) => {
                 this.props.actionGetBlogs(`?page=${e.currentPage}`)
                 window.scrollTo(0, 0)
-                window.history.pushState('', '', `${this.props.match.url}?page=${e.currentPage}`);
+                window.history.pushState('', '', `/dev${this.props.match.url}?page=${e.currentPage}`);
               }}
               totalRecords={Number(this.isMeta()['total'])}
             />

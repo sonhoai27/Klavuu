@@ -102,7 +102,7 @@ class AdminContact extends React.Component<IAdminContactProps, {}> {
                 window.history.pushState(
                   "",
                   "",
-                  `${this.props.match.url}?page=${e.currentPage}`
+                  `/dev${this.props.match.url}?page=${e.currentPage}`
                 );
               }}
               totalRecords={Number(this.isMeta()["total"])}

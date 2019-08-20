@@ -96,7 +96,7 @@ class Client extends React.Component<IClientProps> {
 
     return (
       <>
-        <Router>
+        <Router basename="/dev/">
           <Layout>
             <Route exact path={`${match.url}/product/:alias`} component={ProductDetail} />
             <Route exact path={`${match.url}/products/all`} component={ProductList} />
