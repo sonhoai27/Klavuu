@@ -201,7 +201,11 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
 
     this.props.actionUpdateBlog(
       {
+<<<<<<< HEAD
         blogs_alias: Alias(this.state.blog.blogs_title || ''),
+=======
+        blogs_alias: Alias(this.state.blog.blogs_title),
+>>>>>>> 0ed2a3b06b7528c663b85e8a1bd23712e5110b82
         blogs_content: CKEDITOR.instances.editor1.getData(),
         blogs_cover: image,
         blogs_desc: this.state.blog.blogs_desc,
