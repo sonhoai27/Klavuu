@@ -93,6 +93,7 @@ module.exports = {
             { from: '../public/sw.js', to: '../build/sw.js' },
             { from: '../public/images/favicon.ico', to: '../build' }
         ]),
+        new HardSourceWebpackPlugin(),
     ],
     optimization: {
         splitChunks: {
