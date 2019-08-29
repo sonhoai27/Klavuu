@@ -10,6 +10,7 @@ import { actionShowHideLoading, actionShowHideAlert } from '@app/stores/init';
 import Pagination from '@app/shared/Pagination';
 import FormatNumber from '@app/shared/utils/FormatNumber';
 import OrderExport from './Export';
+import { ADMIN_URL } from '@app/shared/const';
 
 const GlobalStyles = require('@app/shared/styles/Box.scss');
 const S = require('./styles/Order.scss')
@@ -59,7 +60,7 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
       return (
         <tr key={uuidv4()} style={{ fontSize: 13 }}>
           <td>
-            <Link to={`/xxx/app/order/${element.order_id}`}>{`#${element.order_id}`}</Link>
+            <Link to={`${ADMIN_URL}order/${element.order_id}`}>{`#${element.order_id}`}</Link>
           </td>
           <td>
             - <b>{element.order_client_name}</b><br/>
@@ -101,12 +102,12 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
             items={[
               {
                 title: 'Trang chủ',
-                href: '/xxx/app',
+                href: '/',
                 active: false,
               },
               {
                 title: 'Quản lý đơn hàng',
-                href: '/xxx/app/orders',
+                href: '/orders',
                 active: true,
               },
             ]}
@@ -117,7 +118,7 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
             </span>
           </div>
         </AdminHeader>
-        <div className={`col-12 ${S['order']}`}>
+        <div className={`w-full ${S['order']}`}>
           <div className={GlobalStyles['wrap-content']}>
             <div className="table-responsive">
               <table className="table">
@@ -143,7 +144,7 @@ class Order extends React.Component<IOrderProps, IOrderStates> {
               onPageChanged={(e) => {
                 this.props.actionGetOrders(`?page=${e.currentPage}`)
                 window.scrollTo(0, 0)
-                window.history.pushState('', '', `/dev${this.props.match.url}?page=${e.currentPage}`);
+                window.history.pushState('', '', `/backend${this.props.match.url}?page=${e.currentPage}`);
               }}
               totalRecords={Number(this.isMeta()['total'])}
             />

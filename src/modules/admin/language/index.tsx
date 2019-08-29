@@ -118,12 +118,12 @@ class AdminLanguage extends React.PureComponent<IAdminLanguageProps, IAdminLangu
             items={[
               {
                 title: 'Trang chủ',
-                href: '/xxx/app',
+                href: '/',
                 active: false,
               },
               {
                 title: 'Ngôn ngữ',
-                href: '/xxx/app/language',
+                href: '/language',
                 active: true,
               },
             ]}

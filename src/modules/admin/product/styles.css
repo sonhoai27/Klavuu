@@ -1,0 +1,35 @@
+.product-table-filter {
+  list-style: none;
+  overflow: hidden;
+  height: 150px;
+  overflow-y: scroll;
+  margin: 0;
+  padding: 0;
+}
+.product-table-filter li {
+  cursor: pointer;
+  padding: 8px;
+}
+.product-table-filter li:hover {
+  background: #f1f1f1;
+}
+.ant-table-column-has-filters .ant-table-header-column {
+  width: 100%;
+  display: block;
+}
+.title-table-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.close-filter {
+  padding: 4px;
+  cursor: pointer;
+  margin-right: 16px;
+}
+
+.close-filter:hover {
+  background: #ff2020;
+  color: #fff;
+  border-radius: 100%;
+}

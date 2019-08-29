@@ -6,16 +6,6 @@
     --third-dark-color: #585858;
 }
 
-html {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}
-
 .mg-t-16 {
     margin-top: 20px;
 }

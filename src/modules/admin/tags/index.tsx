@@ -150,12 +150,12 @@ class AdminTags extends React.Component<IAdminTagsProps, IAdminTagsStates> {
             items={[
               {
                 title: 'Trang chủ',
-                href: '/xxx/app',
+                href: '/',
                 active: false,
               },
               {
                 title: 'Quản lý tag',
-                href: '/xxx/app/tags',
+                href: '/tags',
                 active: true,
               },
             ]}

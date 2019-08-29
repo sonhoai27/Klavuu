@@ -154,12 +154,12 @@ class AdminBanner extends React.Component<IAdminBannerProps, IAdminBannerStates>
             items={[
               {
                 title: 'Trang chủ',
-                href: '/xxx/app',
+                href: '/',
                 active: false,
               },
               {
                 title: 'Quản lý banner',
-                href: '/xxx/app/banners',
+                href: '/banners',
                 active: true,
               },
             ]}
@@ -170,7 +170,7 @@ class AdminBanner extends React.Component<IAdminBannerProps, IAdminBannerStates>
             </span>
           </div>
         </AdminHeader>
-        <div className="col-12">
+        <div className="w-full">
           <div className={GlobalStyles['wrap-content']}>
             <div className="table-responsive">
               <table className="table">

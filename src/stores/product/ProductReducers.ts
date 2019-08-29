@@ -18,7 +18,10 @@ import { REQUEST, FAILURE, SUCCESS } from '@app/configs/ActionType';
 
 const initialState = {
   productsState: [],
-  productState: {},
+  productState: {
+    items: [],
+    meta: null,
+  },
   tagsProductsState: [],
   productsFilterState: [],
   provinceState: [],

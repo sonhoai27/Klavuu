@@ -57,7 +57,7 @@ class AdminLogin extends React.Component<IAdminLoginProps, IAdminLoginStates> {
           this.props.actionShowHideAlert({
             status: false,
           })
-          window.location.href = '/xxx/app'
+          window.location.href = '/'
         }, 1500)
       })
       .catch(() => {

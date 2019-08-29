@@ -169,18 +169,18 @@ class AdminSettings extends React.Component<IAdminSettingsProps, IAdminSettingsS
             items={[
               {
                 title: 'Trang chủ',
-                href: '/xxx/app',
+                href: '/',
                 active: false,
               },
               {
                 title: 'Thông tin chung',
-                href: '/xxx/app/settings',
+                href: '/settings',
                 active: true,
               },
             ]}
           />
         </AdminHeader>
-        <div className="col-12" style={{ padding: 64 }}>
+        <div className="w-full" style={{ padding: 64 }}>
 
           <div className="row" style={{ paddingBottom: 32 }}>
             <div className="col-sm-4">

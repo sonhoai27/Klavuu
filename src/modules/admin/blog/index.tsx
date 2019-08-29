@@ -8,6 +8,7 @@ import BlogModel from '@app/shared/models/Blog';
 import Icon from '@app/modules/client/shared/layout/Icon';
 import { actionShowHidePopup, actionShowHideAlert } from '@app/stores/init';
 import Pagination from '@app/shared/Pagination';
+import { ADMIN_URL } from '@app/shared/const';
 
 const GlobalStyles = require('@app/shared/styles/Box.scss');
 
@@ -53,7 +54,7 @@ class AdminBlog extends React.Component<IAdminBlogProps> {
     && this.props.blogsState.items.map((element: BlogModel) => (
       <tr key={element.blogs_id}>
         <td>
-          <a href={`/dev/xxx/app/blog/${element.blogs_alias}`}>{element.blogs_title}</a>
+          <a href={`${ADMIN_URL}blog/${element.blogs_alias}`}>{element.blogs_title}</a>
         </td>
         <td>
           <Icon name="trash" onClick={() => this.onDelete(element.blogs_id)}/>
@@ -122,23 +123,23 @@ class AdminBlog extends React.Component<IAdminBlogProps> {
             items={[
               {
                 title: 'Trang chủ',
-                href: '/xxx/app',
+                href: '/',
                 active: false,
               },
               {
                 title: 'Blogs',
-                href: '/xxx/app/blogs',
+                href: '/blogs',
                 active: true,
               },
             ]}
           />
           <div className={GlobalStyles['wrap_action']}>
             <span>
-              <a href="/xxx/app/blogs/add">Thêm mới</a>
+              <a href={`${ADMIN_URL}blogs/add`}>Thêm mới</a>
             </span>
           </div>
         </AdminHeader>
-        <div className="col-12">
+        <div className="w-full">
           <div className={GlobalStyles['wrap-content']}>
             <div className="table-responsive">
               <table className="table">
@@ -161,7 +162,7 @@ class AdminBlog extends React.Component<IAdminBlogProps> {
               onPageChanged={(e) => {
                 this.props.actionGetBlogs(`?page=${e.currentPage}`)
                 window.scrollTo(0, 0)
-                window.history.pushState('', '', `/dev${this.props.match.url}?page=${e.currentPage}`);
+                window.history.pushState('', '', `/backend${this.props.match.url}?page=${e.currentPage}`);
               }}
               totalRecords={Number(this.isMeta()['total'])}
             />

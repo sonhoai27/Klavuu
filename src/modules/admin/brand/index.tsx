@@ -146,12 +146,12 @@ class AdminBrand extends React.Component<IAdminBrandProps, IAdminBrandStates> {
             items={[
               {
                 title: 'Trang chủ',
-                href: '/xxx/app',
+                href: '/',
                 active: false,
               },
               {
                 title: 'Quản lý hãng',
-                href: '/xxx/app/brands',
+                href: '/brands',
                 active: true,
               },
             ]}
@@ -162,7 +162,7 @@ class AdminBrand extends React.Component<IAdminBrandProps, IAdminBrandStates> {
             </span>
           </div>
         </AdminHeader>
-        <div className="col-12">
+        <div className="w-full">
           <div className={GlobalStyles['wrap-content']}>
             <div className="table-responsive">
               <table className="table">

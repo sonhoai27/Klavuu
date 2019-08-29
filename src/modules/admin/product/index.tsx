@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-const uuidv4 = require('uuid/v4');
+import { Table, Divider, Tag, Badge } from 'antd';
 
 import AdminHeader from '../shared/layout/Header';
 import Breadcrumb from '@app/modules/admin/shared/layout/Breadcrumb';
 import { actionGetProducts, actionDeleteProduct } from '@app/stores/product/ProductActions';
 import Icon from '@app/modules/client/shared/layout/Icon';
 import FormatNumber from '@app/shared/utils/FormatNumber';
-import { ADMIN_URL } from '@app/shared/const';
+import { ADMIN_URL, CDN } from '@app/shared/const';
 import { actionShowHidePopup, actionShowHideAlert } from '@app/stores/init';
-import Pagination from '@app/shared/Pagination';
+import queryParams, { getParameterByName } from '@app/shared/utils/Query';
+import { actionGetBrands } from '@app/stores/brand/BrandActions';
 
 const GlobalStyles = require('@app/shared/styles/Box.scss');
+import './styles.css'
 
 interface IProductsProps {
   actionGetProducts: Function;
@@ -21,19 +22,190 @@ interface IProductsProps {
   actionDeleteProduct: Function;
   actionShowHideAlert: Function;
   match?: any;
+  location?: any;
+  actionGetBrands: Function;
+  brandsState: any;
 }
 
-class Products extends React.Component<IProductsProps> {
+interface IProductsStates {
+  meta: any;
+  loading: boolean;
+  brand: string;
+  brandName: string;
+  filterDropdownVisible: boolean;
+}
+
+class Products extends React.Component<IProductsProps, IProductsStates> {
   constructor(props) {
     super(props)
+
+    this.state = {
+      meta: {
+        page: 1,
+        total: 0,
+        limit: 15,
+      },
+      brand: '',
+      loading: true,
+      filterDropdownVisible: false,
+      brandName: '',
+    }
   }
 
-  isProduct = () => {
-    if (this.props.productsState
-      && this.props.productsState.items) {
-      return this.props.productsState.items
-    }
-    return []
+  componentDidMount() {
+    const page = getParameterByName('page', this.props.location.history)
+    const brand = getParameterByName('brand', this.props.location.history)
+
+    this.setState({
+      brand: brand ? brand : '',
+      meta: {
+        ...this.state.meta,
+        page: page ? page : 1,
+      },
+      brandName: (brand || '').replace('-', ' '),
+    }, () => {
+      this.props.actionGetBrands()
+      this.onGetProducts()
+    })
+  }
+
+  columns = () => [
+    {
+      title: 'Name',
+      dataIndex: 'product_name',
+      width: '30%',
+      render: (text: any, row: any) => <a href={`${ADMIN_URL}product/${row.product_alias}`}>{text}</a>,
+    },
+    {
+      title: 'Price',
+      dataIndex: 'product_price',
+      render: (text: any) => <span>{FormatNumber(text)}đ</span>,
+    },
+    {
+      title: () => (
+        <div className="title-table-filter">
+          <span>Brand</span>
+          {
+            this.state.brandName
+            && (
+              <span style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}>
+               <Badge
+                count={this.state.brandName || ''}
+                style={{ backgroundColor: '#52c41a', marginRight: 8 }} />
+               <Icon
+                onClick={() => {
+                  this.setState({
+                    brand: '',
+                    brandName: '',
+                    meta: {
+                      ...this.state.meta,
+                      page: 1,
+                    },
+                    loading: true,
+                  }, () => {
+                    window.scrollTo(0, 0)
+                    this.onGetProducts()
+                  })
+                }}
+                className="close-filter" name="cross"/>
+              </span>
+            )
+          }
+        </div>
+      ),
+      onFilterDropdownVisibleChange: () => {
+        this.setState({
+          filterDropdownVisible: true,
+        })
+      },
+      filterDropdownVisible: this.state.filterDropdownVisible,
+      dataIndex: 'product_alias',
+      filterDropdown: () => {
+        const {
+          brandsState,
+        } = this.props;
+        const brands = brandsState.data || []
+
+        return (
+          <ul className="product-table-filter">
+            {
+              brands.map((brand: any) => (
+                <li
+                  onClick={() => this.onClickBrand(brand)}
+                  key={brand.brand_id}>
+                  {brand.brand_name}
+                </li>
+              ))
+            }
+          </ul>
+        )
+      },
+      render: (_: any, row: any) => (
+        <Tag color="blue" key={row.brand.brand_name || ''}>
+          {row.brand.brand_name || ''}
+        </Tag>
+      ),
+    },
+    {
+      title: 'Action',
+      render: (_: any, row: any) => (
+        <span>
+          <a href={`https://22.zonesgroup.vn/products/${row.product_alias}`} target="_blank">
+            <Icon name="store" />
+          </a>
+          <Divider type="vertical" />
+          <Icon name="trash" />
+        </span>
+      ),
+    },
+  ];
+
+  onClickBrand = (brand: any) => {
+    this.setState({
+      brand: brand.brand_alias,
+      brandName: brand.brand_name,
+      loading: true,
+      meta: {
+        ...this.state.meta,
+        page: 1,
+      },
+      filterDropdownVisible: false,
+    }, () => this.onGetProducts())
+  }
+
+  onGetProducts = () => {
+    const {
+      meta,
+      brand,
+    } = this.state;
+
+    window.scrollTo(0, 0)
+
+    this.props.actionGetProducts(queryParams({
+      brand,
+      page: meta.page,
+    }))
+    .then((result: any) => {
+      if (result.value && result.value.data && result.value.data.meta) {
+        this.setState({
+          meta: result.value.data.meta,
+          loading: false,
+        }, () => {
+          const {
+            meta,
+            brand,
+          } = this.state;
+          // tslint:disable-next-line: max-line-length
+          window.history.pushState('', '', `/backend${this.props.match.url}${queryParams({
+            brand,
+            page: meta.page,
+          })}`);
+        })
+      }
+    })
   }
 
   onMakeCurrentPage = () => {
@@ -45,27 +217,6 @@ class Products extends React.Component<IProductsProps> {
     return 1
   }
 
-  renderProducts = () => (
-    this.isProduct().map((element) => {
-      return (
-        <tr key={uuidv4()}>
-          <th scope="row">1</th>
-          <td>
-            <a href={`${ADMIN_URL}product/${element.product_alias}`}>{element.product_name}</a>
-          </td>
-          <td>{FormatNumber(element.product_price)}đ</td>
-          <td>{element.product_discount}</td>
-          <td>
-            <Link to={`/page/product/${element.product_alias}`}><Icon name="store"/></Link>
-          </td>
-          <td>
-            <Icon onClick={() => this.onDelete(element.product_id)} name="trash"/>
-          </td>
-        </tr>
-      )
-    })
-  )
-
   onDelete = (id) => {
     this.props.actionShowHidePopup({
       status: true,
@@ -75,12 +226,25 @@ class Products extends React.Component<IProductsProps> {
         func: () => {
           this.props.actionShowHidePopup({ status: false })
           this.props.actionDeleteProduct(id)
-          .then(() => {
-            this.props.actionGetProducts(`?page=${this.onMakeCurrentPage()}`)
             .then(() => {
+              this.props.actionGetProducts(`?page=${this.onMakeCurrentPage()}`)
+                .then(() => {
+                  this.props.actionShowHideAlert({
+                    type: 'success',
+                    title: 'Xóa thành công hãng!',
+                    status: true,
+                  })
+                  setTimeout(() => {
+                    this.props.actionShowHideAlert({
+                      status: false,
+                    })
+                  }, 1500)
+                })
+            })
+            .catch(() => {
               this.props.actionShowHideAlert({
-                type: 'success',
-                title: 'Xóa thành công hãng!',
+                type: 'warning',
+                title: 'Có lỗi khi xóa!',
                 status: true,
               })
               setTimeout(() => {
@@ -89,19 +253,6 @@ class Products extends React.Component<IProductsProps> {
                 })
               }, 1500)
             })
-          })
-          .catch(() => {
-            this.props.actionShowHideAlert({
-              type: 'warning',
-              title: 'Có lỗi khi xóa!',
-              status: true,
-            })
-            setTimeout(() => {
-              this.props.actionShowHideAlert({
-                status: false,
-              })
-            }, 1500)
-          })
         },
       },
       neBtn: {
@@ -112,20 +263,8 @@ class Products extends React.Component<IProductsProps> {
       },
       title: 'Warning',
       message: 'If you click OK, This product will be delete.',
-      icon: <Icon name="smile"/>,
+      icon: <Icon name="smile" />,
     })
-  }
-
-  isMeta = () => {
-    if (this.props.productsState
-      && this.props.productsState.meta) {
-      return this.props.productsState.meta
-    }
-
-    return {
-      total: 0,
-      page_size: 0,
-    }
   }
 
   render() {
@@ -137,53 +276,57 @@ class Products extends React.Component<IProductsProps> {
             items={[
               {
                 title: 'Trang chủ',
-                href: '/xxx/app',
+                href: '/',
                 active: false,
               },
               {
                 title: 'Quản lý sản phẩm',
-                href: '/xxx/app/products',
+                href: '/products',
                 active: true,
               },
             ]}
           />
           <div className={GlobalStyles['wrap_action']}>
             <span>
-              <Link to="/xxx/app/product/add">Thêm mới</Link>
+              <a href={`${ADMIN_URL}product/add`}>Thêm mới</a>
             </span>
           </div>
         </AdminHeader>
-        <div className="col-12">
+        <div className="w-full">
           <div className={GlobalStyles['wrap-content']}>
             <div className="table-responsive">
-              <table className="table">
-                <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Sản phẩm</th>
-                  <th scope="col">Giá</th>
-                  <th scope="col">Khuyến mãi</th>
-                  <th/>
-                  <th/>
-                </tr>
-                </thead>
-                <tbody>
-                {this.renderProducts()}
-                </tbody>
-              </table>
+              <Table
+                loading={this.state.loading}
+                pagination={{
+                  total: this.state.meta.total,
+                  current: this.state.meta.page,
+                  pageSize: 15,
+                  onChange: (page: any) => {
+                    this.setState({
+                      meta: {
+                        ...this.state.meta,
+                        page,
+                      },
+                      loading: true,
+                    }, () => this.onGetProducts())
+                  },
+                  showSizeChanger: true,
+                  pageSizeOptions: ['10', '20', '50', '100', '150', '200'],
+                  onShowSizeChange: (_, limit) => this.setState({
+                    meta: {
+                      ...this.state.meta,
+                      limit,
+                      page: 1,
+                    },
+                    loading: true,
+                  }, () => {
+                    this.onGetProducts()
+                  }),
+                }}
+                rowKey={record => record.product_id}
+                columns={this.columns()}
+                dataSource={this.props.productsState.items} />
             </div>
-
-            <Pagination
-              currentPage={Number(this.onMakeCurrentPage())}
-              pageLimit={Number(this.isMeta()['page_size'])}
-              pageNeighbours={2}
-              onPageChanged={(e) => {
-                this.props.actionGetProducts(`?page=${e.currentPage}`)
-                window.scrollTo(0, 0)
-                window.history.pushState('', '', `/dev${this.props.match.url}?page=${e.currentPage}`);
-              }}
-              totalRecords={Number(this.isMeta()['total'])}
-            />
           </div>
         </div>
       </>
@@ -193,6 +336,7 @@ class Products extends React.Component<IProductsProps> {
 
 const mapStateToProps = storeState => ({
   productsState: storeState.productReducer.productsState,
+  brandsState: storeState.brandReducer.brandsState,
 })
 
 const mapDispatchToProps = {
@@ -200,6 +344,7 @@ const mapDispatchToProps = {
   actionShowHidePopup,
   actionDeleteProduct,
   actionShowHideAlert,
+  actionGetBrands,
 }
 
 export default connect(

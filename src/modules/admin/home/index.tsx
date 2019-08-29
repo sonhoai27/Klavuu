@@ -37,7 +37,7 @@ class AdminHome extends React.Component<{}, IAdminHomeState> {
         <AdminHeader>
           <span>Home</span>
         </AdminHeader>
-        <div className="col-12">
+        <div className="w-full">
           <div className={GlobalStyles['wrap-content']}>
             <div className="row">
               <div className="col-sm-6">
@@ -46,7 +46,7 @@ class AdminHome extends React.Component<{}, IAdminHomeState> {
                   this.state.reports.orders.map(element => (
                     <div key={element.order_id} style={{ marginBottom: 8 }}>
                       <span>
-                        <Link to={`/xxx/app/order/${element.order_id}`}>
+                        <Link to={`/backend/order/${element.order_id}`}>
                           {element.order_client_name}
                         </Link>
                       </span>

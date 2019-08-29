@@ -1816,3 +1816,7 @@ pre code {
 .table-responsive>.table-bordered {
     border: 0
 }
+
+.w-full {
+    width: 100%;
+}

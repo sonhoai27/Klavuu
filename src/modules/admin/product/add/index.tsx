@@ -118,19 +118,19 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
         items={[
           {
             title: 'Quản lý sản phẩm',
-            href: '/xxx/app/products',
+            href: '/products',
             active: false,
           },
           {
             title: 'Tạo sản phẩm',
-            href: '/xxx/app/products/add',
+            href: '/products/add',
             active: true,
           },
         ]}
       />
       <div className={GlobalStyles['wrap_action']}>
         <span>
-          <Link to="/xxx/app/products">Hủy</Link>
+          <Link to="/products">Hủy</Link>
         </span>
         <span onClick={() => {
           this.props.actionShowHideLoading(true)
@@ -174,7 +174,7 @@ class AdminProductAdd extends React.Component<IAdminProductAddProps, IAdminProdu
         status: false,
       })
 
-      this.props.history.push('/xxx/app/products')
+      this.props.history.push('/products')
     }, 2500)
   }
 

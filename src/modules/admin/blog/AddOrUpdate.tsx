@@ -13,7 +13,7 @@ import { actionShowHideAlert } from '@app/stores/init';
 // @ts-ignore
 declare var CKEDITOR: any;
 // @ts-ignore
-declare var CKFinder: any;
+declare var $: any;
 
 const GlobalStyles = require('@app/shared/styles/Box.scss');
 const S = require('./styles/Blog.scss');
@@ -44,6 +44,14 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
     if (this.isUpdate()) {
       this.getBlog()
     }
+  }
+
+  imagePicker = (options: any, cb: any) => {
+    const routePrefix = (options && options.prefix) ? options.prefix : '/finder';
+    // tslint:disable-next-line: max-line-length
+    window.open(`${routePrefix}?type=${options.type}` || 'file', 'FileManager', 'width=900,height=600');
+    // @ts-ignore
+    window.SetUrl = cb;
   }
 
   getBlog = () => {
@@ -105,25 +113,30 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
       });
     } catch (e) { }
 
-    const blogsCover = document.getElementById('image-picker');
+    const blogsCover: any = document.getElementById('image-picker');
     blogsCover.onclick =  ()  => {
-      CKFinder.popup({
-        chooseFiles: true,
-        width: 800,
-        height: 600,
-        onInit(finder) {
-          finder.on('files:choose', (evt) => {
-            const file = evt.data.files.first();
-            // @ts-ignore
-            document.getElementById('cover-blog-id').src = file.getUrl();
-          });
+      this.imagePicker({ prefix: 'finder', type: 'image' }, (url: string, path: string) => {
+        console.log(path)
+        // @ts-ignore
+        document.getElementById('cover-blog-id').src = url;
+      })
+      // CKFinder.popup({
+      //   chooseFiles: true,
+      //   width: 800,
+      //   height: 600,
+      //   onInit(finder) {
+      //     finder.on('files:choose', (evt) => {
+      //       const file = evt.data.files.first();
+      //       // @ts-ignore
+      //       document.getElementById('cover-blog-id').src = file.getUrl();
+      //     });
 
-          finder.on('file:choose:resizedImage', (evt) => {
-            // @ts-ignore
-            document.getElementById('cover-blog-id').src = evt.data.resizedUrl
-          });
-        },
-      });
+      //     finder.on('file:choose:resizedImage', (evt) => {
+      //       // @ts-ignore
+      //       document.getElementById('cover-blog-id').src = evt.data.resizedUrl
+      //     });
+      //   },
+      // });
     }
   }
 
@@ -158,7 +171,7 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
             title: 'Thêm thành công bài viết!',
           })
           setTimeout(() => {
-            window.location.href = '/xxx/app/blogs'
+            window.location.href = '/blogs'
           }, 1000)
         })
         .catch(() => this.onShowAlert({
@@ -201,11 +214,7 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
 
     this.props.actionUpdateBlog(
       {
-<<<<<<< HEAD
         blogs_alias: Alias(this.state.blog.blogs_title || ''),
-=======
-        blogs_alias: Alias(this.state.blog.blogs_title),
->>>>>>> 0ed2a3b06b7528c663b85e8a1bd23712e5110b82
         blogs_content: CKEDITOR.instances.editor1.getData(),
         blogs_cover: image,
         blogs_desc: this.state.blog.blogs_desc,
@@ -243,17 +252,17 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
             items={[
               {
                 title: 'Trang chủ',
-                href: '/xxx/app',
+                href: '/',
                 active: false,
               },
               {
                 title: 'Blogs',
-                href: '/xxx/app/blogs',
+                href: '/blogs',
                 active: false,
               },
               {
                 title: 'Thêm',
-                href: '/xxx/app/blogs/addd',
+                href: '/blogs/addd',
                 active: true,
               },
             ]}

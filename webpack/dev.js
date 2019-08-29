@@ -1,6 +1,6 @@
+const paths = require('./path');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
-const { resolve } = require('path');
 
 const commonConfig = require('./common');
 
@@ -10,26 +10,29 @@ module.exports = merge(commonConfig, {
         'react-hot-loader/patch',
         'webpack-dev-server/client?http://localhost:8080',
         'webpack/hot/only-dev-server',
-        './index.tsx',
+        paths.appIndexJs,
     ],
     output: {
         filename: 'js/[name].[hash].js',
         chunkFilename: "js/[name].[hash].js",
-        path: resolve(__dirname, '../build'),
+        path: paths.appDevPath,
         publicPath: '/'
     },
     devServer: {
         hot: true,
         historyApiFallback: true,
+        proxy: {
+            '/api/v1': {
+                target: 'https://zonesgroup.vn',
+                secure: false,
+                changeOrigin: true,
+                headers: {
+                       Connection: 'keep-alive'
+                }
+            },
+          }
     },
-    module: {
-        rules: [{
-            test: /\.tsx?$/,
-            exclude: /node_modules/,
-            use: ['awesome-typescript-loader'],
-        }, ]
-    },
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'cheap-module-source-map',
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin(),

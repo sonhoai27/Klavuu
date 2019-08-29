@@ -64,12 +64,12 @@ class AdminContact extends React.Component<IAdminContactProps, {}> {
             items={[
               {
                 title: "Trang chủ",
-                href: "/xxx/app",
+                href: "",
                 active: false
               },
               {
                 title: "Quản lý đơn hàng",
-                href: "/xxx/app/orders",
+                href: "/orders",
                 active: true
               }
             ]}
@@ -78,7 +78,7 @@ class AdminContact extends React.Component<IAdminContactProps, {}> {
             <span onClick={this.export}>Xuất</span>
           </div>
         </AdminHeader>
-        <div className="col-12  order">
+        <div className="w-full order">
           <div className={GlobalStyles["wrap-content"]}>
             <div className="table-responsive">
               <table className="table">
@@ -102,7 +102,7 @@ class AdminContact extends React.Component<IAdminContactProps, {}> {
                 window.history.pushState(
                   "",
                   "",
-                  `/dev${this.props.match.url}?page=${e.currentPage}`
+                  `/backend${this.props.match.url}?page=${e.currentPage}`
                 );
               }}
               totalRecords={Number(this.isMeta()["total"])}

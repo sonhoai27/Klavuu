@@ -17,7 +17,7 @@ import {
 
 import axios from 'axios'
 
-import { API } from '@app/shared/const';
+import { API, API_PRO } from '@app/shared/const';
 
 const actionAddProduct = product => async (dispatch) => {
   return await dispatch({
@@ -43,7 +43,7 @@ const actionTagProduct = form => async (dispatch) => {
 const actionGetProducts = query => async (dispatch) => {
   return await dispatch({
     type: LIST_PRODUCTS,
-    payload: axios.get(`${API}products${query}`),
+    payload: axios.get(`${API_PRO}products${query}`),
   })
 };
 

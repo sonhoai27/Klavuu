@@ -151,17 +151,17 @@ class OrderDetail extends React.Component<IOrderDetailProps, IOrderDetailStates>
             items={[
               {
                 title: 'Trang chủ',
-                href: '/xxx/app',
+                href: '/',
                 active: false,
               },
               {
                 title: 'Quản lý đơn hàng',
-                href: '/xxx/app/orders',
+                href: '/orders',
                 active: false,
               },
               {
                 title: this.props.match.params.id,
-                href: '/xxx/app/orders',
+                href: '/orders',
                 active: true,
               },
             ]}

@@ -139,12 +139,12 @@ class AdminHelps extends React.Component<IAdminHelpsProps, IAdminHelpsStates> {
             items={[
               {
                 title: 'Trang chủ',
-                href: '/xxx/app',
+                href: '/',
                 active: false,
               },
               {
                 title: 'Quản lý trợ giúp',
-                href: '/xxx/app/helps',
+                href: '/helps',
                 active: true,
               },
             ]}
@@ -155,7 +155,7 @@ class AdminHelps extends React.Component<IAdminHelpsProps, IAdminHelpsStates> {
             </span>
           </div>
         </AdminHeader>
-        <div className="col-12">
+        <div className="w-full">
           <div className={GlobalStyles['wrap-content']}>
             <div className="table-responsive">
               <table className="table">

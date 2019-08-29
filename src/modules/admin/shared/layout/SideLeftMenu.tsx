@@ -1,17 +1,11 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 
 import Icon from '@app/modules/client/shared/layout/Icon';
-import Rule from '../../auth/Rule';
 
 const styles = require('./styles/AdminSideLeftMenu.scss')
 
-interface IAdminSideLeftMenuProps {
-  LoginCheckState: any;
-}
-
-class AdminSideLeftMenu extends React.Component<IAdminSideLeftMenuProps> {
+class AdminSideLeftMenu extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -25,52 +19,42 @@ class AdminSideLeftMenu extends React.Component<IAdminSideLeftMenuProps> {
         </div>
         <div className={styles['am-side-left-menu__item']}>
           <ul>
-            <Rule
-              permision={['ADMIN', 'SALESMAN']}
-              r={this.props.LoginCheckState.user.userRule}
-            >
-              <li>
-                <Link to="/xxx/app/orders">Đơn hàng</Link>
-              </li>
-              <li>
-                <Link to="/xxx/app/contact">Liên hệ</Link>
-              </li>
-            </Rule>
-            <Rule
-              permision={['ADMIN']}
-              r={this.props.LoginCheckState.user.userRule}
-            >
-              <li className={styles['line']} />
-              <li>
-                <Link to="/xxx/app/products">Sản phẩm</Link>
-              </li>
-              <li>
-                <Link to="/xxx/app/brands">Hãng</Link>
-              </li>
-              <li>
-                <Link to="/xxx/app/tags">Tag</Link>
-              </li>
-              <li className={styles['line']} />
-              <li>
-                <Link to="/xxx/app/comments">Bình luận/đánh giá</Link>
-              </li>
-              <li>
-                <Link to="/xxx/app/banners">Banner</Link>
-              </li>
-              <li className={styles['line']} />
-              <li>
-                <Link to="/xxx/app/blogs">Blogs</Link>
-              </li>
-              <li>
-                <Link to="/xxx/app/settings">Thông tin chung</Link>
-              </li>
-              <li>
-                <Link to="/xxx/app/helps">Trợ giúp</Link>
-              </li>
-              <li>
-                <Link to="/xxx/app/language">Ngôn ngữ</Link>
-              </li>
-            </Rule>
+            <li>
+              <Link to="/orders">Đơn hàng</Link>
+            </li>
+            <li>
+              <Link to="/contact">Liên hệ</Link>
+            </li>
+            <li className={styles['line']} />
+            <li>
+              <Link to="/products">Sản phẩm</Link>
+            </li>
+            <li>
+              <Link to="/brands">Hãng</Link>
+            </li>
+            <li>
+              <Link to="/tags">Tag</Link>
+            </li>
+            <li className={styles['line']} />
+            <li>
+              <Link to="/comments">Bình luận/đánh giá</Link>
+            </li>
+            <li>
+              <Link to="/banners">Banner</Link>
+            </li>
+            <li className={styles['line']} />
+            <li>
+              <Link to="/blogs">Blogs</Link>
+            </li>
+            <li>
+              <Link to="/settings">Thông tin chung</Link>
+            </li>
+            <li>
+              <Link to="/helps">Trợ giúp</Link>
+            </li>
+            <li>
+              <Link to="/language">Ngôn ngữ</Link>
+            </li>
           </ul>
         </div>
       </div>
@@ -78,8 +62,4 @@ class AdminSideLeftMenu extends React.Component<IAdminSideLeftMenuProps> {
   }
 }
 
-const mapStateToProps = storeState => ({
-  LoginCheckState: storeState.initReducer.LoginCheckState,
-})
-
-export default connect(mapStateToProps, null)(AdminSideLeftMenu)
+export default AdminSideLeftMenu

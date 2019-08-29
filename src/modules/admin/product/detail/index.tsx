@@ -213,7 +213,7 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
         items={[
           {
             title: 'Quản lý sản phẩm',
-            href: '/xxx/app/products',
+            href: '/products',
             active: false,
           },
           {
@@ -225,7 +225,7 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
       />
       <div className={GlobalStyles['wrap_action']}>
         <span style={{ background: '#999' }} >
-          <Link to="/xxx/app/products">Hủy</Link>
+          <Link to="/products">Hủy</Link>
         </span>
         <span onClick={() => {
           this.props.actionShowHideLoading(true)
@@ -237,7 +237,7 @@ class AdminProductDetail extends React.Component<IAdminProductAddProps, IAdminPr
               .then(() => {
                 this.onAddBrandTag()
                 this.showSuccessNotifyAfterAddingproduct()
-                window.location.href = `/xxx/app/product/${Alias(this.state.products.product_name)}`
+                window.location.href = `/backend/product/${Alias(this.state.products.product_name)}`
               })
               .catch(() => {
                 this.showDangerNotifyAfterAddingproduct()

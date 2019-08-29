@@ -96,18 +96,18 @@ class AdminComments extends React.Component<IAdminCommentsProps> {
             items={[
               {
                 title: 'Trang chủ',
-                href: '/xxx/app',
+                href: '/',
                 active: false,
               },
               {
                 title: 'Quản lý bình luận',
-                href: '/xxx/app/comments',
+                href: '/comments',
                 active: true,
               },
             ]}
           />
         </AdminHeader>
-        <div className="col-12">
+        <div className="w-full">
           <div className={GlobalStyles['wrap-content']}>
             <div className="table-responsive">
               <table className="table">
@@ -132,7 +132,7 @@ class AdminComments extends React.Component<IAdminCommentsProps> {
               onPageChanged={(e) => {
                 this.props.actionGetCMTS(`?page=${e.currentPage}`)
                 window.scrollTo(0, 0)
-                window.history.pushState('', '', `dev${this.props.match.url}?page=${e.currentPage}`);
+                window.history.pushState('', '', `/backend${this.props.match.url}?page=${e.currentPage}`);
               }}
               totalRecords={Number(this.isMeta()['total'])}
             />
