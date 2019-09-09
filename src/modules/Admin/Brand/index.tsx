@@ -5,13 +5,13 @@ import Loadable from 'react-loadable';
 
 const uuidv4 = require('uuid/v4');
 
-import AdminHeader from '../Shared/layout/Header';
-import Breadcrumb from '../Shared/layout/Breadcrumb';
+import AdminHeader from '../Shared/Layout/Header';
+import Breadcrumb from '../Shared/Layout/Breadcrumb';
 import { actionGetBrands, actionDeleteBrand } from '@app/Stores/Brand/BrandActions';
 import { actionShowHidePopup, actionShowHideAlert } from '@app/Stores/init';
 import Icon from '@app/Shared/Icon';
 
-const GlobalStyles = require('@app/Shared/styles/Box.scss');
+const GlobalStyles = require('@app/Shared/Styles/Box.scss');
 
 const AdminAddBrand = Loadable({
   loader: () => import(

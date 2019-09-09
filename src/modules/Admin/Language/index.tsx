@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import AdminHeader from '../Shared/layout/Header';
-import Breadcrumb from '../Shared/layout/Breadcrumb';
+import AdminHeader from '../Shared/Layout/Header';
+import Breadcrumb from '../Shared/Layout/Breadcrumb';
 import { actionGetLanguage, actionUpdateLanguage } from '@app/Stores/Language/LanguageActions';
 import { actionShowHideLoading, actionShowHideAlert } from '@app/Stores/init';
 
-const GlobalStyles = require('@app/shared/styles/Box.scss');
+const GlobalStyles = require('@app/Shared/Styles/Box.scss');
 
 interface IAdminLanguageProps {
   actionGetLanguage: Function;

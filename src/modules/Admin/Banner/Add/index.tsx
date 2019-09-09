@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import Modal from '../../Shared/layout/Modal';
+import Modal from '../../Shared/Layout/Modal';
 import Icon from '@app/Shared/Icon';
 import {
   actionAddBanner,

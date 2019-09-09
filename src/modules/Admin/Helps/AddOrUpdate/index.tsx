@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import CKEditor from 'ckeditor4-react';
 
 import { actionShowHideAlert } from '@app/Stores/init';
-import Modal from '../../Shared/layout/Modal';
+import Modal from '../../Shared/Layout/Modal';
 import Alias from '@app/Shared/Utils/Alias';
 import Axios from 'axios';
 import { API } from '@app/Shared/Const';
@@ -11,7 +11,7 @@ import { configForProductIntro } from '@app/Shared/CKEditorConfig';
 
 CKEditor.editorUrl = 'https://cdn.ckeditor.com/4.10.1/full/ckeditor.js';
 
-const S = require('../styles/add.scss');
+const S = require('@app/modules/Admin/Helps/Styles/add.scss');
 
 interface IAdminHelpAddProps {
   actionShowHideAlert?: Function;

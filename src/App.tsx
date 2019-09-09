@@ -10,7 +10,7 @@ import Loading from '@app/Shared/Loading';
 import Alert from '@app/Shared/Alert/Alert';
 import Popup from '@app/Shared/Popup';
 import GlobalLoading from './Shared/GlobalLoading';
-import AdminLayout from './modules/Admin/Shared/layout';
+import AdminLayout from './modules/Admin/Shared/Layout';
 import { MakeRoute } from './routes';
 
 // const AdminHome = React.lazy(() => import('@app/modules/admin/home'))
@@ -84,7 +84,7 @@ class App extends React.Component<IClientProps> {
 
   render() {
     return (
-        <>
+        <AdminLayout>
           <MakeRoute/>
           {
             this.props.isLoading && <Loading />
@@ -126,7 +126,7 @@ class App extends React.Component<IClientProps> {
               />
             )
           }
-        </>
+        </AdminLayout>
     )
   }
 }

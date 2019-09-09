@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 const uuidv4 = require('uuid/v4');
 import CKEditor from 'ckeditor4-react';
 
-import AdminHeader from '../../Shared/layout/Header';
-import Breadcrumb from '@app/modules/Admin/Shared/layout/Breadcrumb';
+import AdminHeader from '../../Shared/Layout/Header';
+import Breadcrumb from '@app/modules/Admin/Shared/Layout/Breadcrumb';
 import Icon from '@app/Shared/Icon';
 import Tabs, { TabPanel } from '@app/Shared/Tabs/Tabs';
-import Autocomplete from './components/Autocomplete';
+import Autocomplete from './Components/Autocomplete';
 import ProductModel from '@app/Shared/Models/ProductModel';
 import Moment from '@app/Shared/Utils/Moment';
 import { actionGetTags, actionAddTag } from '@app/Stores/Tag/TagActions';
@@ -22,12 +22,12 @@ import { actionAddImage } from '@app/Stores/Image/ImageActions';
 import TagModel from '@app/Shared/Models/TagModel';
 import BrandModel from '@app/Shared/Models/BrandModel';
 import Alias from '@app/Shared/Utils/Alias';
-import UploadPhoto from './components/UploadImage';
+import UploadPhoto from './Components/UploadImage';
 import { configForProductIntro, configForProductInfo } from '@app/Shared/CKEditorConfig';
 import { actionShowHideAlert, actionShowHideLoading } from '@app/Stores/init';
 
 const styles = require('./ProductAdd.scss')
-const GlobalStyles = require('@app/shared/styles/Box.scss');
+const GlobalStyles = require('@app/Shared/Styles/Box.scss');
 
 CKEditor.editorUrl = 'https://cdn.ckeditor.com/4.10.1/full/ckeditor.js';
 

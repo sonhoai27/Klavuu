@@ -5,11 +5,11 @@ const uuidv4 = require('uuid/v4');
 
 import { actionUpdateBrand, actionGetBrands, actionAddBrand } from '@app/Stores/Brand/BrandActions';
 import { actionShowHideAlert } from '@app/Stores/init';
-import Modal from '../../Shared/layout/Modal';
+import Modal from '../../Shared/Layout/Modal';
 import Moment from '@app/Shared/Utils/Moment';
 import Alias from '@app/Shared/Utils/Alias';
 
-const S = require('../styles/add.scss');
+const S = require('@app/modules/Admin/Brand/Styles/add.scss');
 
 interface IAdminBrandAddProps {
   actionUpdateBrand: Function;

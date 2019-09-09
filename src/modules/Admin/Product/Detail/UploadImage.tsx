@@ -4,7 +4,7 @@ const uuidv4 = require('uuid/v4');
 import Icon from '@app/Shared/Icon';
 import { CDN } from '@app/Shared/Const';
 
-const ImageStyles = require('../add/components/UploadImage.scss')
+const ImageStyles = require('@app/modules/Admin/Product/Add/Components/UploadImage.scss')
 
 interface IUploadPhotoProps {
   onChange: (event: any) => void;

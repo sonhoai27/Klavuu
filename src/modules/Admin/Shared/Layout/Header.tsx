@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const styles = require('./styles/Header.scss')
+const styles = require('./Styles/Header.scss')
 
 interface IAdminHeaderProps {
   children: any;

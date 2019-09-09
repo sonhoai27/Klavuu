@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom';
 
-const styles = require('./styles/Breadcrumb.scss')
+const styles = require('@app/Shared/Styles/Breadcrumb.scss')
 interface IBreadCrumbProps {
   className: string;
   items: {

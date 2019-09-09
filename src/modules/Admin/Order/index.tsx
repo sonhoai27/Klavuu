@@ -3,8 +3,8 @@ const uuidv4 = require('uuid/v4');
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import AdminHeader from '../Shared/layout/Header';
-import Breadcrumb from '../Shared/layout/Breadcrumb';
+import AdminHeader from '../Shared/Layout/Header';
+import Breadcrumb from '../Shared/Layout/Breadcrumb';
 import { actionGetOrders } from '@app/Stores/Cart/CartActions';
 import { actionShowHideLoading, actionShowHideAlert } from '@app/Stores/init';
 import Pagination from '@app/Shared/Pagination';
@@ -12,8 +12,8 @@ import FormatNumber from '@app/Shared/Utils/FormatNumber';
 import OrderExport from './Export';
 import { ADMIN_URL } from '@app/Shared/Const';
 
-const GlobalStyles = require('@app/shared/styles/Box.scss');
-const S = require('./styles/Order.scss')
+const GlobalStyles = require('@app/Shared/Styles/Box.scss');
+const S = require('./Styles/Order.scss')
 
 interface IOrderProps {
   actionGetOrders: Function;

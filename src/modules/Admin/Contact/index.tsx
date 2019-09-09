@@ -1,12 +1,12 @@
 import * as React from "react";
-import AdminHeader from "../Shared/layout/Header";
-import Breadcrumb from "../Shared/layout/Breadcrumb";
+import AdminHeader from "../Shared/Layout/Header";
+import Breadcrumb from "../Shared/Layout/Breadcrumb";
 import { connect } from "react-redux";
 import { actionGetContacts } from "@app/Stores/Contact/ContactActions";
 import Pagination from "@app/Shared/Pagination";
 import Icon from "@app/Shared/Icon";
 import { API } from '@app/Shared/Const';
-const GlobalStyles = require("@app/shared/styles/Box.scss");
+const GlobalStyles = require("@app/Shared/Styles/Box.scss");
 
 interface IAdminContactProps {
   actionGetContacts: any;

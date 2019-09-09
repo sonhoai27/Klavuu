@@ -5,11 +5,11 @@ import Axios from 'axios';
 import { actionShowHidePopup, actionShowHideAlert } from '@app/Stores/init';
 import { API } from '@app/Shared/Const';
 import Icon from '@app/Shared/Icon';
-import AdminHeader from '../Shared/layout/Header';
-import Breadcrumb from '../Shared/layout/Breadcrumb';
+import AdminHeader from '../Shared/Layout/Header';
+import Breadcrumb from '../Shared/Layout/Breadcrumb';
 import AdminHelpAdd from './AddOrUpdate'
 
-const GlobalStyles = require('@app/shared/styles/Box.scss');
+const GlobalStyles = require('@app/Shared/Styles/Box.scss');
 
 interface IAdminHelpsProps {
   actionShowHidePopup: Function;

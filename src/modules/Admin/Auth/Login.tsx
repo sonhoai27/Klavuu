@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import { validateEmail } from '@app/configs';
 import { connect } from 'react-redux';
-import './Styles/Login.none.scss';
+import '@app/modules/Admin/Auth/Styles/Login.none.scss';
 import { login, loadUser } from '@app/Stores/init';
 
 interface ILoginProps {
-  login: Function;
+  login: any;
   history: any;
   isAuthenticated: any;
   loadUser: Function;
@@ -101,6 +100,7 @@ class Login extends React.PureComponent<ILoginProps, ILoginStates> {
     if (loginForm.password && loginForm.email && validateEmail(loginForm.email)) {
       login(loginForm.email, loginForm.password)
       .then((res: any) => {
+        console.log(res)
         if (res.payload && res.payload.token) {
           this.setState({
             isLoading: false,
@@ -179,14 +179,6 @@ class Login extends React.PureComponent<ILoginProps, ILoginStates> {
                         Đăng nhập
                       </button>
                   </form>
-                  <div className="my-4 w-full text-center text-sm">
-                    <span className="mr-3">Bạn chưa là thành viên?</span>
-                    <Link
-                      className="text-blue-500"
-                      to="/register">
-                      Tạo tài khoản mới
-                    </Link>
-                  </div>
                 </div>
               </div>
               <div className="sm:w-1/4 px-2"></div>

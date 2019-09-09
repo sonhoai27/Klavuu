@@ -23,7 +23,7 @@ module.exports = merge(commonConfig, {
         historyApiFallback: true,
         proxy: {
             '/api/v1': {
-                target: 'https://zonesgroup.vn',
+                target: 'http://localhost:8000',
                 secure: false,
                 changeOrigin: true,
                 headers: {

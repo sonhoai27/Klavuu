@@ -32,7 +32,7 @@ const initState = {
     status: false,
   },
   settingsState: {},
-  token: localStorage.getItem('zone-22-uuid'),
+  token: localStorage.getItem('zone-uuid'),
   isAuthenticated: null,
   user: null,
 };
@@ -195,17 +195,13 @@ const login = (email: string, password: string) => (dispatch: any) => {
   const body = { email, password };
 
   return POST('login', body)
-    .then((res: any) => {
-      return dispatch({
-        type: INIT_ACTION_TYPES.LOGIN_SUCCESS,
-        payload: res.data,
-      });
-    })
-    .catch(() => {
-      dispatch({
-        type: INIT_ACTION_TYPES.LOGIN_FAIL,
-      });
-    });
+    .then((res: any) =>  dispatch({
+      type: INIT_ACTION_TYPES.LOGIN_SUCCESS,
+      payload: res.data,
+    }))
+    .catch(() => dispatch({
+      type: INIT_ACTION_TYPES.LOGIN_FAIL,
+    }));
 };
 
 // LOGOUT USER

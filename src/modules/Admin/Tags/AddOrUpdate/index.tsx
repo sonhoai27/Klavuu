@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 const uuidv4 = require('uuid/v4');
 
 import { actionShowHideAlert } from '@app/Stores/init';
-import Modal from '../../Shared/layout/Modal';
+import Modal from '../../Shared/Layout/Modal';
 import Moment from '@app/Shared/Utils/Moment';
 import Alias from '@app/Shared/Utils/Alias';
 import { actionUpdateTag, actionGetTags, actionAddTag } from '@app/Stores/Tag/TagActions';
 
-const S = require('../styles/add.scss');
+const S = require('@app/modules/Admin/Tags/Styles/add.scss');
 
 interface IAdminTagAddProps {
   actionUpdateTag: Function;

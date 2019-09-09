@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 const uuidv4 = require('uuid/v4');
 
 import { actionGetCMTS, actionUpdateCMT } from '@app/Stores/Comment/CommentActions';
-import AdminHeader from '../Shared/layout/Header';
-import Breadcrumb from '../Shared/layout/Breadcrumb';
-import Rater from '@app/modules/client/shared/layout/rating';
+import AdminHeader from '../Shared/Layout/Header';
+import Breadcrumb from '../Shared/Layout/Breadcrumb';
 import Pagination from '@app/Shared/Pagination';
+import Rater from '@app/Shared/Rating';
 
-const GlobalStyles = require('@app/shared/styles/Box.scss');
+const GlobalStyles = require('@app/Shared/Styles/Box.scss');
 const S = require('./Comments.scss');
 
 interface IAdminCommentsProps {

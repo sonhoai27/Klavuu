@@ -4,8 +4,8 @@ import axios from 'axios'
 import { ChromePicker } from 'react-color';
 import CKEditor from 'ckeditor4-react';
 
-import AdminHeader from '../Shared/layout/Header';
-import Breadcrumb from '../Shared/layout/Breadcrumb';
+import AdminHeader from '../Shared/Layout/Header';
+import Breadcrumb from '../Shared/Layout/Breadcrumb';
 import { actionShowHideAlert, actionGetSettings } from '@app/Stores/init';
 import SingleUploadImage from './SingleUploadImage';
 import { API } from '@app/Shared/Const';
@@ -13,7 +13,7 @@ import { configForProductIntro } from '@app/Shared/CKEditorConfig';
 
 CKEditor.editorUrl = 'https://cdn.ckeditor.com/4.10.1/full/ckeditor.js';
 
-const GlobalStyles = require('@app/shared/styles/Box.scss');
+const GlobalStyles = require('@app/Shared/Styles/Box.scss');
 const S = require('./Settings.scss');
 
 interface IAdminSettingsProps {

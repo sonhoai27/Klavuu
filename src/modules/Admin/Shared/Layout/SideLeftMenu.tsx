@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Icon from '@app/Shared/Icon';
 
-const styles = require('./styles/AdminSideLeftMenu.scss')
+const styles = require('../Styles/AdminSideLeftMenu.scss')
 
 class AdminSideLeftMenu extends React.Component {
   constructor(props) {

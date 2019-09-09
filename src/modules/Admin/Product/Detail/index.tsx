@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 const uuidv4 = require('uuid/v4');
 import CKEditor from 'ckeditor4-react';
 
-import AdminHeader from '../../Shared/layout/Header';
-import Breadcrumb from '@app/modules/Admin/Shared/layout/Breadcrumb';
+import AdminHeader from '../../Shared/Layout/Header';
+import Breadcrumb from '@app/modules/Admin/Shared/Layout/Breadcrumb';
 import Icon from '@app/Shared/Icon';
 import Tabs, { TabPanel } from '@app/Shared/Tabs/Tabs';
-import Autocomplete from '../Add/components/Autocomplete';
+import Autocomplete from '../Add/Components/Autocomplete';
 import ProductModel from '@app/Shared/Models/ProductModel';
 import Moment from '@app/Shared/Utils/Moment';
 import { actionGetTags, actionAddTag } from '@app/Stores/Tag/TagActions';
@@ -33,8 +33,8 @@ import { configForProductIntro, configForProductInfo } from '@app/Shared/CKEdito
 import { actionShowHideAlert, actionShowHideLoading } from '@app/Stores/init';
 import UploadPhoto from './UploadImage';
 
-const styles = require('../add/ProductAdd.scss')
-const GlobalStyles = require('@app/shared/styles/Box.scss');
+const styles = require('../Add/ProductAdd.scss')
+const GlobalStyles = require('@app/Shared/Styles/Box.scss');
 
 CKEditor.editorUrl = 'https://cdn.ckeditor.com/4.10.1/full/ckeditor.js';
 

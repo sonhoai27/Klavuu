@@ -2,14 +2,14 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 const uuidv4 = require('uuid/v4');
 
-import AdminHeader from '../Shared/layout/Header';
-import Breadcrumb from '../Shared/layout/Breadcrumb';
+import AdminHeader from '../Shared/Layout/Header';
+import Breadcrumb from '../Shared/Layout/Breadcrumb';
 import { actionUpdateOrder, actionGetOrder } from '@app/Stores/Cart/CartActions';
 import { actionShowHideLoading, actionShowHideAlert } from '@app/Stores/init';
 import { CDN } from '@app/Shared/Const';
 
-const GlobalStyles = require('@app/shared/styles/Box.scss');
-const S = require('./styles/OrderDetail.scss');
+const GlobalStyles = require('@app/Shared/Styles/Box.scss');
+const S = require('./Styles/OrderDetail.scss');
 
 interface IOrderDetailProps {
   match?: any;

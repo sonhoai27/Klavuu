@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import Icon from '@app/Shared/Icon';
 
-const S = require('./styles/Photo.scss')
+const S = require('../Styles/Photo.scss')
 
 interface IAdminPhotoProps {
   onClose: Function;

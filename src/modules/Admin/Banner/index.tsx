@@ -6,15 +6,15 @@ import Loadable from 'react-loadable';
 
 const uuidv4 = require('uuid/v4');
 
-import AdminHeader from '../Shared/layout/Header';
-import Breadcrumb from '../Shared/layout/Breadcrumb';
+import AdminHeader from '../Shared/Layout/Header';
+import Breadcrumb from '../Shared/Layout/Breadcrumb';
 import { actionGetBanners, actionDeleteBanner } from '@app/Stores/Banner/BannerActions';
 import { CDN, API } from '@app/Shared/Const';
 import Icon from '@app/Shared/Icon';
 import { actionShowHidePopup, actionShowHideAlert, actionShowHideLoading } from '@app/Stores/init';
 
-const S = require('./styles/AdminBanner.scss')
-const GlobalStyles = require('@app/Shared/styles/Box.scss');
+const S = require('@app/modules/Admin/Banner/Styles/AdminBanner.scss');
+const GlobalStyles = require('@app/Shared/Styles/Box.scss');
 
 const AdminAddBanner = Loadable({
   loader: () => import(

@@ -1,13 +1,13 @@
 import * as React from 'react';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
-import Modal from '../Shared/layout/Modal';
+import Modal from '../Shared/Layout/Modal';
 import Calendar from '@app/Shared/Calendar';
 import Axios from 'axios';
 import { API } from '@app/Shared/Const';
 import FormatNumber from '@app/Shared/Utils/FormatNumber';
 
-const S = require('./styles/Export.scss')
+const S = require('@app/modules/Admin/Order/Styles/Export.scss')
 
 interface IOrderExportProps {
   isShowing: boolean;

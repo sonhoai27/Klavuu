@@ -2,8 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Table, Divider, Tag, Badge } from 'antd';
 
-import AdminHeader from '../Shared/layout/Header';
-import Breadcrumb from '@app/modules/Admin/Shared/layout/Breadcrumb';
+import AdminHeader from '../Shared/Layout/Header';
+import Breadcrumb from '@app/modules/Admin/Shared/Layout/Breadcrumb';
 import { actionGetProducts, actionDeleteProduct } from '@app/Stores/Product/ProductActions';
 import Icon from '@app/Shared/Icon';
 import FormatNumber from '@app/Shared/Utils/FormatNumber';
@@ -12,8 +12,7 @@ import { actionShowHidePopup, actionShowHideAlert } from '@app/Stores/init';
 import queryParams, { getParameterByName } from '@app/Shared/Utils/Query';
 import { actionGetBrands } from '@app/Stores/Brand/BrandActions';
 
-const GlobalStyles = require('@app/shared/styles/Box.scss');
-import './styles.css'
+const GlobalStyles = require('@app/Shared/Styles/Box.scss');
 
 interface IProductsProps {
   actionGetProducts: Function;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import AdminHeader from '../Shared/layout/Header';
+import AdminHeader from '../Shared/Layout/Header';
 import Axios from 'axios';
 import { API } from '@app/Shared/Const';
 import { Link } from 'react-router-dom';

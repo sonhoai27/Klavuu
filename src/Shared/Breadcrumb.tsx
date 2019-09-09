@@ -2,7 +2,8 @@ import * as React from 'react'
 import { Link } from 'react-router-dom';
 const uuidv4 = require('uuid/v4');
 
-const styles = require('./styles/Breadcrumb.scss')
+const styles = require('@app/Shared/Styles/Breadcrumb.scss')
+
 interface IBreadCrumbProps {
   items: {
     title: string;
