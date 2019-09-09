@@ -1,0 +1,37 @@
+.form-group {
+    margin-bottom: 1rem;
+  }
+  label {
+    display: flex;
+    font-weight: 400;
+    margin-bottom: .5rem;
+    color: #4e595d;
+  }
+  .form-control {
+    display: block;
+    width: 100%;
+    padding: .6875rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(78,89,93,.3);
+    border-radius: 0;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    &:hover,
+    &:focus {
+      color: #495057;
+      background-color: #fff;
+      border-color: #f5b2b2;
+      outline: 0;
+      box-shadow: none;
+    }
+  }
+  .invalid-feedback {
+    line-height: 1.5rem;
+    color: #dc2434;
+  }
+  .is-invalid {
+    border-color: #dc2434;
+  }

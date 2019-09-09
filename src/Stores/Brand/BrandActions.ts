@@ -1,0 +1,54 @@
+import {
+  ADD_BRAND,
+  LIST_BRANDS,
+  UPDATE_BRAND,
+  DELETE_BRAND,
+  LIST_BRAND_TAG,
+} from './BrandTypes';
+
+import axios from 'axios'
+
+import { API } from '@app/Shared/Const';
+
+const actionAddBrand = brand => async (dispatch) => {
+  return await dispatch({
+    type: ADD_BRAND,
+    payload: axios.post(`${API}brand`, brand),
+  })
+};
+
+const actionGetBrands = () => async (dispatch) => {
+  return await dispatch({
+    type: LIST_BRANDS,
+    payload: axios.get(`${API}brands`),
+  })
+};
+
+const actionGetBrandTags = brand => async (dispatch) => {
+  return await dispatch({
+    type: LIST_BRAND_TAG,
+    payload: axios.get(`${API}brand/tags/${brand}`),
+  })
+};
+
+const actionUpdateBrand = (brand, id) => async (dispatch) => {
+  return await dispatch({
+    type: UPDATE_BRAND,
+    payload: axios.put(`${API}brand/${id}`, brand),
+  })
+};
+
+const actionDeleteBrand = id => async (dispatch) => {
+  return await dispatch({
+    type: DELETE_BRAND,
+    payload: axios.delete(`${API}brand/${id}`),
+  })
+};
+
+export {
+  actionAddBrand,
+  actionGetBrands,
+  actionUpdateBrand,
+  actionDeleteBrand,
+  actionGetBrandTags,
+}

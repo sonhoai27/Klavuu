@@ -3,47 +3,65 @@ const localStyles = require('./App.css');
 
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 
-import { setLocalStyles } from '@app/stores/init';
-import Loading from '@app/shared/Loading';
-import Alert from '@app/shared/alert/Alert';
-import Popup from '@app/shared/popup';
-import GlobalLoading from './shared/global-loading';
-import AdminLayout from './modules/admin/shared/layout';
+import { setLocalStyles, loadUser } from '@app/Stores/init';
+import Loading from '@app/Shared/Loading';
+import Alert from '@app/Shared/Alert/Alert';
+import Popup from '@app/Shared/Popup';
+import GlobalLoading from './Shared/GlobalLoading';
+import AdminLayout from './modules/Admin/Shared/layout';
+import { MakeRoute } from './routes';
 
-const AdminHome = React.lazy(() => import('@app/modules/admin/home'))
+// const AdminHome = React.lazy(() => import('@app/modules/admin/home'))
 
-const AdminProducts = React.lazy(() => import('@app/modules/admin/product'));
+// const AdminProducts = React.lazy(() => import('@app/modules/admin/product'));
 
-const AdminProductsAdd = React.lazy(() => import('@app/modules/admin/product/add'));
+// const AdminProductsAdd = React.lazy(() => import('@app/modules/admin/product/add'));
 
-const AdminProductsDetail = React.lazy(() => import('@app/modules/admin/product/detail'))
+// const AdminProductsDetail = React.lazy(() => import('@app/modules/admin/product/detail'))
 
-const AdminOrder = React.lazy(() => import('@app/modules/admin/order'));
+// const AdminOrder = React.lazy(() => import('@app/modules/admin/order'));
 
-const AdminOrderDetail = React.lazy(() => import('@app/modules/admin/order/OrderDetail'));
+// const AdminOrderDetail = React.lazy(() => import('@app/modules/admin/order/OrderDetail'));
 
-const AdminBanner = React.lazy(() => import('@app/modules/admin/banner'));
+// const AdminBanner = React.lazy(() => import('@app/modules/admin/banner'));
 
-const AdminBrand = React.lazy(() => import('@app/modules/admin/brand'));
+// const AdminBrand = React.lazy(() => import('@app/modules/admin/brand'));
 
-const AdminTags = React.lazy(() => import('@app/modules/admin/tags'));
+// const AdminTags = React.lazy(() => import('@app/modules/admin/tags'));
 
-const AdminComments = React.lazy(() => import('@app/modules/admin/comment'));
+// const AdminComments = React.lazy(() => import('@app/modules/admin/comment'));
 
-const AdminSettings = React.lazy(() => import('@app/modules/admin/settings'));
+// const AdminSettings = React.lazy(() => import('@app/modules/admin/settings'));
 
-const AdminLanguage = React.lazy(() => import('@app/modules/admin/language'));
+// const AdminLanguage = React.lazy(() => import('@app/modules/admin/language'));
 
-const AdminHelps = React.lazy(() => import('@app/modules/admin/helps'));
+// const AdminHelps = React.lazy(() => import('@app/modules/admin/helps'));
 
-const AdminBlogs = React.lazy(() => import('@app/modules/admin/blog'));
+// const AdminBlogs = React.lazy(() => import('@app/modules/admin/blog'));
 
-const AdminBlogsAddOrUpdate = React.lazy(() => import('@app/modules/admin/blog/AddOrUpdate'));
+// const AdminBlogsAddOrUpdate = React.lazy(() => import('@app/modules/admin/blog/AddOrUpdate'));
 
-const AdminContact = React.lazy(() => import('@app/modules/admin/contact'));
+// const AdminContact = React.lazy(() => import('@app/modules/admin/contact'));
+
+// <Route exact path="/" component={AdminHome} />
+//               <Route exact path="/products" component={AdminProducts} />
+//               <Route exact path="/product/add" component={AdminProductsAdd} />
+//               <Route exact path="/product/:alias" component={AdminProductsDetail} />
+//               <Route exact path="/banners" component={AdminBanner} />
+//               <Route exact path="/brands" component={AdminBrand} />
+//               <Route exact path="/tags" component={AdminTags} />
+//               <Route exact path="/contact" component={AdminContact} />
+//               <Route exact path="/comments" component={AdminComments} />
+//               <Route exact path="/settings" component={AdminSettings} />
+//               <Route exact path="/language" component={AdminLanguage} />
+//               <Route exact path="/orders" component={AdminOrder} />
+//               <Route exact path="/order/:id" component={AdminOrderDetail} />
+//               <Route exact path="/helps" component={AdminHelps} />
+//               <Route exact path="/blogs" component={AdminBlogs} />
+//               <Route exact path="/blogs/add" component={AdminBlogsAddOrUpdate} />
+//               <Route exact path="/blog/:alias" component={AdminBlogsAddOrUpdate} />
 
 interface IClientProps {
   match?: any;
@@ -51,6 +69,7 @@ interface IClientProps {
   showOrHideAlertState: any;
   isShowHidePopupState: any;
   setLocalStyles: Function;
+  loadUser: Function;
 }
 
 class App extends React.Component<IClientProps> {
@@ -60,38 +79,13 @@ class App extends React.Component<IClientProps> {
 
   componentDidMount() {
     this.props.setLocalStyles(localStyles)
+    this.props.loadUser();
   }
 
   render() {
     return (
-     
         <>
-           <React.Suspense fallback={<GlobalLoading />}>
-            <BrowserRouter basename="/backend">
-              <AdminLayout>
-              <Switch>
-              <Route exact path="/" component={AdminHome} />
-              <Route exact path="/products" component={AdminProducts} />
-              <Route exact path="/product/add" component={AdminProductsAdd} />
-              <Route exact path="/product/:alias" component={AdminProductsDetail} />
-              <Route exact path="/banners" component={AdminBanner} />
-              <Route exact path="/brands" component={AdminBrand} />
-              <Route exact path="/tags" component={AdminTags} />
-              <Route exact path="/contact" component={AdminContact} />
-              <Route exact path="/comments" component={AdminComments} />
-              <Route exact path="/settings" component={AdminSettings} />
-              <Route exact path="/language" component={AdminLanguage} />
-              <Route exact path="/orders" component={AdminOrder} />
-              <Route exact path="/order/:id" component={AdminOrderDetail} />
-              <Route exact path="/helps" component={AdminHelps} />
-              <Route exact path="/blogs" component={AdminBlogs} />
-              <Route exact path="/blogs/add" component={AdminBlogsAddOrUpdate} />
-              <Route exact path="/blog/:alias" component={AdminBlogsAddOrUpdate} />
-            </Switch>
-              </AdminLayout>
-            </BrowserRouter>
-           </React.Suspense>
-          
+          <MakeRoute/>
           {
             this.props.isLoading && <Loading />
           }
@@ -142,10 +136,13 @@ const mapStateToProps = storeState => ({
   isLoading: storeState.initReducer.isLoading,
   showOrHideAlertState: storeState.initReducer.showOrHideAlertState,
   isShowHidePopupState: storeState.initReducer.isShowHidePopupState,
+  user: storeState.initReducer.user,
+  isAuthenticated: storeState.initReducer.isAuthenticated,
 })
 
 const mapDispatchToProps = {
   setLocalStyles,
+  loadUser,
 }
 
 export {

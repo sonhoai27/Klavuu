@@ -1,46 +1,16 @@
-const cacheName = "klavuu"
-const staticAssets = [
-    './',
-    './index.html',
-    './css/custom.css',
-    './css/fonts.css',
-    './css/style.css',
-    './images/favicon.ico',
-    './images/shopping-bag.svg',
-]
+// import firebase scripts inside service worker js script
+importScripts('https://www.gstatic.com/firebasejs/5.7.2/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/5.7.2/firebase-messaging.js');
 
-self.addEventListener('install', async function() {
-    const cache = await caches.open(cacheName);
-    cache.addAll(staticAssets);
+firebase.initializeApp({
+    'messagingSenderId': '822669098231'
 });
 
-self.addEventListener('activate', event => {
-    event.waitUntil(self.clients.claim());
-});
+const messaging = firebase.messaging();
 
-self.addEventListener('fetch', event => {
-    const request = event.request;
-    const url = new URL(request.url);
-    if (url.origin === location.origin) {
-        event.respondWith(cacheFirst(request));
-    } else {
-        event.respondWith(networkFirst(request));
+self.addEventListener('notificationclick', (event) => {
+    if (event.action) {
+        clients.openWindow(event.action);
     }
+    event.notification.close();
 });
-
-async function cacheFirst(request) {
-    const cachedResponse = await caches.match(request);
-    return cachedResponse || fetch(request);
-}
-
-async function networkFirst(request) {
-    const dynamicCache = await caches.open('klavuu-dynamic');
-    try {
-        const networkResponse = await fetch(request);
-        dynamicCache.put(request, networkResponse.clone());
-        return networkResponse;
-    } catch (err) {
-        const cachedResponse = await dynamicCache.match(request);
-        return cachedResponse || await caches.match('./fallback.json');
-    }
-}

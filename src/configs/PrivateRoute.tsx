@@ -1,7 +1,7 @@
 import { Redirect, Route } from 'react-router-dom'
 import * as React from 'react'
 
-import AdminLayout from '@app/modules/admin/shared/layout'
+import AdminLayout from '@app/modules/Admin/Shared/layout'
 
 export interface IPrivateRouteProps {
   component: React.ComponentClass<any> | React.StatelessComponent<any>;

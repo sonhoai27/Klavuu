@@ -4,7 +4,6 @@ const { CheckerPlugin } = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 const babelLoader = {
     loader: 'babel-loader',
@@ -37,6 +36,7 @@ module.exports = {
         },
         {
             test: /\.scss$/,
+            exclude: /\.none.(scss)$/,
             use: [{
                 loader: "style-loader"
             },
@@ -54,6 +54,22 @@ module.exports = {
             }
             ]
         },
+        {
+            test: /\.scss$/,
+            include: /\.none.(scss)$/,
+            use: [
+              {
+                loader: "style-loader"
+              },
+              {
+                loader: "css-loader",
+              },
+              { loader: "postcss-loader" },
+              {
+                loader: "sass-loader"
+              }
+            ]
+          },
         {
             test: /\.css$/,
             use: [
@@ -82,50 +98,12 @@ module.exports = {
         new CopyWebpackPlugin([
             { from: paths.resolveApp('public/manifest.json'), to: paths.resolveApp('build') },
             { from: paths.resolveApp('public/images/'), to: paths.resolveApp('build/images') },
-            { from: paths.resolveApp('public/css/'), to: paths.resolveApp('build/css') },
-            { from: paths.resolveApp('public/ckeditor/'), to: paths.resolveApp('build/ckeditor') },
+            { from: paths.resolveApp('public/sw.js'), to: paths.resolveApp('build/sw.js') },
+            { from: paths.resolveApp('public/css/'), to: paths.resolveApp('build/css') }
         ]),
     ],
     externals: {
         CKEDITOR: 'CKEDITOR'
-    },
-    optimization: {
-        minimizer: [
-            new UglifyJsPlugin({
-                cache: true,
-                parallel: true,
-                sourceMap: true,
-                minify(file, sourceMap) {
-                    const extractedComments = [];
-
-                    const { error, map, code, warnings } = require("uglify-js") // Or require('./path/to/uglify-module')
-                        .minify(file, {});
-
-                    return { error, map, code, warnings, extractedComments };
-                },
-                uglifyOptions: {
-                    warnings: false,
-                    parse: {},
-                    compress: {},
-                    mangle: true,
-                    output: null,
-                    toplevel: false,
-                    nameCache: null,
-                    ie8: false,
-                    keep_fnames: false
-                }
-            })
-        ],
-        splitChunks: {
-            cacheGroups: {
-                styles: {
-                    name: 'styles',
-                    test: /\.css$/,
-                    chunks: 'all',
-                    enforce: true,
-                },
-            },
-        },
     },
     node: { fs: "empty" }
 }
