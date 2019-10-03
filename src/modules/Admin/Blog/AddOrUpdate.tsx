@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import CKEditor from 'ckeditor4-react';
 
 import AdminHeader from '../Shared/Layout/Header';
 import Breadcrumb from '../Shared/Layout/Breadcrumb';
@@ -9,11 +10,7 @@ import BlogModel from '@app/Shared/Models/Blog';
 import Alias from '@app/Shared/Utils/Alias';
 import { actionAddBlog, actionGetBlog, actionUpdateBlog } from '@app/Stores/Blog/BlogActions';
 import { actionShowHideAlert } from '@app/Stores/init';
-
-// @ts-ignore
-declare var CKEDITOR: any;
-// @ts-ignore
-declare var $: any;
+import { configForProductInfo } from '@app/Shared/CKEditorConfig';
 
 const GlobalStyles = require('@app/Shared/Styles/Box.scss');
 const S = require('@app/modules/Admin/Blog/Styles/Blog.scss');
@@ -31,7 +28,10 @@ interface ISProps {
   actionUpdateBlog: Function;
 }
 
+CKEditor.editorUrl = 'https://cdn.ckeditor.com/4.10.1/full/ckeditor.js';
+
 class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
+  private editor: any = React.createRef();
   constructor(props) {
     super(props)
     this.state = {
@@ -40,9 +40,14 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
   }
 
   componentDidMount() {
-    this.configCKEditor()
     if (this.isUpdate()) {
       this.getBlog()
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.editor.editor) {
+      console.log(this.editor.editor.instances)
     }
   }
 
@@ -76,70 +81,6 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
   // false -> add
   isUpdate = () => this.props.match.params.alias
 
-  configCKEditor = () => {
-    try {
-      CKEDITOR.replace('editor1', {
-        height: 500,
-        toolbar: [
-          {
-            name: 'document', groups: ['mode', 'document', 'doctools'],
-            items: ['Source'],
-          },
-          {
-            name: 'basicstyles', groups: ['basicstyles', 'cleanup'],
-            items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript',
-              'Superscript', '-', 'CopyFormatting', 'RemoveFormat'],
-          },
-          { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
-          { name: 'colors', items: ['TextColor', 'BGColor'] },
-          {
-            name: 'paragraph', groups: ['list', 'indent', 'blocks',
-              'align', 'bidi'], items: ['NumberedList', 'BulletedList', '-',
-                'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft',
-                'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-',
-                'BidiLtr', 'BidiRtl', 'Language'],
-          },
-          { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
-          {
-            name: 'insert', items: ['Table', 'HorizontalRule', 'Smiley',
-              'SpecialChar', 'PageBreak', 'Iframe'],
-          },
-          { name: 'FontAwesome', items: ['Image'] },
-        ],
-        extraAllowedContent: 'i;span;ul;li;table;td;style;*[id];*(*);*{*}',
-        allowedContent: true,
-        htmlEncodeOutput: false,
-        entities: false,
-      });
-    } catch (e) { }
-
-    const blogsCover: any = document.getElementById('image-picker');
-    blogsCover.onclick =  ()  => {
-      this.imagePicker({ prefix: 'finder', type: 'image' }, (url: string, path: string) => {
-        console.log(path)
-        // @ts-ignore
-        document.getElementById('cover-blog-id').src = url;
-      })
-      // CKFinder.popup({
-      //   chooseFiles: true,
-      //   width: 800,
-      //   height: 600,
-      //   onInit(finder) {
-      //     finder.on('files:choose', (evt) => {
-      //       const file = evt.data.files.first();
-      //       // @ts-ignore
-      //       document.getElementById('cover-blog-id').src = file.getUrl();
-      //     });
-
-      //     finder.on('file:choose:resizedImage', (evt) => {
-      //       // @ts-ignore
-      //       document.getElementById('cover-blog-id').src = evt.data.resizedUrl
-      //     });
-      //   },
-      // });
-    }
-  }
-
   onChange = (e) => {
     const { name, value } = e.target
 
@@ -160,7 +101,7 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
       ...this.state.blog,
       blogs_alias: Alias(this.state.blog.blogs_title || ''),
       blogs_cover: image,
-      blogs_content: CKEDITOR.instances.editor1.getData(),
+      blogs_content: '',
     }
 
     if (this.checkBlogNull(blog)) {
@@ -215,7 +156,7 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
     this.props.actionUpdateBlog(
       {
         blogs_alias: Alias(this.state.blog.blogs_title || ''),
-        blogs_content: CKEDITOR.instances.editor1.getData(),
+        blogs_content: '',
         blogs_cover: image,
         blogs_desc: this.state.blog.blogs_desc,
         blogs_title: this.state.blog.blogs_title,
@@ -291,14 +232,12 @@ class AdminBlogAddOrUpdate extends React.Component<ISProps, IStates> {
             </div>
             <div className={GlobalStyles['form-item']}>
               <label>Nội dung</label>
-              <textarea
-                cols={80}
-                id="editor1"
-                name="editor1"
-                value={this.props.blogState.blogs_content}
-              >
-                {this.props.blogState.blogs_content}
-              </textarea>
+              <CKEditor
+                ref={(editor: any) => this.editor = editor}
+                config={{
+                  ...configForProductInfo,
+                }}
+                data="<h1>Xin chao</h1>" />
             </div>
           </div>
         </div>
